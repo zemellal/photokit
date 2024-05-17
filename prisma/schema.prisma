@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model brands {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  cameras cameras[]
+  lenses  lenses[]
+}
+
+model cameras {
+  id             Int         @id @default(autoincrement())
+  brand_id       Int
+  mount_id       Int?
+  name           String?
+  weight         Int?
+  price          Decimal?    @db.Decimal(7, 2)
+  date_announced DateTime?   @db.Date
+  brands         brands      @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mounts         mounts?     @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ownership      ownership[]
+}
+
+model lenses {
+  id             Int         @id @default(autoincrement())
+  brand_id       Int
+  mount_id       Int
+  zoom_prime     zoom_prime
+  name           String
+  min_fl         Int         @db.SmallInt
+  price          Float?      @db.Real
+  date_announced DateTime?   @db.Date
+  max_aperture   Float       @db.Real
+  filter_thread  Int?
+  weight         Int?
+  max_fl         Int?        @db.SmallInt
+  brands         brands      @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  mounts         mounts      @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ownership      ownership[]
+}
+
+model mounts {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  cameras cameras[]
+  lenses  lenses[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model ownership {
+  id            Int       @id @default(autoincrement())
+  user_id       String
+  lens_id       Int?
+  serial_number String?
+  purchased_on  DateTime? @db.Date
+  camera_id     Int?
+  cameras       cameras?  @relation(fields: [camera_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_cameraId_fkey")
+  lenses        lenses?   @relation(fields: [lens_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_lensId_fkey")
+  users         users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_userId_fkey")
+}
+
+model users {
+  id        String      @id
+  name      String?
+  ownership ownership[]
+}
+
+enum zoom_prime {
+  zoom
+  prime
+}
