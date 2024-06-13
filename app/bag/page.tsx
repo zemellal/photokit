@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/data-table";
 import { columnsBag } from "./columns-bag";
 import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
 import {

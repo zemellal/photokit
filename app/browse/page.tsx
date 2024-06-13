@@ -1,5 +1,5 @@
 import { getProductsWithBrands } from "@/lib/queries/products";
-import { DataTable } from "../../components/ui/data-table";
+import { DataTable } from "../../components/data-table";
 import { columnsProducts } from "./columns-browse";
 import {
   Card,

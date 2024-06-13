@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { locale } from "@/lib";
