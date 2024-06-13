@@ -7,71 +7,103 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model brands {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  cameras cameras[]
-  lenses  lenses[]
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+
+  @@map("brands")
 }
 
-model cameras {
-  id             Int         @id @default(autoincrement())
-  brand_id       Int
-  mount_id       Int?
-  name           String?
-  weight         Int?
-  price          Decimal?    @db.Decimal(7, 2)
-  date_announced DateTime?   @db.Date
-  brands         brands      @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mounts         mounts?     @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ownership      ownership[]
+model Camera {
+  id          Int      @id @default(autoincrement())
+  mount_id    Int?
+  product_id  String?  @db.Uuid
+  megapixels  Float?   @db.Real
+  crop_factor Float?   @db.Real
+  mounts      Mount?   @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products    Product? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("cameras")
 }
 
-model lenses {
-  id             Int         @id @default(autoincrement())
-  brand_id       Int
-  mount_id       Int
-  zoom_prime     zoom_prime
-  name           String
-  min_fl         Int         @db.SmallInt
-  price          Float?      @db.Real
-  date_announced DateTime?   @db.Date
-  max_aperture   Float       @db.Real
-  filter_thread  Int?
-  weight         Int?
-  max_fl         Int?        @db.SmallInt
-  brands         brands      @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  mounts         mounts      @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ownership      ownership[]
+model Lens {
+  id            Int        @id @default(autoincrement())
+  mount_id      Int
+  zoom_prime    zoom_prime
+  min_fl        Int        @db.SmallInt
+  max_aperture  Float      @db.Real
+  filter_thread Int?
+  max_fl        Int?       @db.SmallInt
+  product_id    String?    @db.Uuid
+  mounts        Mount      @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products      Product?   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("lenses")
 }
 
-model mounts {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  cameras cameras[]
-  lenses  lenses[]
+model Mount {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  cameras Camera[]
+  lenses  Lens[]
+
+  @@map("mounts")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model ownership {
+model Ownership {
   id            Int       @id @default(autoincrement())
   user_id       String
-  lens_id       Int?
   serial_number String?
   purchased_on  DateTime? @db.Date
-  camera_id     Int?
-  cameras       cameras?  @relation(fields: [camera_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_cameraId_fkey")
-  lenses        lenses?   @relation(fields: [lens_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_lensId_fkey")
+  purchased_for Float     @default(0) @db.Real
+  condition     Condition @default(new)
+  product_id    String    @db.Uuid
+  products      Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users         users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_userId_fkey")
+
+  @@map("ownership")
 }
 
 model users {
   id        String      @id
   name      String?
-  ownership ownership[]
+  ownership Ownership[]
+}
+
+model Product {
+  id             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  brand_id       Int
+  name           String      @unique
+  type           ProductType
+  price          Int?        @default(dbgenerated("0.00"))
+  date_announced DateTime?   @db.Date
+  weight         Int?
+  cameras        Camera[]
+  lenses         Lens[]
+  ownership      Ownership[]
+  brands         Brand       @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
+
+  @@map("products")
 }
 
 enum zoom_prime {
   zoom
   prime
+  teleconverter
+}
+
+enum ProductType {
+  camera
+  lens
+  accessory
+
+  @@map("product_types")
+}
+
+enum Condition {
+  new
+  refurbished
+  used
 }
