@@ -15,6 +15,31 @@ model Brand {
   @@map("brands")
 }
 
+model Mount {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  cameras Camera[]
+  lenses  Lens[]
+
+  @@map("mounts")
+}
+
+model Product {
+  id             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  brand_id       Int
+  name           String      @unique
+  type           ProductType
+  price          Int?        @default(dbgenerated("0.00"))
+  date_announced DateTime?   @db.Date
+  weight         Int?
+  cameras        Camera[]
+  lenses         Lens[]
+  ownership      Ownership[]
+  brands         Brand       @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
+
+  @@map("products")
+}
+
 model Camera {
   id          Int      @id @default(autoincrement())
   mount_id    Int?
@@ -42,15 +67,6 @@ model Lens {
   @@map("lenses")
 }
 
-model Mount {
-  id      Int      @id @default(autoincrement())
-  name    String   @unique
-  cameras Camera[]
-  lenses  Lens[]
-
-  @@map("mounts")
-}
-
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Ownership {
   id            Int       @id @default(autoincrement())
@@ -70,22 +86,6 @@ model users {
   id        String      @id
   name      String?
   ownership Ownership[]
-}
-
-model Product {
-  id             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  brand_id       Int
-  name           String      @unique
-  type           ProductType
-  price          Int?        @default(dbgenerated("0.00"))
-  date_announced DateTime?   @db.Date
-  weight         Int?
-  cameras        Camera[]
-  lenses         Lens[]
-  ownership      Ownership[]
-  brands         Brand       @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
-
-  @@map("products")
 }
 
 enum zoom_prime {
