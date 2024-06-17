@@ -1,7 +1,7 @@
 "use server";
 
 import { createOwnership, removeOwnership } from "@/lib/queries/ownership";
-import { Prisma } from "@prisma/client";
+import { Ownership, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const createOwnershipAction = async (
@@ -16,7 +16,7 @@ export const createOwnershipAction = async (
   return ownership;
 };
 
-export const deleteOwnershipAction = async (id: number) => {
+export const deleteOwnershipAction = async (id: Ownership["id"]) => {
   // const deleteOwnership = await prisma.ownership.delete({ where: { id: id } });
   const deleteOwnership = await removeOwnership(id);
 

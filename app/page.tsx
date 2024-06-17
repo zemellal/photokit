@@ -3,12 +3,14 @@
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
 import { locale } from "@/lib";
+import { getKitCount } from "@/lib/queries/kits";
 import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 
 export default async function Home() {
   const ownedProducts = await listOwnershipsWithProducts();
+  const kitCount = await getKitCount();
 
   // sum the total weight of your owned products
   const totalWeight = ownedProducts.reduce((acc, cur) => {
@@ -38,7 +40,7 @@ export default async function Home() {
           <SummaryWidget
             header={"Kits"}
             icon={<Backpack className="h-4 w-4 text-muted-foreground" />}
-            value={0}
+            value={kitCount}
             description="Kits you have assembled"
           />
           <SummaryWidget

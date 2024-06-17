@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -9,12 +10,15 @@ import { locale } from "@/lib";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { Plus } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { OwnershipWithProducts } from "@/lib/queries/ownership";
 
 export default function OwnershipSummaryWidget({
   items,
   className,
 }: {
-  items: any[];
+  items: OwnershipWithProducts[];
   className?: string;
 }) {
   const maxItems = 5;
@@ -25,9 +29,17 @@ export default function OwnershipSummaryWidget({
           <CardTitle className="text-lg">Your Gear</CardTitle>
           <CardDescription>Your latest acquisitions</CardDescription>
         </div>
-        <Button asChild size={"sm"}>
-          <Link href={"/bag"}>See All</Link>
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button size={"sm"} asChild>
+              <Link href={"/browse"}>
+                <Plus className="h-4 w-4 " />
+                <span className="sr-only">Add a Product to your Gear</span>
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Add to your Gear</TooltipContent>
+        </Tooltip>
       </CardHeader>
       <CardContent className="grid gap-8">
         {items.slice(0, maxItems).map((item) => (
@@ -41,17 +53,13 @@ export default function OwnershipSummaryWidget({
               <p className="text-sm font-medium leading-none">
                 {item.products.name}
               </p>
-              <p className="text-sm text-muted-foreground">
-                {new Intl.DateTimeFormat(locale, {
-                  dateStyle: "medium",
-                }).format(item.purchased_on)}{" "}
-                {/* <Badge variant={"outline"}>{item.condition}</Badge> */}
-                {/* {new Intl.NumberFormat(locale, {
-                  style: "unit",
-                  unit: "gram",
-                  unitDisplay: "short",
-                }).format(item.products.weight)} */}
-              </p>
+              {item.purchased_on && (
+                <p className="text-sm text-muted-foreground">
+                  {new Intl.DateTimeFormat(locale, {
+                    dateStyle: "medium",
+                  }).format(item.purchased_on)}{" "}
+                </p>
+              )}
 
               {/* <Badge>{item.id}</Badge> */}
             </div>
@@ -64,6 +72,11 @@ export default function OwnershipSummaryWidget({
           </div>
         ))}
       </CardContent>
+      <CardFooter>
+        <Button asChild variant={"outline"}>
+          <Link href={"/bag"}>See All</Link>
+        </Button>
+      </CardFooter>
     </Card>
   );
 }

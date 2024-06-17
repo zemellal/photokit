@@ -25,29 +25,30 @@ model Mount {
 }
 
 model Product {
-  id             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   brand_id       Int
-  name           String      @unique
+  name           String           @unique
   type           ProductType
-  price          Int?        @default(dbgenerated("0.00"))
-  date_announced DateTime?   @db.Date
+  price          Int?             @default(dbgenerated("0.00"))
+  date_announced DateTime?        @db.Date
   weight         Int?
+  ProductsOnKits ProductsOnKits[]
   cameras        Camera[]
   lenses         Lens[]
   ownership      Ownership[]
-  brands         Brand       @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
+  brands         Brand            @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
 
   @@map("products")
 }
 
 model Camera {
-  id          Int      @id @default(autoincrement())
-  mount_id    Int?
-  product_id  String?  @db.Uuid
-  megapixels  Float?   @db.Real
-  crop_factor Float?   @db.Real
-  mounts      Mount?   @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  products    Product? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id          Int     @id @default(autoincrement())
+  mount_id    Int
+  product_id  String  @db.Uuid
+  megapixels  Float?  @db.Real
+  crop_factor Float   @default(1) @db.Real
+  mounts      Mount   @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@map("cameras")
 }
@@ -74,18 +75,39 @@ model Ownership {
   serial_number String?
   purchased_on  DateTime? @db.Date
   purchased_for Float     @default(0) @db.Real
-  condition     Condition @default(new)
   product_id    String    @db.Uuid
+  condition     Condition @default(new)
   products      Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users         users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_userId_fkey")
+  users         User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_userId_fkey")
 
   @@map("ownership")
 }
 
-model users {
+model Kit {
+  id             Int              @id @default(autoincrement())
+  name           String
+  createdOn      DateTime         @default(now())
+  ownerId        String
+  owner          User             @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  ProductsOnKits ProductsOnKits[]
+}
+
+model ProductsOnKits {
+  kitId     Int
+  productId String  @db.Uuid
+  kit       Kit     @relation(fields: [kitId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([productId, kitId])
+}
+
+model User {
   id        String      @id
   name      String?
+  kit       Kit[]
   ownership Ownership[]
+
+  @@map("users")
 }
 
 enum zoom_prime {

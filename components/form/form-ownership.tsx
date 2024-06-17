@@ -213,7 +213,11 @@ export function OwnershipForm({
           )}
         />
 
-        <Button type="submit">Add Item</Button>
+        <div className="pt-6">
+          <Button className="w-full" type="submit">
+            Add Item
+          </Button>
+        </div>
       </form>
     </Form>
   );

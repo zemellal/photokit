@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { OwnershipForm } from "./form/form-ownership";
+import { Plus } from "lucide-react";
 
 export const DialogProductItem = ({ product }: { product: Product }) => {
   const [open, setOpen] = React.useState(false);
@@ -21,10 +22,10 @@ export const DialogProductItem = ({ product }: { product: Product }) => {
       <DialogTrigger asChild>
         <Button
           className="-mr-8 invisible group-hover:visible"
-          variant={"outline"}
+          variant={"default"}
           size={"sm"}
         >
-          Add
+          <Plus className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

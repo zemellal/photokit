@@ -78,7 +78,7 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     accessorKey: "purchased_on",
     id: "purchased_on",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date Purchased" />
+      <DataTableColumnHeader column={column} title="Purchased On" />
     ),
     cell: ({ row }) => {
       if (!row.getValue("purchased_on")) {
