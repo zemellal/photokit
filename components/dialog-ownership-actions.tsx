@@ -23,13 +23,14 @@ import { toast } from "@/components/ui/use-toast";
 import { deleteOwnershipAction } from "@/app/bag/actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { OwnershipForm } from "./form/form-ownership";
+import { AddProductToKitForm } from "./form/form-add-product-to-kit";
 
 export function DialogOwnershipActions({
   item,
 }: {
   item: OwnershipWithProducts;
 }) {
-  type ViewT = "edit" | "delete";
+  type ViewT = "edit" | "delete" | "addToKit";
   const [open, setOpen] = React.useState(false);
   const [view, setView] = React.useState<ViewT>("delete");
 
@@ -57,7 +58,11 @@ export function DialogOwnershipActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>Add to a Kit</DropdownMenuItem>
+          <DialogTrigger asChild>
+            <DropdownMenuItem onClick={() => setView("addToKit")}>
+              Add to a Kit
+            </DropdownMenuItem>
+          </DialogTrigger>
           <DialogTrigger asChild>
             <DropdownMenuItem onClick={() => setView("edit")}>
               Edit
@@ -95,6 +100,17 @@ export function DialogOwnershipActions({
                 Delete
               </Button>
             </DialogFooter>
+          </>
+        )}
+        {view === "addToKit" && (
+          <>
+            <DialogHeader>
+              <DialogTitle>{item.products.name}</DialogTitle>
+              <DialogDescription>
+                Choose which kit you want to add this item to.
+              </DialogDescription>
+            </DialogHeader>
+            <AddProductToKitForm setOpen={setOpen} product={item.products} />
           </>
         )}
         {view === "edit" && (

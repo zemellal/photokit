@@ -12,6 +12,13 @@ export function createKit(data: Prisma.KitUncheckedCreateWithoutOwnerInput) {
 }
 
 // read kits
+export function getKits() {
+  return prisma.kit.findMany({
+    where: { ownerId: userId },
+    orderBy: { createdOn: "desc" },
+  });
+}
+
 export function getKitsWithProductsOnKits() {
   const kits = prisma.kit.findMany({
     where: { ownerId: userId },
@@ -39,6 +46,10 @@ export function getKitCount() {
 }
 
 // add product to kit
+export function addProductToKit(data: ProductsOnKits) {
+  const kitItem = prisma.productsOnKits.create({ data });
+  return kitItem;
+}
 
 // remove product from kit
 export function removeKitItem(kitItem: ProductsOnKits) {

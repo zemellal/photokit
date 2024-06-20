@@ -89,7 +89,7 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
         dateStyle: "short",
       }).format(date);
 
-      return <div className="">{formatted}</div>;
+      return <time className="">{formatted}</time>;
     },
   },
   {

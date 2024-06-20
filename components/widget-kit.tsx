@@ -33,6 +33,8 @@ interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
 const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
   ({ className, kit, ...props }, ref) => {
     const [open, setOpen] = React.useState(false);
+    const [kitItemSelected, setKitItemSelected] =
+      React.useState<ProductsOnKits>();
 
     function deleteKitItem(kitItem: ProductsOnKits) {
       console.log(kitItem);
@@ -85,7 +87,11 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
 
                 <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
-                    <Button variant={"ghost"} size={"sm"}>
+                    <Button
+                      variant={"ghost"}
+                      size={"icon"}
+                      onClick={() => setKitItemSelected(kitItem)}
+                    >
                       <span className="sr-only">{`Delete kit item: ${kitItem.product.name}`}</span>
                       <X className="h-4 w-4" />
                     </Button>
@@ -95,15 +101,22 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
                       <DialogTitle>Remove from kit</DialogTitle>
                       <DialogDescription>
                         Are you sure you want to remove this item from your kit?
+                        <pre className="mt-2 rounded-md bg-slate-950 p-4">
+                          <code className="text-white">
+                            {JSON.stringify(kitItemSelected, null, 2)}
+                          </code>
+                        </pre>
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                      <Button
-                        variant={"destructive"}
-                        onClick={() => deleteKitItem(kitItem)}
-                      >
-                        Delete Kit Item
-                      </Button>
+                      {kitItemSelected && (
+                        <Button
+                          variant={"destructive"}
+                          onClick={() => deleteKitItem(kitItemSelected)}
+                        >
+                          Delete Kit Item
+                        </Button>
+                      )}
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>

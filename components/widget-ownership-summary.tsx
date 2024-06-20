@@ -43,7 +43,7 @@ export default function OwnershipSummaryWidget({
       </CardHeader>
       <CardContent className="grid gap-8">
         {items.slice(0, maxItems).map((item) => (
-          <div key={item.id} className="flex items-center gap-4">
+          <article key={item.id} className="flex items-center gap-4">
             {/* <Avatar className="hidden h-9 w-9 sm:flex">
             <AvatarImage src="/avatars/01.png" alt="Avatar" />
             <AvatarFallback>OM</AvatarFallback>
@@ -54,11 +54,11 @@ export default function OwnershipSummaryWidget({
                 {item.products.name}
               </p>
               {item.purchased_on && (
-                <p className="text-sm text-muted-foreground">
+                <time className="text-sm text-muted-foreground">
                   {new Intl.DateTimeFormat(locale, {
                     dateStyle: "medium",
                   }).format(item.purchased_on)}{" "}
-                </p>
+                </time>
               )}
 
               {/* <Badge>{item.id}</Badge> */}
@@ -69,7 +69,7 @@ export default function OwnershipSummaryWidget({
                 currency: "USD",
               }).format(item.purchased_for)}
             </div>
-          </div>
+          </article>
         ))}
       </CardContent>
       <CardFooter>

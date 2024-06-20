@@ -92,7 +92,7 @@ export const columnsProducts: ColumnDef<Product>[] = [
         dateStyle: "short",
       }).format(date);
 
-      return <div className="">{formatted}</div>;
+      return <time className="">{formatted}</time>;
     },
   },
 ];
