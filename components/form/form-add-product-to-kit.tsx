@@ -30,7 +30,7 @@ import Link from "next/link";
 import { getKits } from "@/lib/queries/kits";
 
 const FormInput = z.object({
-  kitId: z.coerce.number(),
+  kitId: z.string(),
   productId: z.string(),
 }) satisfies z.Schema<Prisma.ProductsOnKitsUncheckedCreateInput>;
 
@@ -112,7 +112,7 @@ export function AddProductToKitForm({
                 <SelectContent>
                   {kits &&
                     kits.map((kit) => (
-                      <SelectItem key={kit.id} value={kit.id.toString()}>
+                      <SelectItem key={kit.id} value={kit.id}>
                         {kit.name}
                       </SelectItem>
                     ))}

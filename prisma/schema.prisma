@@ -33,8 +33,8 @@ model Product {
   date_announced DateTime?        @db.Date
   weight         Int?
   ProductsOnKits ProductsOnKits[]
-  cameras        Camera[]
-  lenses         Lens[]
+  camera         Camera?
+  lens           Lens?
   ownership      Ownership[]
   brands         Brand            @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
 
@@ -44,11 +44,11 @@ model Product {
 model Camera {
   id          Int     @id @default(autoincrement())
   mount_id    Int
-  product_id  String  @db.Uuid
+  product_id  String  @unique @db.Uuid
   megapixels  Float?  @db.Real
   crop_factor Float   @default(1) @db.Real
   mounts      Mount   @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  products    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@map("cameras")
 }
@@ -61,9 +61,9 @@ model Lens {
   max_aperture  Float      @db.Real
   filter_thread Int?
   max_fl        Int?       @db.SmallInt
-  product_id    String?    @db.Uuid
+  product_id    String     @unique @db.Uuid
   mounts        Mount      @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  products      Product?   @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product       Product    @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("lenses")
 }
@@ -84,7 +84,7 @@ model Ownership {
 }
 
 model Kit {
-  id             Int              @id @default(autoincrement())
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name           String
   createdOn      DateTime         @default(now())
   ownerId        String
@@ -93,7 +93,7 @@ model Kit {
 }
 
 model ProductsOnKits {
-  kitId     Int
+  kitId     String  @db.Uuid
   productId String  @db.Uuid
   kit       Kit     @relation(fields: [kitId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
