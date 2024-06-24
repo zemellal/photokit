@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { createOwnershipAction } from "@/app/bag/actions";
+import { createOwnershipAction, editOwnershipAction } from "@/app/bag/actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 
 import { cn } from "@/lib/utils";
@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Prisma } from "@prisma/client";
 
 // TODO:  get the enum from Prisma
 const CONDITION = ["new", "refurbished", "used"] as const;
@@ -58,18 +59,8 @@ const FormSchema = z.object({
     })
   ),
   condition: z.enum(CONDITION),
-  purchased_for: z.string().transform((val, ctx) => {
-    const parsed = parseFloat(val);
-    if (isNaN(parsed)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Not a number",
-      });
-      return z.NEVER;
-    }
-    return parsed;
-  }),
-});
+  purchased_for: z.coerce.number(),
+}) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
 
 export function OwnershipForm({
   product,
@@ -80,16 +71,25 @@ export function OwnershipForm({
   item?: OwnershipWithProducts;
   setOpen: Dispatch<boolean>;
 }) {
+  const safeItem = FormSchema.safeParse(item);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       product_id: product.id,
-      // user_id: "g9om23d7o0rdpigl81e2tl50",
+      serial_number: safeItem.data?.serial_number,
+      purchased_on: safeItem.data?.purchased_on,
+      purchased_for: safeItem.data?.purchased_for,
+      condition: safeItem.data?.condition,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    createOwnershipAction(data);
+    if (!item?.id) {
+      createOwnershipAction(data);
+    } else {
+      editOwnershipAction(item.id, data);
+    }
     setOpen(false);
     toast({
       title: "You submitted the following values:",
@@ -215,7 +215,7 @@ export function OwnershipForm({
 
         <div className="pt-6">
           <Button className="w-full" type="submit">
-            Add Item
+            {item?.id ? "Edit Item" : "Add Item"}
           </Button>
         </div>
       </form>

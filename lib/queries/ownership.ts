@@ -39,3 +39,11 @@ export function createOwnership(
 export function removeOwnership(id: Ownership["id"]) {
   return prisma.ownership.delete({ where: { id: id } });
 }
+
+// delete a product from a user's ownership
+export function editOwnership(
+  id: Ownership["id"],
+  data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
+) {
+  return prisma.ownership.update({ where: { id: id }, data: data });
+}

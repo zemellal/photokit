@@ -121,13 +121,13 @@ export function DialogOwnershipActions({
                 Edit this product ownership details.
               </DialogDescription>
             </DialogHeader>
-            {/* <OwnershipForm
+            <OwnershipForm
               setOpen={setOpen}
               product={{
                 id: item.product_id,
               }}
               item={item}
-            /> */}
+            />
           </>
         )}
       </DialogContent>
