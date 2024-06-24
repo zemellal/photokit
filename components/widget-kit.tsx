@@ -34,7 +34,7 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
   ({ className, kit, ...props }, ref) => {
     const [open, setOpen] = React.useState(false);
     const [kitItemSelected, setKitItemSelected] =
-      React.useState<ProductsOnKits>();
+      React.useState<KitsWithProductsOnKits[0]["ProductsOnKits"][0]>();
 
     function deleteKitItem(kitItem: ProductsOnKits) {
       console.log(kitItem);
@@ -73,19 +73,19 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
         <CardHeader>
           <div className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg">{kit.name}</CardTitle>
-            <DropdownDialogKit kitId={kit.id} />
+            <DropdownDialogKit kit={kit} />
           </div>
         </CardHeader>
         <CardContent>
-          {kit.ProductsOnKits.length > 0 ? (
-            kit.ProductsOnKits.map((kitItem) => (
-              <article
-                key={kitItem.productId}
-                className="flex flex-row items-center justify-between"
-              >
-                <div>{kitItem.product.name}</div>
+          <Dialog open={open} onOpenChange={setOpen}>
+            {kit.ProductsOnKits.length > 0 ? (
+              kit.ProductsOnKits.map((kitItem) => (
+                <article
+                  key={kitItem.productId}
+                  className="flex flex-row items-center justify-between"
+                >
+                  <div>{kitItem.product.name}</div>
 
-                <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
                     <Button
                       variant={"ghost"}
@@ -98,14 +98,9 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Remove from kit</DialogTitle>
+                      <DialogTitle>{kitItemSelected?.product.name}</DialogTitle>
                       <DialogDescription>
                         Are you sure you want to remove this item from your kit?
-                        <pre className="mt-2 rounded-md bg-slate-950 p-4">
-                          <code className="text-white">
-                            {JSON.stringify(kitItemSelected, null, 2)}
-                          </code>
-                        </pre>
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
@@ -119,12 +114,12 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
                       )}
                     </DialogFooter>
                   </DialogContent>
-                </Dialog>
-              </article>
-            ))
-          ) : (
-            <p className="text-muted-foreground">Nothing in this kit</p>
-          )}
+                </article>
+              ))
+            ) : (
+              <p className="text-muted-foreground">Nothing in this kit</p>
+            )}
+          </Dialog>
         </CardContent>
         <CardFooter>
           <Button variant={"outline"} size={"icon"}>

@@ -51,13 +51,13 @@ export const DialogKit = ({ action }: { action: "new" }) => {
 };
 DialogKit.displayName = "DialogKit";
 
-export const DropdownDialogKit = ({ kitId }: { kitId: Kit["id"] }) => {
+export const DropdownDialogKit = ({ kit }: { kit: Kit }) => {
   const [open, setOpen] = React.useState(false);
   const [action, setAction] = React.useState<"delete" | "edit" | "">("");
 
   function deleteKit() {
-    console.log(`kitId: ${kitId}`);
-    deleteKitAction(kitId)
+    console.log(`kitId: ${kit.id}`);
+    deleteKitAction(kit.id)
       .then((kit) => {
         setOpen(false);
         toast({
@@ -130,7 +130,7 @@ export const DropdownDialogKit = ({ kitId }: { kitId: Kit["id"] }) => {
             <DialogTitle>Edit</DialogTitle>
             <DialogDescription>Edit the kit</DialogDescription>
           </DialogHeader>
-          {/* Edit Kit Form */}
+          <KitForm setOpen={setOpen} kit={kit} />
         </DialogContent>
       )}
     </Dialog>

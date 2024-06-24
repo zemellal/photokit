@@ -6,6 +6,7 @@ import {
   deleteKit,
   getKits,
   removeKitItem,
+  updateKit,
 } from "@/lib/queries/kits";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -32,6 +33,18 @@ export const deleteKitAction = async (id: Kit["id"]) => {
 
   revalidatePath("/");
   return deletedKit;
+};
+
+export const editKitAction = async (
+  id: Kit["id"],
+  data: Prisma.KitUncheckedCreateWithoutOwnerInput
+) => {
+  console.log(`editKitAction: ${id}`);
+  const kit = await updateKit(id, data);
+  console.log(kit);
+
+  revalidatePath("/");
+  return kit;
 };
 
 // Kit Item actions

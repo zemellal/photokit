@@ -34,6 +34,12 @@ export type KitsWithProductsOnKits = Prisma.PromiseReturnType<
 >;
 
 // update kit
+export function updateKit(
+  id: Kit["id"],
+  data: Prisma.KitUncheckedCreateWithoutOwnerInput
+) {
+  return prisma.kit.update({ where: { id: id }, data });
+}
 
 // delete kit
 export function deleteKit(id: Kit["id"]) {
