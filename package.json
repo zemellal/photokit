@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed/seed.ts"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
     "@prisma/client": "^5.15.0",
@@ -35,6 +38,7 @@
     "react-hook-form": "^7.51.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.15.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {

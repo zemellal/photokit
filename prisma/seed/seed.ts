@@ -1,0 +1,226 @@
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+async function main() {
+  const me = await prisma.user.upsert({
+    where: { id: "g9om23d7o0rdpigl81e2tl50" },
+    update: { name: "Ansel Adams" },
+    create: { id: "g9om23d7o0rdpigl81e2tl50", name: "Ansel Adams" },
+  });
+
+  const productLensNZ = await prisma.product.upsert({
+    where: { name: "Nikon Nikkor Z 40mm F/2" },
+    update: {},
+    create: {
+      name: "Nikon Nikkor Z 40mm F/2",
+      price: 300,
+      date_announced: new Date("2021-09-14"),
+      weight: 170,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Nikon" },
+          create: { name: "Nikon" },
+        },
+      },
+      type: "lens",
+      lens: {
+        create: {
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Nikon Z" },
+              create: { name: "Nikon Z" },
+            },
+          },
+          zoom_prime: "prime",
+          min_fl: 40,
+          max_aperture: 2,
+          filter_thread: 52,
+        },
+      },
+    },
+  });
+
+  const productLensNF = await prisma.product.upsert({
+    where: { name: "Nikon AF-S Nikkor 200-500mm F/5.6E ED VR" },
+    update: {},
+    create: {
+      name: "Nikon AF-S Nikkor 200-500mm F/5.6E ED VR",
+      price: 1057,
+      date_announced: new Date("2015-08-04"),
+      weight: 2300,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Nikon" },
+          create: { name: "Nikon" },
+        },
+      },
+      type: "lens",
+      lens: {
+        create: {
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Nikon F" },
+              create: { name: "Nikon F" },
+            },
+          },
+          zoom_prime: "zoom",
+          min_fl: 200,
+          max_fl: 500,
+          max_aperture: 5.6,
+          filter_thread: 95,
+        },
+      },
+    },
+  });
+
+  const productLensCR = await prisma.product.upsert({
+    where: { name: "Canon RF 28-70mm F/2L USM" },
+    update: {},
+    create: {
+      name: "Canon RF 28-70mm F/2L USM",
+      price: 3000,
+      date_announced: new Date("2018-09-01"),
+      weight: 1430,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Canon" },
+          create: { name: "Canon" },
+        },
+      },
+      type: "lens",
+      lens: {
+        create: {
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Canon RF" },
+              create: { name: "Canon RF" },
+            },
+          },
+          zoom_prime: "zoom",
+          min_fl: 28,
+          max_fl: 70,
+          max_aperture: 2,
+          filter_thread: 95,
+        },
+      },
+    },
+  });
+
+  const productCameraNZ = await prisma.product.upsert({
+    where: { name: "Nikon Z6" },
+    update: {},
+    create: {
+      name: "Nikon Z6",
+      price: 2000,
+      date_announced: new Date("2018-08-23"),
+      weight: 675,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Nikon" },
+          create: { name: "Nikon" },
+        },
+      },
+      type: "camera",
+      camera: {
+        create: {
+          megapixels: 24,
+          crop_factor: 1,
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Nikon Z" },
+              create: { name: "Nikon Z" },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const productCameraNF = await prisma.product.upsert({
+    where: { name: "Nikon D600" },
+    update: {},
+    create: {
+      name: "Nikon D600",
+      price: 2000,
+      date_announced: new Date("2012-09-01"),
+      weight: 850,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Nikon" },
+          create: { name: "Nikon" },
+        },
+      },
+      type: "camera",
+      camera: {
+        create: {
+          megapixels: 24,
+          crop_factor: 1,
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Nikon F" },
+              create: { name: "Nikon F" },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const productCameraCR = await prisma.product.upsert({
+    where: { name: "Canon EOS R5" },
+    update: {},
+    create: {
+      name: "Canon EOS R5",
+      price: 2900,
+      date_announced: new Date("2020-07-09"),
+      weight: 738,
+      brands: {
+        connectOrCreate: {
+          where: { name: "Canon" },
+          create: { name: "Canon" },
+        },
+      },
+      type: "camera",
+      camera: {
+        create: {
+          megapixels: 45,
+          crop_factor: 1,
+          mounts: {
+            connectOrCreate: {
+              where: { name: "Canon RF" },
+              create: { name: "Canon RF" },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const productAccessory = await prisma.product.upsert({
+    where: { name: "Nikon FTZ II Mount Adapter" },
+    update: {},
+    create: {
+      name: "Nikon FTZ II Mount Adapter",
+      price: 250,
+      date_announced: new Date("2021-10-28"),
+      type: "accessory",
+      brands: {
+        connectOrCreate: {
+          where: { name: "Nikon" },
+          create: { name: "Nikon" },
+        },
+      },
+    },
+  });
+}
+
+main()
+  .then(async () => {
+    console.info("[SEED] Succussfully created user and products");
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
