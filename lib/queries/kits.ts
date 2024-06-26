@@ -1,3 +1,6 @@
+import { cache } from "react";
+import "server-only";
+
 import { mock_userId } from "..";
 import prisma from "../prismaClient";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
@@ -10,14 +13,14 @@ export function createKit(data: Prisma.KitUncheckedCreateWithoutOwnerInput) {
 }
 
 // read kits
-export function getKits() {
+export const getKits = cache(() => {
   return prisma.kit.findMany({
     where: { ownerId: mock_userId },
     orderBy: { createdOn: "desc" },
   });
-}
+});
 
-export function getKitsWithProductsOnKits() {
+export const getKitsWithProductsOnKits = cache(() => {
   const kits = prisma.kit.findMany({
     where: { ownerId: mock_userId },
     orderBy: { createdOn: "desc" },
@@ -26,7 +29,7 @@ export function getKitsWithProductsOnKits() {
     },
   });
   return kits;
-}
+});
 export type KitsWithProductsOnKits = Prisma.PromiseReturnType<
   typeof getKitsWithProductsOnKits
 >;
@@ -44,10 +47,10 @@ export function deleteKit(id: Kit["id"]) {
   return prisma.kit.delete({ where: { id: id } });
 }
 
-export function getKitCount() {
+export const getKitCount = cache(() => {
   const kitCount = prisma.kit.count({ where: { ownerId: mock_userId } });
   return kitCount;
-}
+});
 
 // add product to kit
 export function addProductToKit(data: ProductsOnKits) {

@@ -1,6 +1,8 @@
+import { cache } from "react";
+import "server-only";
+
 import { Product } from "@prisma/client";
 import prisma from "../prismaClient";
-import { cache } from "react";
 
 export const getProductsWithBrands = cache(() => {
   console.log("getProductsWithBrands");
@@ -24,8 +26,8 @@ export const getProductWithDetailsById = cache((id: Product["id"]) => {
   return product;
 });
 
-export function getProductWithBrandsByName(name: Product["name"]) {
+export const getProductWithBrandsByName = cache((name: Product["name"]) => {
   console.log(`getProductWithBrandsByName: ${name}`);
   const product = prisma.product.findUniqueOrThrow({ where: { name } });
   return product;
-}
+});

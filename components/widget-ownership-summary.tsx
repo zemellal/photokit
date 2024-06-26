@@ -67,6 +67,7 @@ export default function OwnershipSummaryWidget({
             </div>
             <div className="ml-auto font-medium">
               {new Intl.NumberFormat(locale, {
+                maximumFractionDigits: 0,
                 style: "currency",
                 currency: "USD",
               }).format(item.purchased_for)}

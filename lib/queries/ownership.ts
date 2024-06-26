@@ -1,4 +1,6 @@
 import { cache } from "react";
+import "server-only";
+
 import prisma from "../prismaClient";
 import { Ownership, Prisma } from "@prisma/client";
 import { mock_userId } from "..";
@@ -46,11 +48,13 @@ export function editOwnership(
   return prisma.ownership.update({ where: { id: id }, data: data });
 }
 
-export function findOwnershipByProductId(pid: Ownership["product_id"]) {
-  return prisma.ownership.findMany({
-    where: {
-      user_id: mock_userId,
-      product_id: pid,
-    },
-  });
-}
+export const findOwnershipByProductId = cache(
+  (pid: Ownership["product_id"]) => {
+    return prisma.ownership.findMany({
+      where: {
+        user_id: mock_userId,
+        product_id: pid,
+      },
+    });
+  }
+);

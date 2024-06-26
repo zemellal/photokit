@@ -57,10 +57,11 @@ export default async function Home() {
             header="Total Cost"
             icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
             value={new Intl.NumberFormat(locale, {
+              maximumFractionDigits: 0,
               style: "currency",
               currency: "USD",
             }).format(totalCost)}
-            description="The total cost of what you paid for your kit"
+            description="The total you paid for your kit"
           />
         </div>
       </section>
