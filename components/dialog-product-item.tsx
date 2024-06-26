@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { Product } from "@prisma/client";
 import {
@@ -15,24 +15,30 @@ import { Button } from "@/components/ui/button";
 import { OwnershipForm } from "./form/form-ownership";
 import { Plus } from "lucide-react";
 
-export const DialogProductItem = ({ product }: { product: Product }) => {
+export const DialogProductItem = ({
+  product,
+  children,
+}: {
+  product: Product;
+  children?: ReactNode;
+}) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="-mr-8 invisible group-hover:visible"
-          variant={"default"}
-          size={"sm"}
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
+        {children ? (
+          children
+        ) : (
+          <Button>
+            <Plus className="h-4 w-4" />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{product.name}</DialogTitle>
           <DialogDescription>
-            Add this poduct to your kit. Also include the serial number, price,
+            Add this poduct to your bag. Also include the serial number, price,
             and date you acquired this cool new toy!
           </DialogDescription>
         </DialogHeader>

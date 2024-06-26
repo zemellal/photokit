@@ -1,16 +1,14 @@
 import { cache } from "react";
 import prisma from "../prismaClient";
 import { Ownership, Prisma } from "@prisma/client";
-
-// temporary userId
-const userId = "g9om23d7o0rdpigl81e2tl50";
+import { mock_userId } from "..";
 
 // gets all owned products by the user
 export const listOwnershipsWithProducts = cache(() => {
   const items = prisma.ownership.findMany({
     include: { products: true },
     orderBy: { purchased_on: "desc" },
-    where: { user_id: userId },
+    where: { user_id: mock_userId },
   });
   return items;
 });
@@ -31,7 +29,7 @@ export function createOwnership(
 ) {
   // const ownershipWithUserId = { ...data, users: { connect: { id: userId } } };
   return prisma.ownership.create({
-    data: { ...data, user_id: userId },
+    data: { ...data, user_id: mock_userId },
   });
 }
 
@@ -40,10 +38,19 @@ export function removeOwnership(id: Ownership["id"]) {
   return prisma.ownership.delete({ where: { id: id } });
 }
 
-// delete a product from a user's ownership
+// edit a user's ownership
 export function editOwnership(
   id: Ownership["id"],
   data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
 ) {
   return prisma.ownership.update({ where: { id: id }, data: data });
+}
+
+export function findOwnershipByProductId(pid: Ownership["product_id"]) {
+  return prisma.ownership.findMany({
+    where: {
+      user_id: mock_userId,
+      product_id: pid,
+    },
+  });
 }

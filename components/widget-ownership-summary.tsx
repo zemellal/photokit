@@ -51,7 +51,9 @@ export default function OwnershipSummaryWidget({
 
             <div className="grid gap-1">
               <p className="text-sm font-medium leading-none">
-                {item.products.name}
+                <Link href={`/product/${item.product_id}`}>
+                  {item.products.name}
+                </Link>
               </p>
               {item.purchased_on && (
                 <time className="text-sm text-muted-foreground">

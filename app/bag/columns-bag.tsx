@@ -9,6 +9,7 @@ import { locale } from "@/lib";
 import { DialogOwnershipActions } from "@/components/dialog-ownership-actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
   {
@@ -40,6 +41,14 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
       <DataTableColumnHeader column={column} title="Name" />
     ),
     enableHiding: false,
+    cell: ({ row }) => {
+      const original = row.original;
+      return (
+        <Link href={`/product/${encodeURI(original.products.id)}`}>
+          {original.products.name}
+        </Link>
+      );
+    },
   },
   {
     accessorKey: "products.weight",

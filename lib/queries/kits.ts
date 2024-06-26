@@ -1,12 +1,10 @@
+import { mock_userId } from "..";
 import prisma from "../prismaClient";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
 
-// temporary userId
-const userId = "g9om23d7o0rdpigl81e2tl50";
-
 // create a kit
 export function createKit(data: Prisma.KitUncheckedCreateWithoutOwnerInput) {
-  const kit = prisma.kit.create({ data: { ...data, ownerId: userId } });
+  const kit = prisma.kit.create({ data: { ...data, ownerId: mock_userId } });
 
   return kit;
 }
@@ -14,14 +12,14 @@ export function createKit(data: Prisma.KitUncheckedCreateWithoutOwnerInput) {
 // read kits
 export function getKits() {
   return prisma.kit.findMany({
-    where: { ownerId: userId },
+    where: { ownerId: mock_userId },
     orderBy: { createdOn: "desc" },
   });
 }
 
 export function getKitsWithProductsOnKits() {
   const kits = prisma.kit.findMany({
-    where: { ownerId: userId },
+    where: { ownerId: mock_userId },
     orderBy: { createdOn: "desc" },
     include: {
       ProductsOnKits: { include: { product: true } },
@@ -47,7 +45,7 @@ export function deleteKit(id: Kit["id"]) {
 }
 
 export function getKitCount() {
-  const kitCount = prisma.kit.count({ where: { ownerId: userId } });
+  const kitCount = prisma.kit.count({ where: { ownerId: mock_userId } });
   return kitCount;
 }
 

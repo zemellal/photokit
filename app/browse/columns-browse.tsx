@@ -8,13 +8,26 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { locale } from "@/lib";
 import { Badge } from "@/components/ui/badge";
 import { DialogProductItem } from "@/components/dialog-product-item";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export const columnsProducts: ColumnDef<Product>[] = [
   {
     id: "add",
     cell: ({ row }) => {
       const item = row.original;
-      return <DialogProductItem product={item} />;
+      return (
+        <DialogProductItem product={item}>
+          <Button
+            className="-mr-8 invisible group-hover:visible"
+            variant={"default"}
+            size={"sm"}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </DialogProductItem>
+      );
     },
   },
   {
@@ -28,6 +41,12 @@ export const columnsProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Name" />
     ),
     enableHiding: false,
+    cell: ({ row }) => {
+      const original = row.original;
+      return (
+        <Link href={`/product/${encodeURI(original.id)}`}>{original.name}</Link>
+      );
+    },
   },
   {
     accessorKey: "type",
