@@ -80,10 +80,7 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
           <Dialog open={open} onOpenChange={setOpen}>
             {kit.ProductsOnKits.length > 0 ? (
               kit.ProductsOnKits.map((kitItem) => (
-                <article
-                  key={kitItem.productId}
-                  className="flex flex-row items-center justify-between"
-                >
+                <div className="flex flex-row items-center justify-between">
                   <div>{kitItem.product.name}</div>
 
                   <DialogTrigger asChild>
@@ -96,29 +93,30 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
                       <X className="h-4 w-4" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{kitItemSelected?.product.name}</DialogTitle>
-                      <DialogDescription>
-                        Are you sure you want to remove this item from your kit?
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      {kitItemSelected && (
-                        <Button
-                          variant={"destructive"}
-                          onClick={() => deleteKitItem(kitItemSelected)}
-                        >
-                          Delete Kit Item
-                        </Button>
-                      )}
-                    </DialogFooter>
-                  </DialogContent>
-                </article>
+                </div>
               ))
             ) : (
-              <p className="text-muted-foreground">Nothing in this kit</p>
+              <p className="text-muted-foreground">This kit has no items</p>
             )}
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{kitItemSelected?.product.name}</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to remove this item from your kit?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                {kitItemSelected && (
+                  <Button
+                    variant={"destructive"}
+                    onClick={() => deleteKitItem(kitItemSelected)}
+                  >
+                    Delete Kit Item
+                  </Button>
+                )}
+              </DialogFooter>
+            </DialogContent>
           </Dialog>
         </CardContent>
         <CardFooter>
