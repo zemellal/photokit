@@ -9,8 +9,8 @@ import { mock_userId } from "..";
 export const listOwnershipsWithProducts = cache(() => {
   const items = prisma.ownership.findMany({
     include: { products: true },
-    orderBy: { purchased_on: "desc" },
-    where: { user_id: mock_userId },
+    orderBy: { purchaseDate: "desc" },
+    where: { userId: mock_userId },
   });
   return items;
 });
@@ -31,7 +31,7 @@ export function createOwnership(
 ) {
   // const ownershipWithUserId = { ...data, users: { connect: { id: userId } } };
   return prisma.ownership.create({
-    data: { ...data, user_id: mock_userId },
+    data: { ...data, userId: mock_userId },
   });
 }
 
@@ -48,13 +48,11 @@ export function editOwnership(
   return prisma.ownership.update({ where: { id: id }, data: data });
 }
 
-export const findOwnershipByProductId = cache(
-  (pid: Ownership["product_id"]) => {
-    return prisma.ownership.findMany({
-      where: {
-        user_id: mock_userId,
-        product_id: pid,
-      },
-    });
-  }
-);
+export const findOwnershipByProductId = cache((pid: Ownership["productId"]) => {
+  return prisma.ownership.findMany({
+    where: {
+      userId: mock_userId,
+      productId: pid,
+    },
+  });
+});

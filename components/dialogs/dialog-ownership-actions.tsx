@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
@@ -22,8 +24,8 @@ import { toast } from "@/components/ui/use-toast";
 
 import { deleteOwnershipAction } from "@/app/bag/actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
-import { OwnershipForm } from "./form/form-ownership";
-import { AddProductToKitForm } from "./form/form-add-product-to-kit";
+import { OwnershipForm } from "@/components/form/form-ownership";
+import { AddProductToKitForm } from "@/components/form/form-add-product-to-kit";
 
 export function DialogOwnershipActions({
   item,
@@ -71,7 +73,7 @@ export function DialogOwnershipActions({
 
           <DropdownMenuItem
             onClick={() =>
-              navigator.clipboard.writeText(String(item.serial_number))
+              navigator.clipboard.writeText(String(item.serialNumber))
             }
           >
             Copy Serial Number
@@ -124,7 +126,7 @@ export function DialogOwnershipActions({
             <OwnershipForm
               setOpen={setOpen}
               product={{
-                id: item.product_id,
+                id: item.productId,
               }}
               item={item}
             />

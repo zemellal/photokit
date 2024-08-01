@@ -26,7 +26,9 @@ export default function OwnershipSummaryWidget({
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-lg">Your Gear</CardTitle>
+          <CardTitle className="text-lg">
+            <Link href="/bag">Your Gear</Link>
+          </CardTitle>
           <CardDescription>Your latest acquisitions</CardDescription>
         </div>
         <Tooltip>
@@ -55,11 +57,11 @@ export default function OwnershipSummaryWidget({
                   {item.products.name}
                 </Link>
               </p>
-              {item.purchased_on && (
+              {item.purchaseDate && (
                 <time className="text-sm text-muted-foreground">
                   {new Intl.DateTimeFormat(locale, {
                     dateStyle: "medium",
-                  }).format(item.purchased_on)}{" "}
+                  }).format(item.purchaseDate)}{" "}
                 </time>
               )}
 
@@ -70,7 +72,7 @@ export default function OwnershipSummaryWidget({
                 maximumFractionDigits: 0,
                 style: "currency",
                 currency: "USD",
-              }).format(item.purchased_for)}
+              }).format(item.price)}
             </div>
           </article>
         ))}

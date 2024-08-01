@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-import { KitForm } from "./form/form-kit";
+import { KitForm } from "@/components/form/form-kit";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +21,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Kit } from "@prisma/client";
 import { deleteKitAction } from "@/app/kits/actions";
-import { toast } from "./ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
 // TODO: pass in JSX child for Dialog Trigger ??
 export const DialogKit = ({ action }: { action: "new" }) => {

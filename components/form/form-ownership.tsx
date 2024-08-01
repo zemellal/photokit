@@ -36,16 +36,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Prisma } from "@prisma/client";
-
-// TODO:  get the enum from Prisma
-const CONDITION = ["new", "refurbished", "used"] as const;
-const ConditionEnum = z.enum(CONDITION);
+import { Prisma, Condition } from "@prisma/client";
 
 const FormSchema = z.object({
-  product_id: z.string(),
-  // user_id: z.string(),
-  serial_number: z.optional(
+  productId: z.string(),
+  serialNumber: z.optional(
     z
       .string({
         invalid_type_error: "Invalid serial number format",
@@ -53,13 +48,13 @@ const FormSchema = z.object({
       .min(3)
       .trim()
   ),
-  purchased_on: z.optional(
+  purchaseDate: z.optional(
     z.date({
       // required_error: "A date of purchase is required",
     })
   ),
-  condition: z.enum(CONDITION),
-  purchased_for: z.coerce.number(),
+  itemCondition: z.nativeEnum(Condition),
+  price: z.coerce.number(),
 }) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
 
 export function OwnershipForm({
@@ -76,11 +71,11 @@ export function OwnershipForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      product_id: product.id,
-      serial_number: safeItem.data?.serial_number,
-      purchased_on: safeItem.data?.purchased_on,
-      purchased_for: safeItem.data?.purchased_for,
-      condition: safeItem.data?.condition,
+      productId: product.id,
+      serialNumber: safeItem.data?.serialNumber,
+      purchaseDate: safeItem.data?.purchaseDate,
+      price: safeItem.data?.price,
+      itemCondition: safeItem.data?.itemCondition,
     },
   });
 
@@ -106,7 +101,7 @@ export function OwnershipForm({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="purchased_on"
+          name="purchaseDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Item Purchased On</FormLabel>
@@ -149,7 +144,7 @@ export function OwnershipForm({
 
         <FormField
           control={form.control}
-          name="serial_number"
+          name="serialNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Serial Number</FormLabel>
@@ -166,7 +161,7 @@ export function OwnershipForm({
 
         <FormField
           control={form.control}
-          name="purchased_for"
+          name="price"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Price</FormLabel>
@@ -183,7 +178,7 @@ export function OwnershipForm({
 
         <FormField
           control={form.control}
-          name="condition"
+          name="itemCondition"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Condition</FormLabel>
@@ -194,13 +189,9 @@ export function OwnershipForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {Object.keys(ConditionEnum.Values).map((condition) => (
-                    <SelectItem
-                      key={condition}
-                      className="capitalize"
-                      value={condition}
-                    >
-                      {condition}
+                  {Object.keys(Condition).map((condition) => (
+                    <SelectItem key={condition} value={condition}>
+                      {condition.replace(/Condition$/, "")}
                     </SelectItem>
                   ))}
                 </SelectContent>

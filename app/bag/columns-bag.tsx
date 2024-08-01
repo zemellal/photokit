@@ -6,7 +6,7 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { locale } from "@/lib";
-import { DialogOwnershipActions } from "@/components/dialog-ownership-actions";
+import { DialogOwnershipActions } from "@/components/dialogs/dialog-ownership-actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -68,32 +68,32 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     },
   },
   {
-    accessorKey: "serial_number",
+    accessorKey: "serialNumber",
     header: "Serial Number",
   },
   {
-    accessorKey: "condition",
+    accessorKey: "itemCondition",
     header: "Condition",
     cell: ({ row }) => {
-      const type = row.original.condition;
+      const type = row.original.itemCondition;
       return (
         <Badge className="capitalize" variant={"secondary"}>
-          {type}
+          {type?.replace(/Condition$/, "")}
         </Badge>
       );
     },
   },
   {
-    accessorKey: "purchased_on",
-    id: "purchased_on",
+    accessorKey: "purchaseDate",
+    id: "purchaseDate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Purchased On" />
+      <DataTableColumnHeader column={column} title="Purchase Date" />
     ),
     cell: ({ row }) => {
-      if (!row.getValue("purchased_on")) {
+      if (!row.getValue("purchaseDate")) {
         return <div>n/a</div>;
       }
-      const date = row.getValue("purchased_on") as Date;
+      const date = row.getValue("purchaseDate") as Date;
       const formatted = new Intl.DateTimeFormat(locale, {
         dateStyle: "short",
       }).format(date);
@@ -102,13 +102,13 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     },
   },
   {
-    accessorKey: "purchased_for",
-    id: "purchased_for",
+    accessorKey: "price",
+    id: "price",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Purchased For" />
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("purchased_for"));
+      const amount = parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat(locale, {
         style: "currency",
         currency: "USD",

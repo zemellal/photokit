@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import { locale } from "@/lib";
 import { Badge } from "@/components/ui/badge";
-import { DialogProductItem } from "@/components/dialog-product-item";
+import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -20,19 +20,15 @@ export const columnsProducts: ColumnDef<Product>[] = [
       return (
         <DialogProductItem product={item}>
           <Button
-            className="-mr-8 invisible group-hover:visible"
+            className="-mr-8 invisible group-hover:visible size-6"
             variant={"default"}
-            size={"sm"}
+            size={"icon"}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="size-3.5" />
           </Button>
         </DialogProductItem>
       );
     },
-  },
-  {
-    accessorKey: "brands.name",
-    header: "Brand",
   },
   {
     id: "name",
@@ -97,16 +93,16 @@ export const columnsProducts: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "date_announced",
-    id: "date_announced",
+    accessorKey: "releaseDate",
+    id: "releaseDate",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Release Date" />
     ),
     cell: ({ row }) => {
-      if (!row.getValue("date_announced")) {
+      if (!row.getValue("releaseDate")) {
         return <div>n/a</div>;
       }
-      const date = row.getValue("date_announced") as Date;
+      const date = row.getValue("releaseDate") as Date;
       const formatted = new Intl.DateTimeFormat(locale, {
         dateStyle: "short",
       }).format(date);

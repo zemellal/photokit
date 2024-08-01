@@ -1,4 +1,4 @@
-import { getProductsWithBrands } from "@/lib/queries/products";
+import { getProducts } from "@/lib/queries/products";
 import { DataTable } from "../../components/data-table";
 import { columnsProducts } from "./columns-browse";
 import {
@@ -10,17 +10,14 @@ import {
 } from "@/components/ui/card";
 
 export default async function BrowsePage() {
-  const products = await getProductsWithBrands();
+  const products = await getProducts();
 
   return (
     <div className="main-padded">
       <section className="">
-        {/* <h1 className="text-2xl font-medium tracking-tight">Browse</h1> */}
-
-        <Card className="px-6 py-2 mt-4">
+        <Card className="">
           <CardHeader>
-            <CardTitle className="text-base">Browse All Products</CardTitle>
-            <CardDescription>Add to your bag or wishlist</CardDescription>
+            <CardTitle className="text-base">Browse Products</CardTitle>
           </CardHeader>
           <CardContent>
             <DataTable columns={columnsProducts} data={products} />

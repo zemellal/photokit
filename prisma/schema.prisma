@@ -26,17 +26,19 @@ model Mount {
 
 model Product {
   id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  brand_id       Int
+  brandId        Int
   name           String           @unique
   type           ProductType
   price          Int?             @default(dbgenerated("0.00"))
-  date_announced DateTime?        @db.Date
+  releaseDate    DateTime?        @db.Date
   weight         Int?
+  mpn            String?
+  Offer          Offer[]
   ProductsOnKits ProductsOnKits[]
   camera         Camera?
   lens           Lens?
   ownership      Ownership[]
-  brands         Brand            @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
+  Brand          Brand            @relation(fields: [brandId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
 
   @@map("products")
 }
@@ -70,15 +72,15 @@ model Lens {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Ownership {
-  id            Int       @id @default(autoincrement())
-  user_id       String
-  serial_number String?
-  purchased_on  DateTime? @db.Date
-  purchased_for Float     @default(0) @db.Real
-  product_id    String    @db.Uuid
-  condition     Condition @default(new)
-  products      Product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users         User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_userId_fkey")
+  id            Int        @id @default(autoincrement())
+  userId        String
+  serialNumber  String?
+  purchaseDate  DateTime?  @db.Date
+  price         Float      @default(0) @db.Real
+  productId     String     @db.Uuid
+  itemCondition Condition? @default(NewCondition)
+  products      Product    @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_product_id_fkey")
+  users         User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("ownership")
 }
@@ -99,6 +101,17 @@ model ProductsOnKits {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([productId, kitId])
+}
+
+model Offer {
+  date          DateTime  @default(now()) @db.Date
+  itemCondition Condition
+  price         Decimal   @db.Money
+  priceCurrency String
+  productId     String    @db.Uuid
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([date, productId])
 }
 
 model User {
@@ -125,7 +138,8 @@ enum ProductType {
 }
 
 enum Condition {
-  new
-  refurbished
-  used
+  DamagedCondition
+  NewCondition
+  RefurbishedCondition
+  UsedCondition
 }

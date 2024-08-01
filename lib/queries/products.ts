@@ -1,24 +1,36 @@
 import { cache } from "react";
 import "server-only";
 
-import { Product } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 import prisma from "../prismaClient";
+import { mock_userId } from "..";
 
-export const getProductsWithBrands = cache(() => {
-  console.log("getProductsWithBrands");
+export const getProducts = cache(() => {
+  console.log("getProducts");
   const products = prisma.product.findMany({
-    include: { brands: true },
-    orderBy: [{ date_announced: "desc" }],
+    orderBy: [{ releaseDate: "desc" }],
   });
   return products;
 });
+
+export const getProductsWithOwnershipBrands = cache(() => {
+  console.log("getProductsWithOwnership");
+  const products = prisma.product.findMany({
+    include: { Brand: true, ownership: { where: { userId: mock_userId } } },
+    orderBy: [{ releaseDate: "desc" }],
+  });
+  return products;
+});
+export type ProductsWithOwnershipBrands = Prisma.PromiseReturnType<
+  typeof getProductsWithOwnershipBrands
+>;
 
 export const getProductWithDetailsById = cache((id: Product["id"]) => {
   console.log(`getProductWithDetailsById: ${id}`);
   const product = prisma.product.findUniqueOrThrow({
     where: { id },
     include: {
-      brands: true,
+      Brand: true,
       lens: { include: { mounts: true } },
       camera: { include: { mounts: true } },
     },

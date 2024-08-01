@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { OwnershipForm } from "./form/form-ownership";
+import { OwnershipForm } from "@/components/form/form-ownership";
 import { Plus } from "lucide-react";
 
 export const DialogProductItem = ({

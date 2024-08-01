@@ -1,4 +1,4 @@
-import { DialogKit } from "@/components/dialog-kit";
+import { DialogKit } from "@/components/dialogs/dialog-kit";
 import {
   Card,
   CardDescription,

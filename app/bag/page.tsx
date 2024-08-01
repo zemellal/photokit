@@ -15,7 +15,7 @@ export default async function BagPage() {
     <div className="main-padded">
       <section>
         {/* <h1 className="text-2xl font-medium tracking-tight">My Gear</h1> */}
-        <Card className="px-6 py-2 mt-4">
+        <Card>
           <CardHeader>
             <CardTitle className="text-base">My Gear</CardTitle>
             <CardDescription>All of the gear that you own</CardDescription>

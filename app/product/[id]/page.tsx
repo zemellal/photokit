@@ -1,4 +1,4 @@
-import { DialogProductItem } from "@/components/dialog-product-item";
+import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,7 +74,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                       <TableCell className="font-medium text-right  w-[50%]">
                         Brand
                       </TableCell>
-                      <TableCell className="">{product.brands.name}</TableCell>
+                      <TableCell className="">{product.Brand.name}</TableCell>
                     </TableRow>
                     {product.weight && (
                       <TableRow>
@@ -91,7 +91,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                       </TableRow>
                     )}
 
-                    {product.date_announced && (
+                    {product.releaseDate && (
                       <TableRow>
                         <TableCell className="font-medium text-right">
                           Announced
@@ -99,7 +99,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                         <TableCell className="">
                           {new Intl.DateTimeFormat(locale, {
                             dateStyle: "long",
-                          }).format(product.date_announced)}
+                          }).format(product.releaseDate)}
                         </TableCell>
                       </TableRow>
                     )}
@@ -215,7 +215,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                     {ownership.map((ownedItem) => (
                       <Table key={ownedItem.id}>
                         <TableCaption>
-                          Serial Number: {ownedItem.serial_number}
+                          Serial Number: {ownedItem.serialNumber}
                         </TableCaption>
                         <TableBody>
                           <TableRow>
@@ -226,11 +226,11 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                               {new Intl.NumberFormat(locale, {
                                 style: "currency",
                                 currency: "USD",
-                              }).format(ownedItem.purchased_for)}
+                              }).format(ownedItem.price)}
                             </TableCell>
                           </TableRow>
 
-                          {ownedItem.purchased_on && (
+                          {ownedItem.purchaseDate && (
                             <TableRow>
                               <TableCell className="font-medium text-right">
                                 Purchased On
@@ -238,7 +238,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                               <TableCell className="">
                                 {new Intl.DateTimeFormat(locale, {
                                   dateStyle: "long",
-                                }).format(ownedItem.purchased_on)}
+                                }).format(ownedItem.purchaseDate)}
                               </TableCell>
                             </TableRow>
                           )}
@@ -247,8 +247,11 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                             <TableCell className="font-medium text-right w-[50%]">
                               Condition
                             </TableCell>
-                            <TableCell className="capitalize">
-                              {ownedItem.condition}
+                            <TableCell>
+                              {ownedItem.itemCondition?.replace(
+                                /Condition$/,
+                                ""
+                              )}
                             </TableCell>
                           </TableRow>
                         </TableBody>

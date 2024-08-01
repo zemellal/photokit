@@ -2,26 +2,26 @@
 
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
-import { locale } from "@/lib";
+import { locale, sumTotal } from "@/lib";
 import { getKitCount } from "@/lib/queries/kits";
 import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 
 export default async function Home() {
-  const ownedProducts = await listOwnershipsWithProducts();
-  const kitCount = await getKitCount();
+  const ownedProductsData = listOwnershipsWithProducts();
+  const kitCountData = getKitCount();
 
-  // sum the total weight of your owned products
-  const totalWeight = ownedProducts.reduce((acc, cur) => {
-    acc += cur.products?.weight || 0;
-    return acc;
-  }, 0);
-  // sum the cost of all your owned products
-  const totalCost = ownedProducts.reduce((acc, cur) => {
-    acc += cur.purchased_for || 0;
-    return acc;
-  }, 0);
+  const [ownedProducts, kitCount] = await Promise.all([
+    ownedProductsData,
+    kitCountData,
+  ]);
+
+  const totalWeight = sumTotal(ownedProducts.map((el) => el.products.weight));
+  const totalCost = sumTotal(ownedProducts.map((el) => el.price));
+  const totalReplacementCost = sumTotal(
+    ownedProducts.map((el) => el.products.price)
+  );
 
   return (
     <div className="main-padded main-col-gap">
@@ -36,13 +36,15 @@ export default async function Home() {
             icon={<Ungroup className="h-4 w-4 text-muted-foreground" />}
             value={ownedProducts.length}
             description="You own these many items"
+            href="/bag"
           />
-          <SummaryWidget
+          {/* <SummaryWidget
             header={"Kits"}
             icon={<Backpack className="h-4 w-4 text-muted-foreground" />}
             value={kitCount}
             description="Kits you have assembled"
-          />
+            href="/kits"
+          /> */}
           <SummaryWidget
             header={"Total Weight"}
             icon={<Weight className="h-4 w-4 text-muted-foreground" />}
@@ -52,6 +54,7 @@ export default async function Home() {
               unitDisplay: "short",
             }).format(totalWeight)}
             description="The total weight of your kit"
+            href="/bag"
           />
           <SummaryWidget
             header="Total Cost"
@@ -62,16 +65,29 @@ export default async function Home() {
               currency: "USD",
             }).format(totalCost)}
             description="The total you paid for your kit"
+            href="/bag"
+          />
+          <SummaryWidget
+            header="Replacement Cost"
+            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+            value={new Intl.NumberFormat(locale, {
+              maximumFractionDigits: 0,
+              style: "currency",
+              currency: "USD",
+            }).format(totalReplacementCost)}
+            description="The new replacement cost of your gear"
+            href="/bag"
           />
         </div>
       </section>
 
       <section>
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
           <OwnershipSummaryWidget
             className="sm:col-span-2 lg:col-span-2"
             items={ownedProducts}
           />
+          {/* <GraphWidget className="sm:col-span-2 lg:col-span-4" /> */}
         </div>
       </section>
     </div>
