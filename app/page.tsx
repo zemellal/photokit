@@ -2,7 +2,7 @@
 
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
-import { locale, sumTotal } from "@/lib";
+import { formatCurrency, formatWeight, locale, sumTotal } from "@/lib";
 import { getKitCount } from "@/lib/queries/kits";
 import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
 
@@ -48,33 +48,23 @@ export default async function Home() {
           <SummaryWidget
             header={"Total Weight"}
             icon={<Weight className="h-4 w-4 text-muted-foreground" />}
-            value={new Intl.NumberFormat(locale, {
-              style: "unit",
-              unit: "gram",
-              unitDisplay: "short",
-            }).format(totalWeight)}
+            value={formatWeight(totalWeight)}
             description="The total weight of your kit"
             href="/bag"
           />
           <SummaryWidget
             header="Total Cost"
             icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-            value={new Intl.NumberFormat(locale, {
-              maximumFractionDigits: 0,
-              style: "currency",
-              currency: "USD",
-            }).format(totalCost)}
+            value={formatCurrency(totalCost, { maximumFractionDigits: 0 })}
             description="The total you paid for your kit"
             href="/bag"
           />
           <SummaryWidget
             header="Replacement Cost"
             icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-            value={new Intl.NumberFormat(locale, {
+            value={formatCurrency(totalReplacementCost, {
               maximumFractionDigits: 0,
-              style: "currency",
-              currency: "USD",
-            }).format(totalReplacementCost)}
+            })}
             description="The new replacement cost of your gear"
             href="/bag"
           />

@@ -5,7 +5,7 @@ import { Product } from "@prisma/client";
 
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
-import { locale } from "@/lib";
+import { formatCurrency, formatWeight, locale } from "@/lib";
 import { Badge } from "@/components/ui/badge";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import Link from "next/link";
@@ -63,14 +63,8 @@ export const columnsProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="Weight" />
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("weight"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "unit",
-        unit: "gram",
-        unitDisplay: "short",
-      }).format(amount);
-
-      return <div className="">{formatted}</div>;
+      const weight = row.original.weight;
+      return <div className="">{formatWeight(weight)}</div>;
     },
   },
   {
@@ -80,16 +74,9 @@ export const columnsProducts: ColumnDef<Product>[] = [
       <DataTableColumnHeader column={column} title="price" />
     ),
     cell: ({ row }) => {
-      if (typeof row.getValue("price") !== "number") {
-        return <div className="">n/a</div>;
-      }
-      const amount = parseFloat(row.getValue("price"));
-      const formatted = new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
+      const amount = row.original.price;
 
-      return <div className="">{formatted}</div>;
+      return <div className="">{formatCurrency(amount)}</div>;
     },
   },
   {

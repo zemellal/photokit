@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { locale } from "@/lib";
+import { formatCurrency, formatWeight, locale } from "@/lib";
 import { DialogOwnershipActions } from "@/components/dialogs/dialog-ownership-actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { Badge } from "@/components/ui/badge";
@@ -57,14 +57,9 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
       <DataTableColumnHeader column={column} title="Weight" />
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("weight"));
-      const formatted = new Intl.NumberFormat(locale, {
-        style: "unit",
-        unit: "gram",
-        unitDisplay: "short",
-      }).format(amount);
+      const amount = row.original.products.weight;
 
-      return <div className="">{formatted}</div>;
+      return <div className="">{formatWeight(amount)}</div>;
     },
   },
   {
@@ -108,13 +103,9 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
       <DataTableColumnHeader column={column} title="Purchased For" />
     ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
-      const formatted = new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
+      const amount = row.original.price;
 
-      return <div className="">{formatted}</div>;
+      return <div className="">{formatCurrency(amount)}</div>;
     },
   },
   {

@@ -15,12 +15,16 @@ import {
   TableCell,
   TableRow,
 } from "@/components/ui/table";
-import { locale } from "@/lib";
+import { formatCurrency, formatWeight, locale } from "@/lib";
 import { findOwnershipByProductId } from "@/lib/queries/ownership";
 import { getProductWithDetailsById } from "@/lib/queries/products";
 import { ChevronLeft } from "lucide-react";
 
-export default async function KitPage({ params }: { params: { id: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const pid = decodeURI(params.id);
   const productData = getProductWithDetailsById(pid);
   const ownershipData = findOwnershipByProductId(pid);
@@ -62,10 +66,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                           Price
                         </TableCell>
                         <TableCell className="">
-                          {new Intl.NumberFormat(locale, {
-                            style: "currency",
-                            currency: "USD",
-                          }).format(product.price)}
+                          {formatCurrency(product.price)}
                         </TableCell>
                       </TableRow>
                     )}
@@ -82,11 +83,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                           Weight
                         </TableCell>
                         <TableCell className="">
-                          {new Intl.NumberFormat(locale, {
-                            style: "unit",
-                            unit: "gram",
-                            unitDisplay: "short",
-                          }).format(product.weight)}
+                          {formatWeight(product.weight)}
                         </TableCell>
                       </TableRow>
                     )}
@@ -223,10 +220,7 @@ export default async function KitPage({ params }: { params: { id: string } }) {
                               Purchased For
                             </TableCell>
                             <TableCell className="">
-                              {new Intl.NumberFormat(locale, {
-                                style: "currency",
-                                currency: "USD",
-                              }).format(ownedItem.price)}
+                              {formatCurrency(ownedItem.price)}
                             </TableCell>
                           </TableRow>
 

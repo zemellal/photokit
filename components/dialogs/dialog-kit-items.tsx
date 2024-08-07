@@ -17,6 +17,7 @@ import { ProductsOnKits } from "@prisma/client";
 import { deleteKitItemAction } from "@/app/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 import { X } from "lucide-react";
+import { formatWeight, locale } from "@/lib";
 
 export const DialogKitItems = ({
   kitItems,
@@ -62,7 +63,13 @@ export const DialogKitItems = ({
             key={`${kitItem.kitId}-${kitItem.productId}`}
             className="flex flex-row items-center justify-between text-sm group"
           >
-            <div>{kitItem.product.name}</div>
+            <div>
+              {kitItem.product.name}{" "}
+              <span className="text-muted-foreground">
+                {" • "}
+                {formatWeight(kitItem.product.weight)}
+              </span>
+            </div>
 
             <DialogTrigger asChild>
               <Button

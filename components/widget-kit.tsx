@@ -12,7 +12,7 @@ import { DropdownDialogKit } from "./dialogs/dialog-kit";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { KitsWithProductsOnKits } from "@/lib/queries/kits";
-import { locale, sumTotal } from "@/lib";
+import { formatWeight, locale, sumTotal } from "@/lib";
 import { DialogKitItems } from "./dialogs/dialog-kit-items";
 
 interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -31,14 +31,7 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
             <CardTitle className="text-lg">{kit.name}</CardTitle>
             <DropdownDialogKit kit={kit} />
           </div>
-          <CardDescription>
-            Weight:{" "}
-            {new Intl.NumberFormat(locale, {
-              style: "unit",
-              unit: "gram",
-              unitDisplay: "short",
-            }).format(totalWeight)}
-          </CardDescription>
+          <CardDescription>Weight: {formatWeight(totalWeight)}</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow">
           <DialogKitItems kitItems={kit.ProductsOnKits} />

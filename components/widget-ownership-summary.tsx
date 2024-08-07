@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { locale } from "@/lib";
+import { formatCurrency, locale } from "@/lib";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -53,7 +53,7 @@ export default function OwnershipSummaryWidget({
 
             <div className="grid gap-1">
               <p className="text-sm font-medium leading-none">
-                <Link href={`/product/${item.product_id}`}>
+                <Link href={`/product/${item.productId}`}>
                   {item.products.name}
                 </Link>
               </p>
@@ -68,11 +68,7 @@ export default function OwnershipSummaryWidget({
               {/* <Badge>{item.id}</Badge> */}
             </div>
             <div className="ml-auto font-medium">
-              {new Intl.NumberFormat(locale, {
-                maximumFractionDigits: 0,
-                style: "currency",
-                currency: "USD",
-              }).format(item.price)}
+              {formatCurrency(item.price)}
             </div>
           </article>
         ))}
