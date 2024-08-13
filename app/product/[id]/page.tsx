@@ -122,7 +122,7 @@ export default async function ProductPage({
                             style: "unit",
                             unit: "millimeter",
                             unitDisplay: "short",
-                          }).format(product.lens.min_fl)}
+                          }).format(product.lens.minFl)}
                         </TableCell>
                       </TableRow>
                       <TableRow>
@@ -130,7 +130,7 @@ export default async function ProductPage({
                           Speed
                         </TableCell>
                         <TableCell className="">
-                          {`f/${product.lens.max_aperture}`}
+                          {`f/${product.lens.maxAperture}`}
                         </TableCell>
                       </TableRow>
                       <TableRow>
@@ -141,7 +141,7 @@ export default async function ProductPage({
                           {product.lens.mounts.name}
                         </TableCell>
                       </TableRow>
-                      {product.lens.filter_thread && (
+                      {product.lens.filterThread && (
                         <TableRow>
                           <TableCell className="font-medium text-right">
                             Filter thread
@@ -151,7 +151,7 @@ export default async function ProductPage({
                               style: "unit",
                               unit: "millimeter",
                               unitDisplay: "short",
-                            }).format(product.lens.filter_thread)}
+                            }).format(product.lens.filterThread)}
                           </TableCell>
                         </TableRow>
                       )}
@@ -172,13 +172,13 @@ export default async function ProductPage({
                           </TableCell>
                         </TableRow>
                       )}
-                      {product.camera.crop_factor && (
+                      {product.camera.cropFactor && (
                         <TableRow>
                           <TableCell className="font-medium text-right w-[50%]">
                             Crop Factor
                           </TableCell>
                           <TableCell className="">
-                            {product.camera.crop_factor}
+                            {product.camera.cropFactor}
                           </TableCell>
                         </TableRow>
                       )}

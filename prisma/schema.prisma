@@ -44,28 +44,28 @@ model Product {
 }
 
 model Camera {
-  id          Int     @id @default(autoincrement())
-  mount_id    Int
-  product_id  String  @unique @db.Uuid
-  megapixels  Float?  @db.Real
-  crop_factor Float   @default(1) @db.Real
-  mounts      Mount   @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product     Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  id         Int     @id @default(autoincrement())
+  mountId    Int
+  productId  String  @unique(map: "cameras_product_id_key") @db.Uuid
+  megapixels Float?  @db.Real
+  cropFactor Float   @default(1) @db.Real
+  mounts     Mount   @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cameras_mount_id_fkey")
+  products   Product @relation(fields: [productId], references: [id], onDelete: Cascade, map: "cameras_product_id_fkey")
 
   @@map("cameras")
 }
 
 model Lens {
-  id            Int        @id @default(autoincrement())
-  mount_id      Int
-  zoom_prime    zoom_prime
-  min_fl        Int        @db.SmallInt
-  max_aperture  Float      @db.Real
-  filter_thread Int?
-  max_fl        Int?       @db.SmallInt
-  product_id    String     @unique @db.Uuid
-  mounts        Mount      @relation(fields: [mount_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product       Product    @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id           Int        @id @default(autoincrement())
+  mountId      Int
+  zoom_prime   zoom_prime
+  minFl        Int        @db.SmallInt
+  maxAperture  Float      @db.Real
+  filterThread Int?
+  maxFl        Int?       @db.SmallInt
+  productId    String     @unique(map: "lenses_product_id_key") @db.Uuid
+  mounts       Mount      @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lenses_mount_id_fkey")
+  products     Product    @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "lenses_product_id_fkey")
 
   @@map("lenses")
 }

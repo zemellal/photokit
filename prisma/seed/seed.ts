@@ -14,9 +14,9 @@ async function main() {
     create: {
       name: "Nikon Nikkor Z 40mm F/2",
       price: 300,
-      date_announced: new Date("2021-09-14"),
+      releaseDate: new Date("2021-09-14"),
       weight: 170,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -32,9 +32,9 @@ async function main() {
             },
           },
           zoom_prime: "prime",
-          min_fl: 40,
-          max_aperture: 2,
-          filter_thread: 52,
+          minFl: 40,
+          maxAperture: 2,
+          filterThread: 52,
         },
       },
     },
@@ -46,9 +46,9 @@ async function main() {
     create: {
       name: "Nikon AF-S Nikkor 200-500mm F/5.6E ED VR",
       price: 1057,
-      date_announced: new Date("2015-08-04"),
+      releaseDate: new Date("2015-08-04"),
       weight: 2300,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -64,10 +64,10 @@ async function main() {
             },
           },
           zoom_prime: "zoom",
-          min_fl: 200,
-          max_fl: 500,
-          max_aperture: 5.6,
-          filter_thread: 95,
+          minFl: 200,
+          maxFl: 500,
+          maxAperture: 5.6,
+          filterThread: 95,
         },
       },
     },
@@ -79,9 +79,9 @@ async function main() {
     create: {
       name: "Canon RF 28-70mm F/2L USM",
       price: 3000,
-      date_announced: new Date("2018-09-01"),
+      releaseDate: new Date("2018-09-01"),
       weight: 1430,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Canon" },
           create: { name: "Canon" },
@@ -97,10 +97,10 @@ async function main() {
             },
           },
           zoom_prime: "zoom",
-          min_fl: 28,
-          max_fl: 70,
-          max_aperture: 2,
-          filter_thread: 95,
+          minFl: 28,
+          maxFl: 70,
+          maxAperture: 2,
+          filterThread: 95,
         },
       },
     },
@@ -112,9 +112,9 @@ async function main() {
     create: {
       name: "Nikon Z6",
       price: 2000,
-      date_announced: new Date("2018-08-23"),
+      releaseDate: new Date("2018-08-23"),
       weight: 675,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -124,7 +124,7 @@ async function main() {
       camera: {
         create: {
           megapixels: 24,
-          crop_factor: 1,
+          cropFactor: 1,
           mounts: {
             connectOrCreate: {
               where: { name: "Nikon Z" },
@@ -142,9 +142,9 @@ async function main() {
     create: {
       name: "Nikon D600",
       price: 2000,
-      date_announced: new Date("2012-09-01"),
+      releaseDate: new Date("2012-09-01"),
       weight: 850,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -154,7 +154,7 @@ async function main() {
       camera: {
         create: {
           megapixels: 24,
-          crop_factor: 1,
+          cropFactor: 1,
           mounts: {
             connectOrCreate: {
               where: { name: "Nikon F" },
@@ -172,9 +172,9 @@ async function main() {
     create: {
       name: "Canon EOS R5",
       price: 2900,
-      date_announced: new Date("2020-07-09"),
+      releaseDate: new Date("2020-07-09"),
       weight: 738,
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Canon" },
           create: { name: "Canon" },
@@ -184,7 +184,7 @@ async function main() {
       camera: {
         create: {
           megapixels: 45,
-          crop_factor: 1,
+          cropFactor: 1,
           mounts: {
             connectOrCreate: {
               where: { name: "Canon RF" },
@@ -202,9 +202,9 @@ async function main() {
     create: {
       name: "Nikon FTZ II Mount Adapter",
       price: 250,
-      date_announced: new Date("2021-10-28"),
+      releaseDate: new Date("2021-10-28"),
       type: "accessory",
-      brands: {
+      Brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
