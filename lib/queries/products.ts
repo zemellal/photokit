@@ -43,3 +43,17 @@ export const getProductWithBrandsByName = cache((name: Product["name"]) => {
   const product = prisma.product.findUniqueOrThrow({ where: { name } });
   return product;
 });
+
+export const createProduct = (data: Prisma.ProductUncheckedCreateInput) => {
+  return prisma.product.create({ data: { ...data } });
+};
+
+export const getBrands = cache(() => {
+  console.log("getBrands");
+  return prisma.brand.findMany();
+});
+
+export const getMounts = cache(() => {
+  console.log("getMounts");
+  return prisma.mount.findMany();
+});

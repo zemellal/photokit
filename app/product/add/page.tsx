@@ -1,0 +1,31 @@
+import { ProductForm } from "@/components/form/form-product";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getBrands, getMounts } from "@/lib/queries/products";
+
+export default async function AddProduct() {
+  const brandsPromise = getBrands();
+  const mountsPromise = getMounts();
+
+  const [brands, mounts] = await Promise.all([brandsPromise, mountsPromise]);
+
+  return (
+    <div className="container py-6">
+      {/* <div className="flex flex-row gap-4 items-center">
+        <h1 className="text-xl tracking-tight font-semibold whitespace-nowrap">
+          Add a Product
+        </h1>
+      </div> */}
+      {/* Form */}
+      <div className="max-w-xl">
+        <Card>
+          <CardHeader>
+            <CardTitle>Add a Product</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ProductForm brands={brands} mounts={mounts} />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
