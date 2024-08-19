@@ -25,6 +25,24 @@ export const formatWeight = (weight: number | string | null): string => {
   }).format(value);
 };
 
+export const formatUnit = (
+  length: number | string | null,
+  options: Intl.NumberFormatOptions
+): string | null => {
+  let value: number;
+  if (length === null) return null;
+  if (typeof length === "string") {
+    value = parseFloat(length);
+  } else value = length;
+
+  return new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: options?.unit,
+    unitDisplay: options?.unitDisplay || "short",
+    ...options,
+  }).format(value);
+};
+
 export const formatCurrency = (
   input: number | string | null,
   options?: Intl.NumberFormatOptions
@@ -40,4 +58,15 @@ export const formatCurrency = (
     style: "currency",
     currency: options?.currency || "USD",
   }).format(rawNum);
+};
+
+export const formatDate = (
+  input: number | Date | null,
+  options?: Intl.DateTimeFormatOptions
+) => {
+  if (!input || input === null) return null;
+
+  return new Intl.DateTimeFormat(locale, {
+    dateStyle: options?.dateStyle,
+  }).format(input);
 };

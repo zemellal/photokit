@@ -1,4 +1,5 @@
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
+import { SpecsTable } from "@/components/table-specs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,14 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableCaption,
-  TableBody,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
-import { formatCurrency, formatWeight, locale } from "@/lib";
+import { formatCurrency, formatDate, formatUnit, locale } from "@/lib";
 import { findOwnershipByProductId } from "@/lib/queries/ownership";
 import { getProductWithDetailsById } from "@/lib/queries/products";
 import { ChevronLeft } from "lucide-react";
@@ -30,6 +24,44 @@ export default async function ProductPage({
   const ownershipData = findOwnershipByProductId(pid);
 
   const [product, ownership] = await Promise.all([productData, ownershipData]);
+
+  const generalSpecsData = [
+    { label: "Price", value: formatCurrency(product.price) },
+    { label: "Brand", value: product.Brand.name },
+    { label: "Weight", value: formatUnit(product.weight, { unit: "gram" }) },
+    {
+      label: "Announced",
+      value: formatDate(product.releaseDate, { dateStyle: "long" }),
+    },
+  ];
+
+  let detailedSpecsData;
+  if (product.type === "lens" && product.lens) {
+    detailedSpecsData = [
+      {
+        label: "Focal length",
+        value: formatUnit(product.lens.minFl, { unit: "millimeter" }),
+      },
+      { label: "Speed", value: `f/${product.lens.maxAperture}` },
+      {
+        label: "Entrance Pupil",
+        value: formatUnit(
+          Math.round(
+            (product.lens.maxFl || product.lens.minFl) /
+              product.lens.maxAperture
+          ),
+          { unit: "millimeter" }
+        ),
+      },
+      { label: "Mount", value: product.lens.mounts.name },
+      { label: "Filter Thread", value: product.lens.filterThread },
+    ];
+  } else if (product.type === "camera" && product.camera) {
+    detailedSpecsData = [
+      { label: "Megapixels", value: product.camera.megapixels },
+      { label: "Crop Factor", value: product.camera.cropFactor },
+    ];
+  }
 
   return (
     <div className="container py-6">
@@ -50,216 +82,92 @@ export default async function ProductPage({
           {ownership.length > 0 && <Badge className="select-none">Owned</Badge>}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3 lg:gap-8">
-          <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Product Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  {/* <TableCaption>Product</TableCaption> */}
-                  <TableBody>
-                    {product.price && (
-                      <TableRow>
-                        <TableCell className="font-medium text-right  w-[50%]">
-                          Price
-                        </TableCell>
-                        <TableCell className="">
-                          {formatCurrency(product.price)}
-                        </TableCell>
-                      </TableRow>
-                    )}
+        <div className="grid grid-flow-row-dense gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-6 xl:gap-8">
+          {/* General product info card */}
+          <Card className="col-span-1 xl:col-span-4">
+            <CardHeader>
+              <CardTitle className="text-base">Product Details</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SpecsTable data={generalSpecsData} />
+            </CardContent>
+          </Card>
 
-                    <TableRow>
-                      <TableCell className="font-medium text-right  w-[50%]">
-                        Brand
-                      </TableCell>
-                      <TableCell className="">{product.Brand.name}</TableCell>
-                    </TableRow>
-                    {product.weight && (
-                      <TableRow>
-                        <TableCell className="font-medium text-right">
-                          Weight
-                        </TableCell>
-                        <TableCell className="">
-                          {formatWeight(product.weight)}
-                        </TableCell>
-                      </TableRow>
-                    )}
+          {/* Ownership card */}
+          <Card className="cols-span-1 xl:col-span-2 ">
+            <CardHeader>
+              <CardTitle className="text-base">Ownership</CardTitle>
+              <CardDescription>
+                {ownership.length > 0
+                  ? "You own this product"
+                  : "You do not currently own this product"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {ownership.length > 0 ? (
+                <>
+                  {ownership.map((ownedItem) => (
+                    <SpecsTable
+                      key={ownedItem.id}
+                      data={[
+                        {
+                          label: "Purchased For",
+                          value: formatCurrency(ownedItem.price),
+                        },
+                        {
+                          label: "Purchased On",
+                          value: formatDate(ownedItem.purchaseDate),
+                        },
+                        {
+                          label: "Condition",
+                          value: ownedItem.itemCondition?.replace(
+                            /Condition$/,
+                            ""
+                          ),
+                        },
+                      ]}
+                      caption={`Serial Number: ${ownedItem.serialNumber}`}
+                    />
+                  ))}
+                </>
+              ) : (
+                <DialogProductItem product={product}>
+                  <Button>Add to Bag</Button>
+                </DialogProductItem>
+              )}
+            </CardContent>
+          </Card>
 
-                    {product.releaseDate && (
-                      <TableRow>
-                        <TableCell className="font-medium text-right">
-                          Announced
-                        </TableCell>
-                        <TableCell className="">
-                          {new Intl.DateTimeFormat(locale, {
-                            dateStyle: "long",
-                          }).format(product.releaseDate)}
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-            <Card>
+          {/* Price history card */}
+          <Card className="col-span-1 md:col-span-2 xl:col-span-4">
+            <CardHeader>
+              <CardTitle className="text-base">Price History</CardTitle>
+            </CardHeader>
+            <CardContent></CardContent>
+          </Card>
+
+          {/* Specs details card */}
+          {detailedSpecsData && (
+            <Card className="col-span-1 xl:col-span-2">
               <CardHeader>
                 <CardTitle className="text-base">Specs</CardTitle>
               </CardHeader>
               <CardContent>
-                {product.type === "lens" && product.lens && (
-                  <Table>
-                    <TableCaption>Optical Design</TableCaption>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium text-right w-[50%]">
-                          Focal length
-                        </TableCell>
-                        <TableCell className="">
-                          {new Intl.NumberFormat(locale, {
-                            style: "unit",
-                            unit: "millimeter",
-                            unitDisplay: "short",
-                          }).format(product.lens.minFl)}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium text-right">
-                          Speed
-                        </TableCell>
-                        <TableCell className="">
-                          {`f/${product.lens.maxAperture}`}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium text-right">
-                          Mount
-                        </TableCell>
-                        <TableCell className="">
-                          {product.lens.mounts.name}
-                        </TableCell>
-                      </TableRow>
-                      {product.lens.filterThread && (
-                        <TableRow>
-                          <TableCell className="font-medium text-right">
-                            Filter thread
-                          </TableCell>
-                          <TableCell className="">
-                            {new Intl.NumberFormat(locale, {
-                              style: "unit",
-                              unit: "millimeter",
-                              unitDisplay: "short",
-                            }).format(product.lens.filterThread)}
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
+                {product.type === "lens" && (
+                  <SpecsTable
+                    data={detailedSpecsData}
+                    caption={"Optical Design"}
+                  />
                 )}
-                {product.type === "camera" && product.camera && (
-                  <Table>
-                    <TableCaption>Camera Details</TableCaption>
-                    <TableBody>
-                      {product.camera.megapixels && (
-                        <TableRow>
-                          <TableCell className="font-medium text-right w-[50%]">
-                            Megapixels
-                          </TableCell>
-                          <TableCell className="">
-                            {product.camera.megapixels}
-                          </TableCell>
-                        </TableRow>
-                      )}
-                      {product.camera.cropFactor && (
-                        <TableRow>
-                          <TableCell className="font-medium text-right w-[50%]">
-                            Crop Factor
-                          </TableCell>
-                          <TableCell className="">
-                            {product.camera.cropFactor}
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
+                {product.type === "camera" && (
+                  <SpecsTable
+                    data={detailedSpecsData}
+                    caption="Camera Details"
+                  />
                 )}
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Price History</CardTitle>
-              </CardHeader>
-              <CardContent></CardContent>
-            </Card>
-          </div>
-
-          <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Ownership</CardTitle>
-                <CardDescription>
-                  {ownership.length > 0
-                    ? "You own this product"
-                    : "You do not currently own this product"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {ownership.length > 0 ? (
-                  <>
-                    {ownership.map((ownedItem) => (
-                      <Table key={ownedItem.id}>
-                        <TableCaption>
-                          Serial Number: {ownedItem.serialNumber}
-                        </TableCaption>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="font-medium text-right w-[50%]">
-                              Purchased For
-                            </TableCell>
-                            <TableCell className="">
-                              {formatCurrency(ownedItem.price)}
-                            </TableCell>
-                          </TableRow>
-
-                          {ownedItem.purchaseDate && (
-                            <TableRow>
-                              <TableCell className="font-medium text-right">
-                                Purchased On
-                              </TableCell>
-                              <TableCell className="">
-                                {new Intl.DateTimeFormat(locale, {
-                                  dateStyle: "long",
-                                }).format(ownedItem.purchaseDate)}
-                              </TableCell>
-                            </TableRow>
-                          )}
-
-                          <TableRow>
-                            <TableCell className="font-medium text-right w-[50%]">
-                              Condition
-                            </TableCell>
-                            <TableCell>
-                              {ownedItem.itemCondition?.replace(
-                                /Condition$/,
-                                ""
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    ))}
-                  </>
-                ) : (
-                  <DialogProductItem product={product}>
-                    <Button>Add to Bag</Button>
-                  </DialogProductItem>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+          )}
         </div>
       </article>
     </div>
