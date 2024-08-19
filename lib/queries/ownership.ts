@@ -25,6 +25,14 @@ export type OwnershipWithProducts = Prisma.OwnershipGetPayload<
   typeof ownershipWithProducts
 >;
 
+export const listOwnershipsWithProductsLens = cache(() => {
+  const items = prisma.ownership.findMany({
+    include: { products: { include: { lens: true } } },
+    where: { userId: mock_userId },
+  });
+  return items;
+});
+
 // add a product to a user's ownership
 export function createOwnership(
   data: Prisma.OwnershipUncheckedCreateWithoutUsersInput

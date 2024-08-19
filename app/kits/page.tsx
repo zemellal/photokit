@@ -21,13 +21,9 @@ export default async function KitPage() {
           <DialogKit action={"new"} />
         </div>
         {kits.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-6">
             {kits.map((kit) => (
-              <KitWidget
-                kit={kit}
-                key={kit.id}
-                className="col-span-1 lg:col-span-2"
-              />
+              <KitWidget kit={kit} key={kit.id} className="" />
             ))}
           </div>
         ) : (

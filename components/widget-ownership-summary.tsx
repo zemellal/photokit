@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatCurrency, locale } from "@/lib";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
@@ -25,8 +24,8 @@ export default function OwnershipSummaryWidget({
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-lg">
+        <div className="flex flex-col space-y-1.5">
+          <CardTitle>
             <Link href="/bag">Your Gear</Link>
           </CardTitle>
           <CardDescription>Your latest acquisitions</CardDescription>
@@ -73,11 +72,16 @@ export default function OwnershipSummaryWidget({
           </article>
         ))}
       </CardContent>
-      <CardFooter>
-        <Button asChild variant={"outline"}>
-          <Link href={"/bag"}>See All</Link>
-        </Button>
-      </CardFooter>
+
+      {items.length > maxItems && (
+        <CardFooter>
+          <Button asChild variant={"outline"}>
+            <Link href={"/bag"}>{`See All (${
+              items.length - maxItems
+            } more)`}</Link>
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 }

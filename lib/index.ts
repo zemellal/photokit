@@ -65,8 +65,15 @@ export const formatDate = (
   options?: Intl.DateTimeFormatOptions
 ) => {
   if (!input || input === null) return null;
+  return localizeDate(input, options);
+};
 
+export const localizeDate = (
+  date?: Date | number,
+  options?: Intl.DateTimeFormatOptions
+): string => {
   return new Intl.DateTimeFormat(locale, {
     dateStyle: options?.dateStyle,
-  }).format(input);
+    ...options,
+  }).format(date);
 };

@@ -1,8 +1,10 @@
 // export const runtime = "edge";
 
+import { OwnershipValueChart } from "@/components/charts/ownership-value";
+import LensTypeWidget from "@/components/widget-lens-type";
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
-import { formatCurrency, formatWeight, locale, sumTotal } from "@/lib";
+import { formatCurrency, formatWeight, sumTotal } from "@/lib";
 import { getKitCount } from "@/lib/queries/kits";
 import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
 
@@ -72,12 +74,17 @@ export default async function Home() {
       </section>
 
       <section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6">
           <OwnershipSummaryWidget
-            className="sm:col-span-2 lg:col-span-2"
+            className="sm:col-span-2 md:col-span-1 lg:col-span-4"
             items={ownedProducts}
           />
-          {/* <GraphWidget className="sm:col-span-2 lg:col-span-4" /> */}
+          <div className="sm:col-span-2 lg:col-span-5">
+            <OwnershipValueChart ownershipData={ownedProducts} />
+          </div>
+          <div className="sm:col-span-3">
+            <LensTypeWidget />
+          </div>
         </div>
       </section>
     </div>
