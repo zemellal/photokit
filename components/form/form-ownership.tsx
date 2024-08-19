@@ -37,22 +37,18 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Prisma, Condition } from "@prisma/client";
+import { removeNullKeysFromObject } from "@/lib";
 
 const FormSchema = z.object({
   productId: z.string(),
-  serialNumber: z.optional(
-    z
-      .string({
-        invalid_type_error: "Invalid serial number format",
-      })
-      .min(3)
-      .trim()
-  ),
-  purchaseDate: z.optional(
-    z.date({
-      // required_error: "A date of purchase is required",
+  serialNumber: z
+    .string({
+      invalid_type_error: "Invalid serial number format",
     })
-  ),
+    .min(3)
+    .trim()
+    .optional(),
+  purchaseDate: z.date().optional(),
   itemCondition: z.nativeEnum(Condition),
   price: z.coerce.number(),
 }) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
@@ -66,16 +62,17 @@ export function OwnershipForm({
   item?: OwnershipWithProducts;
   setOpen: Dispatch<boolean>;
 }) {
-  const safeItem = FormSchema.safeParse(item);
+  let itemNoNulls;
+  if (item) {
+    itemNoNulls = removeNullKeysFromObject(item);
+  }
+  const safeItem = FormSchema.safeParse(itemNoNulls);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       productId: product.id,
-      serialNumber: safeItem.data?.serialNumber,
-      purchaseDate: safeItem.data?.purchaseDate,
-      price: safeItem.data?.price,
-      itemCondition: safeItem.data?.itemCondition,
+      ...safeItem.data,
     },
   });
 

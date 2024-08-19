@@ -11,6 +11,14 @@ export const sumTotal = (numArray: (number | null)[]): number => {
   return total || 0;
 };
 
+export const removeNullKeysFromObject = (
+  o: { [s: string]: unknown } | ArrayLike<unknown>
+): {
+  [k: string]: unknown;
+} => {
+  return Object.fromEntries(Object.entries(o).filter(([_, v]) => v != null));
+};
+
 export const formatWeight = (weight: number | string | null): string => {
   let value: number;
   if (weight === null) return "n/a";
