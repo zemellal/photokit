@@ -1,3 +1,4 @@
+import { BackButton } from "@/components/button-back";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { SpecsTable } from "@/components/table-specs";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { formatCurrency, formatDate, formatUnit, locale } from "@/lib";
+import { formatCurrency, formatDate, formatUnit } from "@/lib";
 import { findOwnershipByProductId } from "@/lib/queries/ownership";
 import { getProductWithDetailsById } from "@/lib/queries/products";
 import { ChevronLeft } from "lucide-react";
@@ -72,10 +73,7 @@ export default async function ProductPage({
         </section> */}
 
         <div className="flex flex-row gap-4 items-center">
-          {/* TODO: make this a "back" button ? */}
-          <Button variant={"outline"} size={"icon"} className="size-8">
-            <ChevronLeft className="size-5" />
-          </Button>
+          <BackButton />
           <h1 className="text-xl tracking-tight font-semibold whitespace-nowrap">
             {product.name}
           </h1>
