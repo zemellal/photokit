@@ -20,7 +20,7 @@ export const columnsProducts: ColumnDef<Product>[] = [
       return (
         <DialogProductItem product={item}>
           <Button
-            className="-mr-8 invisible group-hover:visible size-6"
+            className="-mr-4 invisible group-hover:visible size-6"
             variant={"default"}
             size={"icon"}
           >

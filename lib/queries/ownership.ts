@@ -28,6 +28,7 @@ export type OwnershipWithProducts = Prisma.OwnershipGetPayload<
 export const listOwnershipsWithProductsLens = cache(() => {
   const items = prisma.ownership.findMany({
     include: { products: { include: { lens: true } } },
+    orderBy: { purchaseDate: "desc" },
     where: { userId: mock_userId },
   });
   return items;

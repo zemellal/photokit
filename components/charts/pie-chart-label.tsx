@@ -15,7 +15,7 @@ export default function PieChartLabel({
   nameKey,
 }: {
   chartConfig: ChartConfig;
-  chartData: any;
+  chartData: object[];
   dataKey: string;
   nameKey: string;
 }) {

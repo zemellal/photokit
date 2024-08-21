@@ -29,7 +29,7 @@ export default function RootLayout({
         className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
       >
         <ThemeProvider attribute="class" defaultTheme="system">
-          <TooltipProvider delayDuration={250}>
+          <TooltipProvider delayDuration={50}>
             <div className="relative flex">
               <Sidebar />
               <main className="flex flex-col flex-1 min-h-screen sm:pl-14">

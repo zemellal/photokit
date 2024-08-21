@@ -6,12 +6,12 @@ import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
 import { formatCurrency, formatWeight, sumTotal } from "@/lib";
 import { getKitCount } from "@/lib/queries/kits";
-import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
+import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 
 export default async function Home() {
-  const ownedProductsData = listOwnershipsWithProducts();
+  const ownedProductsData = listOwnershipsWithProductsLens();
   const kitCountData = getKitCount();
 
   const [ownedProducts, kitCount] = await Promise.all([
