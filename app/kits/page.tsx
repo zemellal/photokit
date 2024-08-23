@@ -36,7 +36,7 @@ export default async function KitPage() {
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
         <div className="flex flex-row items-center justify-between">
-          <h1 className="text-2xl font-medium tracking-tight">Kits</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Kits</h1>
           <DialogKit action={"new"} />
         </div>
         {kits.length > 0 ? (
