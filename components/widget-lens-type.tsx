@@ -21,8 +21,8 @@ export default async function LensTypeWidget() {
   // sums how many of each type of lens the user owns
   ownershipData.forEach((item) => {
     if (item.products.type === "lens") {
-      if (item.products.lens?.zoom_prime === "prime") primes += 1;
-      else if (item.products.lens?.zoom_prime === "zoom") zooms += 1;
+      if (item.products.lens?.type === "prime") primes += 1;
+      else if (item.products.lens?.type === "zoom") zooms += 1;
     }
   });
 
@@ -52,6 +52,8 @@ export default async function LensTypeWidget() {
       color: "hsl(var(--chart-2))",
     },
   } satisfies ChartConfig;
+
+  if (primes + zooms === 0) return <></>;
 
   return (
     <Card className="flex flex-col">

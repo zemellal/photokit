@@ -36,8 +36,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Prisma, Condition } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { removeNullKeysFromObject } from "@/lib";
+import { ProductCondition } from "@/lib/types";
 
 const FormSchema = z.object({
   productId: z.string(),
@@ -49,7 +50,7 @@ const FormSchema = z.object({
     .trim()
     .optional(),
   purchaseDate: z.date().optional(),
-  itemCondition: z.nativeEnum(Condition),
+  itemCondition: z.nativeEnum(ProductCondition),
   price: z.coerce.number(),
 }) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
 
@@ -186,7 +187,7 @@ export function OwnershipForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {Object.keys(Condition).map((condition) => (
+                  {Object.keys(ProductCondition).map((condition) => (
                     <SelectItem key={condition} value={condition}>
                       {condition.replace(/Condition$/, "")}
                     </SelectItem>

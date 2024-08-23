@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -11,8 +11,6 @@ model Brand {
   id       Int       @id @default(autoincrement())
   name     String    @unique
   products Product[]
-
-  @@map("brands")
 }
 
 model Mount {
@@ -20,17 +18,15 @@ model Mount {
   name    String   @unique
   cameras Camera[]
   lenses  Lens[]
-
-  @@map("mounts")
 }
 
 model Product {
-  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String           @id @default(cuid())
   brandId        Int
   name           String           @unique
-  type           ProductType
-  price          Int?             @default(dbgenerated("0.00"))
-  releaseDate    DateTime?        @db.Date
+  type           String
+  price          Int?
+  releaseDate    DateTime?
   weight         Int?
   mpn            String?
   Offer          Offer[]
@@ -38,55 +34,46 @@ model Product {
   camera         Camera?
   lens           Lens?
   ownership      Ownership[]
-  Brand          Brand            @relation(fields: [brandId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_brand_fkey")
-
-  @@map("products")
+  Brand          Brand            @relation(fields: [brandId], references: [id])
 }
 
 model Camera {
   id         Int     @id @default(autoincrement())
   mountId    Int
-  productId  String  @unique(map: "cameras_product_id_key") @db.Uuid
-  megapixels Float?  @db.Real
-  cropFactor Float   @default(1) @db.Real
-  mounts     Mount   @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cameras_mount_id_fkey")
-  products   Product @relation(fields: [productId], references: [id], onDelete: Cascade, map: "cameras_product_id_fkey")
-
-  @@map("cameras")
+  productId  String  @unique
+  megapixels Float?
+  cropFactor Float   @default(1)
+  mounts     Mount   @relation(fields: [mountId], references: [id])
+  products   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Lens {
-  id           Int        @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   mountId      Int
-  zoom_prime   zoom_prime
-  minFl        Int        @db.SmallInt
-  maxAperture  Float      @db.Real
-  filterThread Int?
-  maxFl        Int?       @db.SmallInt
-  productId    String     @unique(map: "lenses_product_id_key") @db.Uuid
-  mounts       Mount      @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lenses_mount_id_fkey")
-  products     Product    @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "lenses_product_id_fkey")
-
-  @@map("lenses")
+  type         String
+  minFl        Float
+  maxAperture  Float
+  filterThread Float?
+  maxFl        Float?
+  productId    String  @unique
+  mounts       Mount   @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products     Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Ownership {
-  id            Int        @id @default(autoincrement())
+  id            String    @id @default(cuid())
   userId        String
   serialNumber  String?
-  purchaseDate  DateTime?  @db.Date
-  price         Float      @default(0) @db.Real
-  productId     String     @db.Uuid
-  itemCondition Condition? @default(NewCondition)
-  products      Product    @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ownership_product_id_fkey")
-  users         User       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("ownership")
+  purchaseDate  DateTime?
+  price         Float     @default(0)
+  productId     String
+  itemCondition String
+  products      Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users         User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Kit {
-  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String           @id @default(cuid())
   name           String
   createdOn      DateTime         @default(now())
   ownerId        String
@@ -95,8 +82,8 @@ model Kit {
 }
 
 model ProductsOnKits {
-  kitId     String  @db.Uuid
-  productId String  @db.Uuid
+  kitId     String
+  productId String
   kit       Kit     @relation(fields: [kitId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
@@ -104,42 +91,87 @@ model ProductsOnKits {
 }
 
 model Offer {
-  date          DateTime  @default(now()) @db.Date
-  itemCondition Condition
-  price         Decimal   @db.Money
+  date          DateTime @default(now())
+  itemCondition String?
+  price         Float
   priceCurrency String
-  productId     String    @db.Uuid
-  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([date, productId])
 }
 
 model User {
-  id        String      @id
-  name      String?
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   kit       Kit[]
   ownership Ownership[]
-
-  @@map("users")
 }
 
-enum zoom_prime {
-  zoom
-  prime
-  teleconverter
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
-enum ProductType {
-  camera
-  lens
-  accessory
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("product_types")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-enum Condition {
-  DamagedCondition
-  NewCondition
-  RefurbishedCondition
-  UsedCondition
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
 }

@@ -79,12 +79,16 @@ export default async function Home() {
             className="sm:col-span-2 md:col-span-1 lg:col-span-4"
             items={ownedProducts}
           />
-          <div className="sm:col-span-2 lg:col-span-5">
-            <OwnershipValueChart ownershipData={ownedProducts} />
-          </div>
-          <div className="sm:col-span-3">
-            <LensTypeWidget />
-          </div>
+          {ownedProducts.length > 0 && (
+            <>
+              <div className="sm:col-span-2 lg:col-span-5">
+                <OwnershipValueChart ownershipData={ownedProducts} />
+              </div>
+              <div className="sm:col-span-3">
+                <LensTypeWidget />
+              </div>
+            </>
+          )}
         </div>
       </section>
     </div>

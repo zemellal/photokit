@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 
 import { toast } from "@/components/ui/use-toast";
-import { Brand, Mount, Prisma, ProductType, zoom_prime } from "@prisma/client";
+import { Brand, Mount, Prisma } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -41,10 +41,11 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
+import { LensType, ProductType } from "@/lib/types";
 
 const lensSchema = z.object({
   mountId: z.number(),
-  zoom_prime: z.nativeEnum(zoom_prime),
+  type: z.nativeEnum(LensType),
   minFl: z.coerce
     .number({ required_error: "Focal length is required" })
     .positive(),
@@ -423,7 +424,7 @@ export function ProductForm({
             />
             <FormField
               control={form.control}
-              name="lensData.zoom_prime"
+              name="lensData.type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Lens Type</FormLabel>
@@ -437,13 +438,13 @@ export function ProductForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.keys(zoom_prime).map((zoom_prime) => (
+                      {Object.keys(LensType).map((LensType) => (
                         <SelectItem
                           className="capitalize"
-                          key={zoom_prime}
-                          value={zoom_prime}
+                          key={LensType}
+                          value={LensType}
                         >
-                          {zoom_prime}
+                          {LensType}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -459,7 +460,7 @@ export function ProductForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    {form.watch("lensData.zoom_prime") === "zoom"
+                    {form.watch("lensData.type") === "zoom"
                       ? "Min focal length"
                       : "Focal Length"}
                   </FormLabel>
@@ -471,7 +472,7 @@ export function ProductForm({
                 </FormItem>
               )}
             />
-            {form.watch("lensData.zoom_prime") === "zoom" && (
+            {form.watch("lensData.type") === "zoom" && (
               <FormField
                 control={form.control}
                 name="lensData.maxFl"
