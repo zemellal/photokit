@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -102,6 +103,7 @@ export function ProductForm({
     resolver: zodResolver(FormInput),
     defaultValues: {},
   });
+  const router = useRouter();
 
   function onSubmit(data: z.infer<typeof FormInput>) {
     let subData: Prisma.ProductUncheckedCreateInput;
@@ -144,6 +146,7 @@ export function ProductForm({
             </pre>
           ),
         });
+        router.push("/browse");
       })
       .catch((err) => {
         toast({

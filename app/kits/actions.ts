@@ -17,7 +17,7 @@ export const createKitAction = async (
 ) => {
   const ownership = await createKit(data);
 
-  revalidatePath("/");
+  revalidatePath("/kits", "page");
   return ownership;
 };
 
@@ -31,7 +31,7 @@ export const deleteKitAction = async (id: Kit["id"]) => {
   const deletedKit = await deleteKit(id);
   console.log(deletedKit);
 
-  revalidatePath("/");
+  revalidatePath("/kits", "page");
   return deletedKit;
 };
 
@@ -43,7 +43,7 @@ export const editKitAction = async (
   const kit = await updateKit(id, data);
   console.log(kit);
 
-  revalidatePath("/");
+  revalidatePath("/kits", "page");
   return kit;
 };
 
@@ -56,7 +56,7 @@ export const addProductToKitAction = async (
     `addProductToKitAction: { kitId: ${data.kitId}, productId: ${data.productId} }`
   );
   const kitItem = await addProductToKit(data);
-  revalidatePath("/");
+  revalidatePath("/kits", "page");
   return kitItem;
 };
 
@@ -66,6 +66,6 @@ export const deleteKitItemAction = async (kitItem: ProductsOnKits) => {
   );
   const removedKitItem = await removeKitItem(kitItem);
 
-  revalidatePath("/");
+  revalidatePath("/kits", "page");
   return removedKitItem;
 };

@@ -16,7 +16,7 @@ export const createOwnershipAction = async (
   const ownership = await createOwnership(data);
 
   console.log(ownership);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return ownership;
 };
 
@@ -24,7 +24,7 @@ export const deleteOwnershipAction = async (id: Ownership["id"]) => {
   const deleteOwnership = await removeOwnership(id);
 
   console.log(deleteOwnership);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return deleteOwnership;
 };
 
@@ -35,6 +35,6 @@ export const editOwnershipAction = async (
   const ownership = await editOwnership(id, data);
 
   console.log(ownership);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return ownership;
 };

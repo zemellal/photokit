@@ -11,6 +11,6 @@ export const createProductAction = async (
 
   const product = await createProduct(data);
   console.log(product);
-  revalidatePath("/browse");
+  revalidatePath("/browse", "page");
   return product;
 };
