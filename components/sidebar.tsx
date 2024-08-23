@@ -1,7 +1,14 @@
-import { Backpack, Camera, Compass, Home, Settings, Vault } from "lucide-react";
+import { Backpack, Camera, Compass, Home, Vault } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./theme-mode-toggle";
 import { NavLink } from "./nav-links";
+
+const navs = [
+  { id: "home", name: "Home", href: "/", icon: Home },
+  { id: "browse", name: "Browse", href: "/browse", icon: Compass },
+  { id: "mygear", name: "My Gear", href: "/bag", icon: Vault },
+  { id: "kits", name: "Kits", href: "/kits", icon: Backpack },
+];
 
 export function Sidebar() {
   return (
@@ -15,21 +22,11 @@ export function Sidebar() {
           <span className="sr-only">PhotoKit</span>
         </Link>
 
-        <NavLink label="Home" path="/">
-          <Home className="h-5 w-5" />
-        </NavLink>
-
-        <NavLink label="Browse Products" path="/browse">
-          <Compass className="h-5 w-5" />
-        </NavLink>
-
-        <NavLink label="My Gear" path="/bag">
-          <Vault className="h-5 w-5" />
-        </NavLink>
-
-        <NavLink label="Kits" path="/kits">
-          <Backpack className="h-5 w-5" />
-        </NavLink>
+        {navs.map((nav) => (
+          <NavLink key={nav.id} label={nav.name} path={nav.href}>
+            <nav.icon className="h-5 w-5" />
+          </NavLink>
+        ))}
       </nav>
       <section className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
         <ModeToggle />
