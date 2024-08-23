@@ -18,6 +18,7 @@ export default async function LensTypeWidget() {
   let zooms = 0,
     primes = 0;
 
+  // sums how many of each type of lens the user owns
   ownershipData.forEach((item) => {
     if (item.products.type === "lens") {
       if (item.products.lens?.zoom_prime === "prime") primes += 1;
@@ -67,9 +68,9 @@ export default async function LensTypeWidget() {
         />
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
+        {/* <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
+        </div> */}
         <div className="leading-none text-muted-foreground">
           {`Showing a total of ${primes + zooms} lenses`}
         </div>
