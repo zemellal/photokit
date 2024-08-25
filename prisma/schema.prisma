@@ -39,9 +39,8 @@ model Product {
 }
 
 model Camera {
-  id         Int     @id @default(autoincrement())
+  productId  String  @id
   mountId    Int
-  productId  String  @unique
   megapixels Float?
   cropFactor Float   @default(1)
   mounts     Mount   @relation(fields: [mountId], references: [id])
@@ -49,14 +48,13 @@ model Camera {
 }
 
 model Lens {
-  id           Int     @id @default(autoincrement())
+  productId    String  @id
   mountId      Int
   type         String
-  minFl        Float
   maxAperture  Float
-  filterThread Float?
+  minFl        Float
   maxFl        Float?
-  productId    String  @unique
+  filterThread Float?
   mounts       Mount   @relation(fields: [mountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   products     Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
@@ -64,10 +62,10 @@ model Lens {
 model Ownership {
   id            String    @id @default(cuid())
   userId        String
+  productId     String
   serialNumber  String?
   purchaseDate  DateTime?
-  price         Float     @default(0)
-  productId     String
+  price         Float
   itemCondition String
   products      Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users         User      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
