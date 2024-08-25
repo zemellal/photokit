@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { signInSchema } from "@/lib/zod";
 import { signInAction } from "@/app/(signin)/signin/actions";
 import { useState } from "react";
+import { toast } from "../ui/use-toast";
 
 export function SignInForm() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export function SignInForm() {
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "password" },
   });
 
   function onSubmit(data: z.infer<typeof signInSchema>) {
@@ -42,6 +43,10 @@ export function SignInForm() {
       .catch((error) => {
         console.log("error: ", error);
         setLoading(false);
+        toast({
+          variant: "destructive",
+          title: "Invalid Credentials",
+        });
       })
       .finally(() => {});
   }

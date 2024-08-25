@@ -29,7 +29,7 @@ const providers: Provider[] = [
 
         // logic to verify if the user exists
         user = await prisma.user.findUnique({ where: { email } });
-        console.log("user from db: ", user);
+        // console.log("user from db: ", user);
 
         if (!user) {
           throw new Error("User not found.");
@@ -94,7 +94,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     // },
   },
   basePath: "/auth",
-  // pages: {
-  //   signIn: "/signin",
-  // },
+  pages: {
+    signIn: "/signin",
+  },
 });
