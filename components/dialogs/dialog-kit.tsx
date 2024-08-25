@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Kit } from "@prisma/client";
-import { deleteKitAction } from "@/app/kits/actions";
+import { deleteKitAction } from "@/app/(dashboard)/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 
 // TODO: pass in JSX child for Dialog Trigger ??

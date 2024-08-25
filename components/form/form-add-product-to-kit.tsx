@@ -18,7 +18,10 @@ import {
 
 import { toast } from "@/components/ui/use-toast";
 import { Prisma, Product, Kit } from "@prisma/client";
-import { addProductToKitAction, getKitsAction } from "@/app/kits/actions";
+import {
+  addProductToKitAction,
+  getKitsAction,
+} from "@/app/(dashboard)/kits/actions";
 import {
   Select,
   SelectContent,

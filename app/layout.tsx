@@ -30,13 +30,8 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system">
           <TooltipProvider delayDuration={50}>
-            <div className="relative flex">
-              <Sidebar />
-              <main className="flex flex-col flex-1 min-h-screen sm:pl-14">
-                {children}
-              </main>
-              <Toaster />
-            </div>
+            {children}
+            <Toaster />
           </TooltipProvider>
         </ThemeProvider>
       </body>

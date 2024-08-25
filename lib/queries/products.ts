@@ -2,8 +2,14 @@ import { cache } from "react";
 import "server-only";
 
 import { Prisma, Product } from "@prisma/client";
-import prisma from "../prismaClient";
-import { mock_userId } from "..";
+import { prisma } from "../prisma";
+import { auth } from "@/auth";
+
+async function getSessionId() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("User not found.");
+  return session.user.id;
+}
 
 export const getProducts = cache(() => {
   console.log("getProducts");
@@ -13,10 +19,13 @@ export const getProducts = cache(() => {
   return products;
 });
 
-export const getProductsWithOwnershipBrands = cache(() => {
+export const getProductsWithOwnershipBrands = cache(async () => {
   console.log("getProductsWithOwnership");
   const products = prisma.product.findMany({
-    include: { Brand: true, ownership: { where: { userId: mock_userId } } },
+    include: {
+      Brand: true,
+      ownership: { where: { userId: await getSessionId() } },
+    },
     orderBy: [{ releaseDate: "desc" }],
   });
   return products;

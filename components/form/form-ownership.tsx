@@ -7,7 +7,10 @@ import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { createOwnershipAction, editOwnershipAction } from "@/app/bag/actions";
+import {
+  createOwnershipAction,
+  editOwnershipAction,
+} from "@/app/(dashboard)/bag/actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 
 import { cn } from "@/lib/utils";

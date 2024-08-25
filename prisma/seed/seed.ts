@@ -4,8 +4,12 @@ const prisma = new PrismaClient();
 async function main() {
   const me = await prisma.user.upsert({
     where: { id: "g9om23d7o0rdpigl81e2tl50" },
-    update: { name: "Ansel Adams" },
-    create: { id: "g9om23d7o0rdpigl81e2tl50", name: "Ansel Adams" },
+    update: { name: "Ansel Adams", email: "ansel@adams.com" },
+    create: {
+      id: "g9om23d7o0rdpigl81e2tl50",
+      name: "Ansel Adams",
+      email: "ansel@adams.com",
+    },
   });
 
   const productLensNZ = await prisma.product.upsert({

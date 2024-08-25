@@ -1,18 +1,24 @@
 import { cache } from "react";
 import "server-only";
 
-import prisma from "../prismaClient";
-import { Ownership, Prisma } from "@prisma/client";
-import { mock_userId } from "..";
+import { prisma } from "../prisma";
+import { Ownership, Prisma, User } from "@prisma/client";
+import { auth } from "@/auth";
+
+async function getSessionId() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("User not found.");
+  return session.user.id;
+}
 
 //  READ many / list
 //  Get Ownership
 //
-export const listOwnershipsWithProducts = cache(() => {
+export const listOwnershipsWithProducts = cache(async () => {
   const items = prisma.ownership.findMany({
     include: { products: true },
     orderBy: { purchaseDate: "desc" },
-    where: { userId: mock_userId },
+    where: { userId: await getSessionId() },
   });
   return items;
 });
@@ -27,33 +33,35 @@ export type OwnershipWithProducts = Prisma.OwnershipGetPayload<
   typeof ownershipWithProducts
 >;
 
-export const listOwnershipsWithProductsLens = cache(() => {
+export const listOwnershipsWithProductsLens = cache(async () => {
   const items = prisma.ownership.findMany({
     include: { products: { include: { lens: true, camera: true } } },
     orderBy: { purchaseDate: "desc" },
-    where: { userId: mock_userId },
+    where: { userId: await getSessionId() },
   });
   return items;
 });
 
-export const findOwnershipByProductId = cache((pid: Ownership["productId"]) => {
-  return prisma.ownership.findMany({
-    where: {
-      userId: mock_userId,
-      productId: pid,
-    },
-  });
-});
+export const findOwnershipByProductId = cache(
+  async (pid: Ownership["productId"]) => {
+    return prisma.ownership.findMany({
+      where: {
+        userId: await getSessionId(),
+        productId: pid,
+      },
+    });
+  }
+);
 
 // CREATE
 // add a product to a user's ownership
 //
-export function createOwnership(
+export async function createOwnership(
   data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
 ) {
   // const ownershipWithUserId = { ...data, users: { connect: { id: userId } } };
   return prisma.ownership.create({
-    data: { ...data, userId: mock_userId },
+    data: { ...data, userId: await getSessionId() },
   });
 }
 

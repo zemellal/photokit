@@ -2,6 +2,7 @@ import { Backpack, Camera, Compass, Home, Vault } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./theme-mode-toggle";
 import { NavLink } from "./nav-links";
+import { AccountMenu } from "./account-menu";
 
 const navs = [
   { id: "home", name: "Home", href: "/", icon: Home },
@@ -29,6 +30,7 @@ export function Sidebar() {
         ))}
       </nav>
       <section className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
+        <AccountMenu />
         <ModeToggle />
         {/* <Tooltip>
           <TooltipTrigger asChild>

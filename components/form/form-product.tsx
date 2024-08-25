@@ -31,7 +31,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { Input } from "../ui/input";
-import { createProductAction } from "@/app/product/add/actions";
+import { createProductAction } from "@/app/(dashboard)/product/add/actions";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import {
   Command,

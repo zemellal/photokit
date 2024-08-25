@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { KitsWithProductsOnKits } from "@/lib/queries/kits";
 import { ProductsOnKits } from "@prisma/client";
-import { deleteKitItemAction } from "@/app/kits/actions";
+import { deleteKitItemAction } from "@/app/(dashboard)/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 import { X } from "lucide-react";
 import { formatWeight, locale } from "@/lib";

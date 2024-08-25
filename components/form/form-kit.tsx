@@ -19,7 +19,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Kit, Prisma } from "@prisma/client";
-import { createKitAction, editKitAction } from "@/app/kits/actions";
+import { createKitAction, editKitAction } from "@/app/(dashboard)/kits/actions";
 
 const KitFormSchema = z.object({
   name: z.string().min(3).trim(),

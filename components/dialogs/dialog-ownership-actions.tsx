@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 
-import { deleteOwnershipAction } from "@/app/bag/actions";
+import { deleteOwnershipAction } from "@/app/(dashboard)/bag/actions";
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { OwnershipForm } from "@/components/form/form-ownership";
 import { AddProductToKitForm } from "@/components/form/form-add-product-to-kit";
