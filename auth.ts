@@ -70,11 +70,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
   session: { strategy: "jwt" },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         // User is available during sign-in
         token.id = user.id;
       }
+      if (trigger === "update") token.name = session?.user?.name;
       return token;
     },
     session({ session, user, token }) {
@@ -93,7 +94,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     //   return token;
     // },
   },
-  basePath: "/auth",
   pages: {
     signIn: "/signin",
   },

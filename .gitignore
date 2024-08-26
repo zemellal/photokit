@@ -37,3 +37,7 @@ next-env.d.ts
 
 # sqlite
 /prisma/*.db
+
+# wrangler project
+.dev.vars
+.wrangler/
