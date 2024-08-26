@@ -59,7 +59,7 @@ export async function AccountMenu() {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <Link href={"/auth/signout"}>
+        <Link href={"/api/auth/signout"}>
           <DropdownMenuItem>
             {/* <SignOutButton /> */}
             <LogOut className="mr-2 h-4 w-4" />
