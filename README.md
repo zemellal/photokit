@@ -30,7 +30,7 @@ npx prisma generate
 Seed the database:
 
 ```bash
-npx prisma seed
+npx prisma db seed
 ```
 
 Or run packages with `bunx`

@@ -12,6 +12,44 @@ async function main() {
     },
   });
 
+  const brands = await prisma.brand.createMany({
+    data: [
+      { name: "Canon" },
+      { name: "Sony" },
+      { name: "Nikon" },
+      { name: "FUJIFILM" },
+      { name: "Hasselblad" },
+      { name: "Leica" },
+      { name: "Minolta" },
+      { name: "Olympus" },
+      { name: "Panasonic" },
+      { name: "Pentax" },
+      { name: "Pixii" },
+      { name: "Ricoh" },
+      { name: "Sigma" },
+    ],
+  });
+
+  const mounts = await prisma.mount.createMany({
+    data: [
+      { name: "Canon RF" },
+      { name: "Fujifilm X " },
+      { name: "Leica L" },
+      { name: "Nikon Z" },
+      { name: "Sony E" },
+      { name: "Micro Four Thirds" },
+      { name: "Canon EF-M" },
+      { name: "Samsung NX" },
+      { name: "Canon EF" },
+      { name: "Nikon F" },
+      { name: "Pentax K" },
+      { name: "Sigma SA" },
+      { name: "Sony A" },
+      { name: "Four Thirds" },
+      { name: "Leica M" },
+    ],
+  });
+
   const productLensNZ = await prisma.product.upsert({
     where: { name: "Nikon Nikkor Z 40mm F/2" },
     update: {},
