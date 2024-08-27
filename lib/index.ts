@@ -1,5 +1,10 @@
 export const locale = Intl.NumberFormat().resolvedOptions().locale;
 
+/**
+ * Sum all the values in the array
+ * @param numArray an array of numbers, may include null values
+ * @returns the sum of all values in the array
+ */
 export const sumTotal = (numArray: (number | null)[]): number => {
   const total = numArray.reduce(
     (accumulator, currentValue) => (accumulator || 0) + (currentValue || 0),
@@ -8,6 +13,11 @@ export const sumTotal = (numArray: (number | null)[]): number => {
   return total || 0;
 };
 
+/**
+ * Removes any null keys from the object and returns it
+ * @param o
+ * @returns
+ */
 export const removeNullKeysFromObject = (
   o: { [s: string]: unknown } | ArrayLike<unknown>
 ): {
@@ -16,6 +26,11 @@ export const removeNullKeysFromObject = (
   return Object.fromEntries(Object.entries(o).filter(([_, v]) => v != null));
 };
 
+/**
+ * Formats a weight using Intl number formatter
+ * @param weight
+ * @returns
+ */
 export const formatWeight = (weight: number | string | null): string => {
   let value: number;
   if (weight === null) return "n/a";
@@ -30,6 +45,12 @@ export const formatWeight = (weight: number | string | null): string => {
   }).format(value);
 };
 
+/**
+ * Formats an input to a unit using Intl number formatter with given options
+ * @param length
+ * @param options
+ * @returns
+ */
 export const formatUnit = (
   length: number | string | null,
   options: Intl.NumberFormatOptions
@@ -48,6 +69,13 @@ export const formatUnit = (
   }).format(value);
 };
 
+/**
+ * Formats number or string to the locale's currency
+ *
+ * @param input
+ * @param options
+ * @returns
+ */
 export const formatCurrency = (
   input: number | string | null,
   options?: Intl.NumberFormatOptions
@@ -65,6 +93,12 @@ export const formatCurrency = (
   }).format(rawNum);
 };
 
+/**
+ * Formats an input to a locale's date format with options
+ * @param input
+ * @param options
+ * @returns
+ */
 export const formatDate = (
   input: number | Date | null,
   options?: Intl.DateTimeFormatOptions
@@ -73,6 +107,13 @@ export const formatDate = (
   return localizeDate(input, options);
 };
 
+/**
+ * Localize a date
+ *
+ * @param date
+ * @param options
+ * @returns
+ */
 export const localizeDate = (
   date?: Date | number,
   options?: Intl.DateTimeFormatOptions

@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { auth, signOut } from "@/auth";
@@ -61,7 +60,6 @@ export async function AccountMenu() {
         <DropdownMenuSeparator />
         <Link href={"/api/auth/signout"}>
           <DropdownMenuItem>
-            {/* <SignOutButton /> */}
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
           </DropdownMenuItem>

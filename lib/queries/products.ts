@@ -11,6 +11,11 @@ async function getSessionId() {
   return session.user.id;
 }
 
+/**
+ * Get all products
+ *
+ * @group Product
+ */
 export const getProducts = cache(() => {
   console.log("getProducts");
   const products = prisma.product.findMany({
@@ -19,6 +24,11 @@ export const getProducts = cache(() => {
   return products;
 });
 
+/**
+ * Get all products including Brand and Ownership data
+ *
+ * @group Product
+ */
 export const getProductsWithOwnershipBrands = cache(async () => {
   console.log("getProductsWithOwnership");
   const products = prisma.product.findMany({
@@ -34,6 +44,11 @@ export type ProductsWithOwnershipBrands = Prisma.PromiseReturnType<
   typeof getProductsWithOwnershipBrands
 >;
 
+/**
+ * Get the product's details by id, includes Brand, lens and camera details
+ *
+ * @group Product
+ */
 export const getProductWithDetailsById = cache((id: Product["id"]) => {
   console.log(`getProductWithDetailsById: ${id}`);
   const product = prisma.product.findUniqueOrThrow({
@@ -47,21 +62,43 @@ export const getProductWithDetailsById = cache((id: Product["id"]) => {
   return product;
 });
 
+/**
+ * Get product by unique name
+ *
+ * @group Product
+ */
 export const getProductWithBrandsByName = cache((name: Product["name"]) => {
   console.log(`getProductWithBrandsByName: ${name}`);
   const product = prisma.product.findUniqueOrThrow({ where: { name } });
   return product;
 });
 
+/**
+ * Create a product
+ * @param data - product data input
+ * @returns
+ *
+ * @group Product
+ */
 export const createProduct = (data: Prisma.ProductUncheckedCreateInput) => {
   return prisma.product.create({ data: { ...data } });
 };
 
+/**
+ * Get brands
+ *
+ * @group Brand
+ */
 export const getBrands = cache(() => {
   console.log("getBrands");
   return prisma.brand.findMany();
 });
 
+/**
+ * Get mounts
+ *
+ * @group Mount
+ */
 export const getMounts = cache(() => {
   console.log("getMounts");
   return prisma.mount.findMany();

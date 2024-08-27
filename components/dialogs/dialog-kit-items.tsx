@@ -27,6 +27,7 @@ export const DialogKitItems = ({
   const [open, setOpen] = React.useState(false);
   const [kitItemSelected, setKitItemSelected] =
     React.useState<KitsWithProductsOnKits[0]["ProductsOnKits"][0]>();
+
   function deleteKitItem(kitItem: ProductsOnKits) {
     console.log(kitItem);
     deleteKitItemAction(kitItem)

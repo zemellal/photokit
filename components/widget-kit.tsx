@@ -21,7 +21,9 @@ interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
   ({ className, kit, ...props }, ref) => {
+    /** Extract the weights to an array */
     const weights = kit.ProductsOnKits.map((a) => a.product.weight || 0);
+
     const totalWeight = sumTotal(weights);
 
     return (

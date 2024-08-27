@@ -12,6 +12,9 @@ import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 // Kit actions
+/** Server action to create a user's kit
+ * @param data - the input with kit details
+ */
 export const createKitAction = async (
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
 ) => {
@@ -21,11 +24,13 @@ export const createKitAction = async (
   return ownership;
 };
 
+/** Server action to get user's kits */
 export const getKitsAction = async () => {
   console.log(`getKitsAction`);
   return await getKits();
 };
 
+/** Server action to delete a user's kit by id */
 export const deleteKitAction = async (id: Kit["id"]) => {
   console.log(`deleteKitAction: ${id}`);
   const deletedKit = await deleteKit(id);
@@ -35,6 +40,7 @@ export const deleteKitAction = async (id: Kit["id"]) => {
   return deletedKit;
 };
 
+/** Server action to edit a user's kit by id */
 export const editKitAction = async (
   id: Kit["id"],
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
@@ -49,6 +55,11 @@ export const editKitAction = async (
 
 // Kit Item actions
 // TODO: check that the kit belongs to that user
+/**
+ * Server action to add a kit entry (a product to the kit)
+ * @param data
+ * @returns
+ */
 export const addProductToKitAction = async (
   data: Prisma.ProductsOnKitsUncheckedCreateInput
 ) => {
@@ -60,6 +71,11 @@ export const addProductToKitAction = async (
   return kitItem;
 };
 
+/**
+ * Server action to delete a kit entry (remove the product from the kit)
+ * @param kitItem
+ * @returns
+ */
 export const deleteKitItemAction = async (kitItem: ProductsOnKits) => {
   console.log(
     `deleteKitItemAction: { kitId: ${kitItem.kitId}, productId: ${kitItem.productId} }`

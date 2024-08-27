@@ -36,6 +36,8 @@ export function OwnershipValueChart({
 }) {
   const dataOrdered = [...ownershipData].reverse();
   let c = 0;
+
+  /** Map the ordered data to date and value only for the chart */
   let chartData = dataOrdered.map((x) => ({
     date: x.purchaseDate || new Date(Date.now()),
     marketValue: (c += x.price),
