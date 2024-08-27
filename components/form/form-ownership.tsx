@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch } from "react";
+import { Dispatch, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
@@ -39,23 +39,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Prisma } from "@prisma/client";
 import { removeNullKeysFromObject } from "@/lib";
 import { ProductCondition } from "@/lib/types";
-
-const FormSchema = z.object({
-  productId: z.string(),
-  serialNumber: z
-    .string({
-      invalid_type_error: "Invalid serial number format",
-    })
-    .min(3)
-    .trim()
-    .optional(),
-  purchaseDate: z.date().optional(),
-  itemCondition: z.nativeEnum(ProductCondition),
-  price: z.coerce.number(),
-}) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
+import { ownershipSchema } from "@/lib/zod";
 
 export function OwnershipForm({
   product,
@@ -66,27 +52,33 @@ export function OwnershipForm({
   item?: OwnershipWithProducts;
   setOpen: Dispatch<boolean>;
 }) {
+  const [loading, setLoading] = useState(false);
   let itemNoNulls;
   if (item) {
     itemNoNulls = removeNullKeysFromObject(item);
   }
-  const safeItem = FormSchema.safeParse(itemNoNulls);
+  const safeItem = ownershipSchema.safeParse(itemNoNulls);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof ownershipSchema>>({
+    resolver: zodResolver(ownershipSchema),
     defaultValues: {
       productId: product.id,
       ...safeItem.data,
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!item?.id) {
-      createOwnershipAction(data);
-    } else {
-      editOwnershipAction(item.id, data);
-    }
-    setOpen(false);
+  function errorToast(err: unknown) {
+    toast({
+      variant: "destructive",
+      title: "Error submitting",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(err, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
+  function messageToast(data: unknown) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -95,6 +87,36 @@ export function OwnershipForm({
         </pre>
       ),
     });
+  }
+
+  function onSubmit(data: z.infer<typeof ownershipSchema>) {
+    setLoading(true);
+    try {
+      if (!item?.id) {
+        createOwnershipAction(data)
+          .then((data) => {
+            setOpen(false);
+            messageToast(data);
+          })
+          .catch((err) => {
+            setLoading(false);
+            errorToast(err);
+          });
+      } else {
+        editOwnershipAction(item.id, data)
+          .then((data) => {
+            setOpen(false);
+            messageToast(data);
+          })
+          .catch((err) => {
+            setLoading(false);
+            errorToast(err);
+          });
+      }
+    } catch (err) {
+      setLoading(false);
+      errorToast(err);
+    }
   }
 
   return (
@@ -206,7 +228,7 @@ export function OwnershipForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={loading}>
             {item?.id ? "Edit Item" : "Add Item"}
           </Button>
         </div>

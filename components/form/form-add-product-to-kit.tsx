@@ -45,18 +45,19 @@ export function AddProductToKitForm({
   product: Product;
 }) {
   const [kits, setKits] = useState<Kit[]>();
+  const [loading, setLoading] = useState(false);
   function getKits() {
     getKitsAction()
       .then((data) => {
         setKits(data);
       })
       .catch((err) => {
-        console.log("error getting kits");
+        console.log("error getting kits: ", err);
       })
       .finally(() => {});
   }
 
-  // Todo: convert this to a server component?
+  /** @todo convert this to a server component? */
   useEffect(() => {
     getKits();
   }, []);
@@ -68,7 +69,12 @@ export function AddProductToKitForm({
     },
   });
 
+  /**
+   * Submits the kit entry form, productId on kitId
+   * @param data
+   */
   function onSubmit(data: z.infer<typeof FormInput>) {
+    setLoading(true);
     addProductToKitAction(data)
       .then((kit) => {
         setOpen(false);
@@ -84,6 +90,7 @@ export function AddProductToKitForm({
         });
       })
       .catch((err) => {
+        setLoading(false);
         toast({
           variant: "destructive",
           title: "Error adding product to kit",
@@ -138,7 +145,7 @@ export function AddProductToKitForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={loading}>
             Add to Kit
           </Button>
         </div>

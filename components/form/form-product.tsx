@@ -42,6 +42,7 @@ import {
   CommandList,
 } from "../ui/command";
 import { LensType, ProductType } from "@/lib/types";
+import { useState } from "react";
 
 const lensSchema = z.object({
   mountId: z.number(),
@@ -100,6 +101,8 @@ export function ProductForm({
   brands: Brand[];
   mounts: Mount[];
 }) {
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof FormInput>>({
     resolver: zodResolver(FormInput),
     defaultValues: {},
@@ -107,6 +110,7 @@ export function ProductForm({
   const router = useRouter();
 
   function onSubmit(data: z.infer<typeof FormInput>) {
+    setLoading(true);
     let subData: Prisma.ProductUncheckedCreateInput;
 
     //  for lens or camera data payloads, it structures the data for
@@ -150,6 +154,7 @@ export function ProductForm({
         router.push("/browse");
       })
       .catch((err) => {
+        setLoading(false);
         toast({
           variant: "destructive",
           title: "Error creating product",
@@ -627,7 +632,7 @@ export function ProductForm({
         )}
 
         <div className="pt-6">
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={loading}>
             Create Product
           </Button>
         </div>

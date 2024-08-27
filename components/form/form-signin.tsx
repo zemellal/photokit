@@ -45,7 +45,7 @@ export function SignInForm() {
         setLoading(false);
         toast({
           variant: "destructive",
-          title: "Invalid Credentials",
+          title: "Auth Error",
         });
       })
       .finally(() => {});

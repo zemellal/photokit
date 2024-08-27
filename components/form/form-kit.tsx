@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch } from "react";
+import { Dispatch, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,6 +32,7 @@ export function KitForm({
   setOpen: Dispatch<boolean>;
   kit?: Kit;
 }) {
+  const [loading, setLoading] = useState(false);
   const safeKit = KitFormSchema.safeParse(kit);
   const form = useForm<z.infer<typeof KitFormSchema>>({
     resolver: zodResolver(KitFormSchema),
@@ -40,7 +41,12 @@ export function KitForm({
     },
   });
 
+  /**
+   * Submit the kit form. If the input includes a kit id, then it updates the kit. Otherwise it creates a new kit.
+   * @param data Kit Form
+   */
   function onSubmit(data: z.infer<typeof KitFormSchema>) {
+    setLoading(true);
     // kit id found, so edit the kit
     if (kit?.id) {
       editKitAction(kit.id, data)
@@ -58,6 +64,7 @@ export function KitForm({
           });
         })
         .catch((err) => {
+          setLoading(false);
           toast({
             variant: "destructive",
             title: "Error editing kit",
@@ -89,6 +96,7 @@ export function KitForm({
           });
         })
         .catch((err) => {
+          setLoading(false);
           toast({
             variant: "destructive",
             title: "Error creating kit",
@@ -124,7 +132,7 @@ export function KitForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" disabled={loading}>
             {kit ? "Edit Kit" : "Create Kit"}
           </Button>
         </div>
