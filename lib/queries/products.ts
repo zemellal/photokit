@@ -4,12 +4,15 @@ import "server-only";
 import { Prisma, Product } from "@prisma/client";
 import { prisma } from "../prisma";
 import { auth } from "@/auth";
+import { unstable_cache } from "next/cache";
 
 async function getSessionId() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("User not found.");
   return session.user.id;
 }
+
+const revalidate = 60 * 60 * 24 * 3;
 
 /**
  * Get all products
@@ -95,6 +98,19 @@ export const getBrands = cache(() => {
 });
 
 /**
+ * Get cached brands
+ *
+ * @group Brand
+ */
+export const getCachedBrands = unstable_cache(
+  async () => {
+    return await prisma.brand.findMany();
+  },
+  ["brands"],
+  { revalidate, tags: ["brands"] }
+);
+
+/**
  * Get mounts
  *
  * @group Mount
@@ -103,3 +119,16 @@ export const getMounts = cache(() => {
   console.log("getMounts");
   return prisma.mount.findMany();
 });
+
+/**
+ * Get cached mounts
+ *
+ * @group Mount
+ */
+export const getCachedMounts = unstable_cache(
+  async () => {
+    return await prisma.mount.findMany();
+  },
+  ["mounts"],
+  { revalidate, tags: ["mounts"] }
+);

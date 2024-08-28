@@ -8,10 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { KitWidget } from "@/components/widget-kit";
-import { formatUnit } from "@/lib";
 
 import { getKitsWithProductsOnKits } from "@/lib/queries/kits";
-import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
 
 export default async function KitPage() {
   const kits = await getKitsWithProductsOnKits();

@@ -1,12 +1,12 @@
 import { ProductForm } from "@/components/form/form-product";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getBrands, getMounts } from "@/lib/queries/products";
+import { getCachedBrands, getCachedMounts } from "@/lib/queries/products";
 
 export default async function AddProduct() {
-  const brandsPromise = getBrands();
-  const mountsPromise = getMounts();
-
-  const [brands, mounts] = await Promise.all([brandsPromise, mountsPromise]);
+  const [brands, mounts] = await Promise.all([
+    getCachedBrands(),
+    getCachedMounts(),
+  ]);
 
   return (
     <div className="container py-6">
