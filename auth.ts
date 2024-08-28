@@ -2,51 +2,54 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-import Credentials from "next-auth/providers/credentials";
-import { saltAndHashPassword } from "@/lib/password";
-import { signInSchema } from "./lib/zod";
-import { ZodError } from "zod";
+import GitHub from "next-auth/providers/github";
+// import Credentials from "next-auth/providers/credentials";
+// import { saltAndHashPassword } from "@/lib/password";
+// import { signInSchema } from "./lib/zod";
+// import { ZodError } from "zod";
 import type { Provider } from "next-auth/providers";
 
 const providers: Provider[] = [
-  Credentials({
-    name: "Credentials",
-    // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-    // e.g. domain, username, password, 2FA token, etc.
-    credentials: {
-      email: {},
-      password: {},
-    },
-    authorize: async (c, req) => {
-      try {
-        console.log("trying to authorize credentials");
-        let user: any = null;
+  GitHub,
+  // Credentials({
+  //   name: "Credentials",
+  //   // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+  //   // e.g. domain, username, password, 2FA token, etc.
+  //   credentials: {
+  //     email: {},
+  //     password: {},
+  //   },
+  //   authorize: async (c, req) => {
+  //     try {
+  //       console.log("trying to authorize credentials");
+  //       let user: any = null;
 
-        const { email, password } = await signInSchema.parseAsync(c);
+  //       const { email, password } = await signInSchema.parseAsync(c);
 
-        // logic to salt and hash password
-        const pwHash = saltAndHashPassword(password);
+  //       // logic to salt and hash password
+  //       const pwHash = saltAndHashPassword(password);
 
-        // logic to verify if the user exists
-        user = await prisma.user.findUnique({ where: { email } });
-        // console.log("user from db: ", user);
+  //       // logic to verify if the user exists
+  //       user = await prisma.user.findUnique({ where: { email } });
+  //       // console.log("user from db: ", user);
 
-        if (!user) {
-          throw new Error("User not found.");
-        }
+  //       if (!user) {
+  //         throw new Error("User not found.");
+  //       }
 
-        // return JSON object with the user data
-        return user;
-      } catch (error) {
-        if (error instanceof ZodError) {
-          // Return `null` to indicate that the credentials are invalid
-          return null;
-        }
-      }
-    },
-  }),
+  //       // return JSON object with the user data
+  //       return user;
+  //     } catch (error) {
+  //       if (error instanceof ZodError) {
+  //         // Return `null` to indicate that the credentials are invalid
+  //         return null;
+  //       }
+  //     }
+  //   },
+  // }),
 ];
 
+/** If we need to access the auth providers in a custom component */
 export const providerMap = providers
   .map((provider) => {
     if (typeof provider === "function") {
@@ -79,9 +82,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     },
     session({ session, user, token }) {
-      // console.log("Session Callback Session: ", session);
-      // console.log("Session Callback Token: ", token);
-      // console.log("Callback User: ", user);
       session.user.id = token.id as string;
       return session;
     },
@@ -89,13 +89,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth;
     },
-    // jwt({ token, trigger, session }) {
-    //   if (trigger === "update") token.name = session?.user?.name;
-    //   return token;
-    // },
   },
   trustHost: true,
   pages: {
-    signIn: "/signin",
+    // signIn: "/signin",
   },
 });
