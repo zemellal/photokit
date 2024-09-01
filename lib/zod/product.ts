@@ -2,20 +2,39 @@ import { z } from "zod";
 import { LensType, ProductType } from "../types";
 import { Prisma } from "@prisma/client";
 
-const lensSchema = z.object({
-  mountId: z.number(),
-  type: z.nativeEnum(LensType),
-  minFl: z.coerce
-    .number({ required_error: "Focal length is required" })
-    .positive(),
-  maxAperture: z.coerce
-    .number({
-      required_error: "Maximum aperture is required",
-    })
-    .positive(),
-  maxFl: z.optional(z.coerce.number().positive()),
-  filterThread: z.optional(z.coerce.number().positive()),
-}) satisfies z.Schema<Prisma.LensUncheckedCreateWithoutProductsInput>;
+const lensSchema = z
+  .object({
+    mountId: z.number(),
+    type: z.nativeEnum(LensType),
+    minFl: z.coerce
+      .number({ required_error: "Focal length is required" })
+      .positive(),
+    maxAperture: z.coerce
+      .number({
+        required_error: "Maximum aperture is required",
+      })
+      .positive(),
+    maxFl: z.optional(z.coerce.number().positive()),
+    filterThread: z.optional(z.coerce.number().positive()),
+  })
+  .superRefine((obj, ctx) => {
+    // check max focal length is filled in for zoom lens type
+    if (obj.type === "zoom" && (!obj.maxFl || typeof obj.maxFl !== "number")) {
+      ctx.addIssue({
+        path: ["maxFl"],
+        code: z.ZodIssueCode.custom,
+        message: "Zoom lenses require a maximum focal length",
+      });
+    }
+    // check that max focal length is greater than min focal length
+    if (obj.maxFl && obj.maxFl <= obj.minFl) {
+      ctx.addIssue({
+        path: ["maxFl"],
+        code: z.ZodIssueCode.custom,
+        message: "Max focal length needs to be greater than min focal length",
+      });
+    }
+  }) satisfies z.Schema<Prisma.LensUncheckedCreateWithoutProductsInput>;
 
 const cameraSchema = z.object({
   mountId: z.number(),

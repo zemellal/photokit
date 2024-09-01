@@ -410,42 +410,45 @@ export function ProductForm({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="lensData.minFl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {form.watch("lensData.type") === "zoom"
-                      ? "Min focal length"
-                      : "Focal Length"}
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormDescription>{"Focal length"}</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {form.watch("lensData.type") === "zoom" && (
+            <div className="w-full grid auto-cols-auto grid-flow-col gap-4">
               <FormField
                 control={form.control}
-                name="lensData.maxFl"
+                name="lensData.minFl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Max FL</FormLabel>
+                    <FormLabel>
+                      {form.watch("lensData.type") === "zoom"
+                        ? "Min focal length"
+                        : "Focal Length"}
+                    </FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      {"Maximum zoom focal length"}
-                    </FormDescription>
+                    <FormDescription>{"Focal length"}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
+              {form.watch("lensData.type") === "zoom" && (
+                <FormField
+                  control={form.control}
+                  name="lensData.maxFl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Max FL</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        {"Maximum zoom focal length"}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+
             <FormField
               control={form.control}
               name="lensData.maxAperture"
