@@ -27,7 +27,7 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
     const totalWeight = sumTotal(weights);
 
     return (
-      <Card ref={ref} className={cn("flex flex-col", className)} {...props}>
+      <Card ref={ref} className={cn("", className)} {...props}>
         <CardHeader>
           <div className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg">{kit.name}</CardTitle>

@@ -3,14 +3,8 @@ import "server-only";
 
 import { Prisma, Product } from "@prisma/client";
 import { prisma } from "../prisma";
-import { auth } from "@/auth";
+import { getSessionId } from "@/auth";
 import { unstable_cache } from "next/cache";
-
-async function getSessionId() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("User not found.");
-  return session.user.id;
-}
 
 const revalidate = 60 * 60 * 24 * 3;
 

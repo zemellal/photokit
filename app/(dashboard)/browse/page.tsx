@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { PageTitle } from "@/components/typography";
 
 export default async function BrowsePage() {
   const products = await getProducts();
@@ -18,9 +19,8 @@ export default async function BrowsePage() {
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
         <div className="flex flex-row items-center justify-between">
-          <h1 className="text-xl font-semibold tracking-tight">
-            Browse Products
-          </h1>
+          <PageTitle>Browse Products</PageTitle>
+
           <Button size={"sm"} asChild>
             <Link href="/product/add">Add Product</Link>
           </Button>

@@ -1,19 +1,20 @@
-import React from "react";
+import React, { ComponentType } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import Link from "next/link";
+import { LucideProps } from "lucide-react";
 
 interface Props {
   header: string;
   value: string | number;
   description: string;
-  icon: React.JSX.Element;
+  Icon: ComponentType<LucideProps>;
   href?: string;
 }
 
 export function SummaryWidget({
   header,
   value,
-  icon,
+  Icon,
   description,
   href,
 }: Props) {
@@ -23,7 +24,7 @@ export function SummaryWidget({
         <CardTitle className="text-sm font-medium">
           {href ? <Link href={href}>{header}</Link> : <>{header}</>}
         </CardTitle>
-        {icon}
+        <Icon className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>

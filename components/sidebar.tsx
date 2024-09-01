@@ -5,10 +5,10 @@ import { NavLink } from "./nav-links";
 import { AccountMenu } from "./account-menu";
 
 const navs = [
-  { id: "home", name: "Home", href: "/", icon: Home },
-  { id: "browse", name: "Browse", href: "/browse", icon: Compass },
-  { id: "mygear", name: "My Gear", href: "/bag", icon: Vault },
-  { id: "kits", name: "Kits", href: "/kits", icon: Backpack },
+  { id: "home", name: "Home", href: "/", Icon: Home },
+  { id: "browse", name: "Browse", href: "/browse", Icon: Compass },
+  { id: "mygear", name: "My Gear", href: "/bag", Icon: Vault },
+  { id: "kits", name: "Kits", href: "/kits", Icon: Backpack },
 ];
 
 export function Sidebar() {
@@ -25,7 +25,7 @@ export function Sidebar() {
 
         {navs.map((nav) => (
           <NavLink key={nav.id} label={nav.name} path={nav.href}>
-            <nav.icon className="h-5 w-5" />
+            <nav.Icon className="h-5 w-5" />
           </NavLink>
         ))}
       </nav>

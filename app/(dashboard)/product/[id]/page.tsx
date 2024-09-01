@@ -1,6 +1,7 @@
 import { BackButton } from "@/components/button-back";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { SpecsTable } from "@/components/table-specs";
+import { PageTitle } from "@/components/typography";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,9 +75,7 @@ export default async function ProductPage({
 
         <div className="flex flex-row gap-4 items-center">
           <BackButton />
-          <h1 className="text-xl tracking-tight font-semibold whitespace-nowrap">
-            {product.name}
-          </h1>
+          <PageTitle className="whitespace-nowrap">{product.name}</PageTitle>
           {ownership.length > 0 && <Badge className="select-none">Owned</Badge>}
         </div>
 

@@ -3,13 +3,7 @@ import "server-only";
 
 import { prisma } from "../prisma";
 import { Ownership, Prisma, User } from "@prisma/client";
-import { auth } from "@/auth";
-
-async function getSessionId() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("User not found.");
-  return session.user.id;
-}
+import { getSessionId } from "@/auth";
 
 /**
  * Get the user's owned products with details

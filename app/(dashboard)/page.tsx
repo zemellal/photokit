@@ -1,6 +1,7 @@
 // export const runtime = "edge";
 
 import { OwnershipValueChart } from "@/components/charts/ownership-value";
+import { PageTitle } from "@/components/typography";
 import LensTypeWidget from "@/components/widget-lens-type";
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
@@ -28,14 +29,14 @@ export default async function Home() {
   return (
     <div className="main-padded main-col-gap">
       <section className="">
-        <h1 className="text-2xl font-medium tracking-tight">PhotoKit</h1>
+        <PageTitle className="text-3xl font-medium">PhotoKit</PageTitle>
       </section>
 
       <section className="">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           <SummaryWidget
             header={"Products Count"}
-            icon={<Ungroup className="h-4 w-4 text-muted-foreground" />}
+            Icon={Ungroup}
             value={ownedProducts.length}
             description="You own these many items"
             href="/bag"
@@ -49,21 +50,21 @@ export default async function Home() {
           /> */}
           <SummaryWidget
             header={"Total Weight"}
-            icon={<Weight className="h-4 w-4 text-muted-foreground" />}
+            Icon={Weight}
             value={formatWeight(totalWeight)}
             description="The total weight of your kit"
             href="/bag"
           />
           <SummaryWidget
             header="Total Cost"
-            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+            Icon={DollarSign}
             value={formatCurrency(totalCost, { maximumFractionDigits: 0 })}
             description="The total you paid for your kit"
             href="/bag"
           />
           <SummaryWidget
             header="Replacement Cost"
-            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+            Icon={DollarSign}
             value={formatCurrency(totalReplacementCost, {
               maximumFractionDigits: 0,
             })}
@@ -81,12 +82,11 @@ export default async function Home() {
           />
           {ownedProducts.length > 0 && (
             <>
-              <div className="sm:col-span-2 lg:col-span-5">
-                <OwnershipValueChart ownershipData={ownedProducts} />
-              </div>
-              <div className="sm:col-span-3">
-                <LensTypeWidget />
-              </div>
+              <OwnershipValueChart
+                className="sm:col-span-2 lg:col-span-5"
+                ownershipData={ownedProducts}
+              />
+              <LensTypeWidget className="sm:col-span-3" />
             </>
           )}
         </div>

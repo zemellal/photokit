@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 
 import GitHub from "next-auth/providers/github";
 // import Credentials from "next-auth/providers/credentials";
-// import { saltAndHashPassword } from "@/lib/password";
 // import { signInSchema } from "./lib/zod";
 // import { ZodError } from "zod";
 import type { Provider } from "next-auth/providers";
@@ -49,6 +48,13 @@ const providers: Provider[] = [
   // }),
 ];
 
+/** Get User ID from Session Auth */
+export const getSessionId = async () => {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("User not found.");
+  return session.user.id;
+};
+
 /** If we need to access the auth providers in a custom component */
 export const providerMap = providers
   .map((provider) => {
@@ -73,7 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
   session: { strategy: "jwt" },
   callbacks: {
-    jwt({ token, user, trigger, session }) {
+    jwt: async ({ token, user, trigger, session }) => {
       if (user) {
         // User is available during sign-in
         token.id = user.id;
@@ -81,7 +87,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (trigger === "update") token.name = session?.user?.name;
       return token;
     },
-    session({ session, user, token }) {
+    session: async ({ session, user, token }) => {
       session.user.id = token.id as string;
       return session;
     },

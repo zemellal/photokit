@@ -8,16 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PageTitle } from "@/components/typography";
 
 export default async function BagPage() {
   const ownedProducts = await listOwnershipsWithProducts();
   return (
     <div className="main-padded">
-      <section>
-        {/* <h1 className="text-2xl font-medium tracking-tight">My Gear</h1> */}
+      <section className="flex flex-col gap-y-4">
+        <div>
+          <PageTitle>My Gear</PageTitle>
+        </div>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">My Gear</CardTitle>
+            <CardTitle className="text-base">Gear List</CardTitle>
             <CardDescription>All of the gear that you own</CardDescription>
           </CardHeader>
           <CardContent>

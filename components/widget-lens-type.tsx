@@ -11,8 +11,11 @@ import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
 import { TrendingUp } from "lucide-react";
 import { ChartConfig } from "./ui/chart";
 import PieChartLabel from "./charts/pie-chart-label";
+import { cn } from "@/lib/utils";
 
-export default async function LensTypeWidget() {
+interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default async function LensTypeWidget({ className }: WidgetProps) {
   const ownershipData = await listOwnershipsWithProductsLens();
 
   let zooms = 0,
@@ -56,7 +59,7 @@ export default async function LensTypeWidget() {
   if (primes + zooms === 0) return <></>;
 
   return (
-    <Card className="flex flex-col">
+    <Card className={cn("", className)}>
       <CardHeader className="items-center pb-0">
         <CardTitle>Lenses</CardTitle>
         <CardDescription>Primes vs Zooms</CardDescription>

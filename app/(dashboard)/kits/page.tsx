@@ -1,4 +1,5 @@
 import { DialogKit } from "@/components/dialogs/dialog-kit";
+import { PageTitle } from "@/components/typography";
 import {
   Card,
   CardContent,
@@ -34,7 +35,7 @@ export default async function KitPage() {
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
         <div className="flex flex-row items-center justify-between">
-          <h1 className="text-xl font-semibold tracking-tight">Kits</h1>
+          <PageTitle>Kits</PageTitle>
           <DialogKit action={"new"} />
         </div>
         {kits.length > 0 ? (

@@ -20,6 +20,7 @@ import {
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { formatCurrency, formatDate, localizeDate } from "@/lib";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const chartConfig = {
   marketValue: {
@@ -29,11 +30,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function OwnershipValueChart({
-  ownershipData,
-}: {
+interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   ownershipData: OwnershipWithProducts[];
-}) {
+}
+
+export function OwnershipValueChart({ ownershipData, className }: WidgetProps) {
   const dataOrdered = [...ownershipData].reverse();
   let c = 0;
 
@@ -44,7 +45,7 @@ export function OwnershipValueChart({
   }));
 
   return (
-    <Card>
+    <Card className={cn("", className)}>
       <CardHeader>
         <CardTitle>
           <Link href={"/bag"}>Ownership Value</Link>

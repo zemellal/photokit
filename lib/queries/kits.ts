@@ -3,13 +3,7 @@ import "server-only";
 
 import { prisma } from "../prisma";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
-import { auth } from "@/auth";
-
-async function getSessionId() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("User not found.");
-  return session.user.id;
-}
+import { getSessionId } from "@/auth";
 
 /**
  * Create a user's kit
