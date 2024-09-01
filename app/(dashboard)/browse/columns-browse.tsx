@@ -11,6 +11,7 @@ import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { badgeVariantByType } from "@/lib/helpers/ui";
 
 export const columnsProducts: ColumnDef<Product>[] = [
   {
@@ -51,7 +52,7 @@ export const columnsProducts: ColumnDef<Product>[] = [
       const type = row.original.type;
       return (
         <div className="capitalize">
-          <Badge variant={"secondary"}>{type}</Badge>
+          <Badge variant={badgeVariantByType(type)}>{type}</Badge>
         </div>
       );
     },

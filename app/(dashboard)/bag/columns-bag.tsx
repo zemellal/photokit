@@ -10,6 +10,7 @@ import { DialogOwnershipActions } from "@/components/dialogs/dialog-ownership-ac
 import { OwnershipWithProducts } from "@/lib/queries/ownership";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { badgeVariantByType } from "@/lib/helpers/ui";
 
 export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
   // {
@@ -70,10 +71,10 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     accessorKey: "itemCondition",
     header: "Condition",
     cell: ({ row }) => {
-      const type = row.original.itemCondition;
+      const condition = row.original.itemCondition;
       return (
-        <Badge className="capitalize" variant={"secondary"}>
-          {type?.replace(/Condition$/, "")}
+        <Badge className="capitalize" variant={badgeVariantByType(condition)}>
+          {condition.replace(/Condition$/, "")}
         </Badge>
       );
     },
