@@ -20,7 +20,7 @@ export default async function BagPage() {
         </div>
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Gear List</CardTitle>
+            <CardTitle className="text-base">Ownership List</CardTitle>
             <CardDescription>All of the gear that you own</CardDescription>
           </CardHeader>
           <CardContent>

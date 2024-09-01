@@ -12,12 +12,9 @@ import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 
 export default async function Home() {
-  const ownedProductsData = listOwnershipsWithProductsLens();
-  const kitCountData = getKitCount();
-
   const [ownedProducts, kitCount] = await Promise.all([
-    ownedProductsData,
-    kitCountData,
+    listOwnershipsWithProductsLens(),
+    getKitCount(),
   ]);
 
   const totalWeight = sumTotal(ownedProducts.map((el) => el.products.weight));

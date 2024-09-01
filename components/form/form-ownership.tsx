@@ -40,7 +40,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { removeNullKeysFromObject } from "@/lib";
-import { ProductCondition } from "@/lib/types";
+import { ItemCondition } from "@/lib/types";
 import { ownershipSchema } from "@/lib/zod/ownership";
 
 export function OwnershipForm({
@@ -212,7 +212,7 @@ export function OwnershipForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {Object.keys(ProductCondition).map((condition) => (
+                  {Object.keys(ItemCondition).map((condition) => (
                     <SelectItem key={condition} value={condition}>
                       {condition.replace(/Condition$/, "")}
                     </SelectItem>

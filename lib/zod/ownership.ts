@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductCondition } from "../types";
+import { ItemCondition } from "../types";
 import { Prisma } from "@prisma/client";
 
 export const ownershipSchema = z.object({
@@ -12,6 +12,6 @@ export const ownershipSchema = z.object({
     .trim()
     .optional(),
   purchaseDate: z.date().optional(),
-  itemCondition: z.nativeEnum(ProductCondition),
+  itemCondition: z.nativeEnum(ItemCondition),
   price: z.coerce.number(),
 }) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;

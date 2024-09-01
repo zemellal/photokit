@@ -40,7 +40,8 @@ export function OwnershipValueChart({ ownershipData, className }: WidgetProps) {
 
   /** Map the ordered data to date and value only for the chart */
   let chartData = dataOrdered.map((x) => ({
-    date: x.purchaseDate || new Date(Date.now()),
+    // if the ownership item has no date, set the date to now
+    date: new Date(x.purchaseDate || Date.now()),
     marketValue: (c += x.price),
   }));
 

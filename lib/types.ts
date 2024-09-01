@@ -8,7 +8,7 @@ export enum ProductType {
   lens = "lens",
   accessory = "accessory",
 }
-export enum ProductCondition {
+export enum ItemCondition {
   DamagedCondition = "DamagedCondition",
   NewCondition = "NewCondition",
   RefurbishedCondition = "RefurbishedCondition",
