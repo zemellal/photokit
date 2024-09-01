@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-import { signInSchema } from "@/lib/zod";
+import { signInSchema } from "@/lib/zod/auth";
 import { signInAction } from "@/app/(signin)/signin/actions";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";

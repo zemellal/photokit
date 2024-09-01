@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 
 import { toast } from "@/components/ui/use-toast";
-import { Prisma, Product, Kit } from "@prisma/client";
+import { Product, Kit } from "@prisma/client";
 import {
   addProductToKitAction,
   getKitsAction,
@@ -30,12 +30,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import Link from "next/link";
-import { getKits } from "@/lib/queries/kits";
-
-const FormInput = z.object({
-  kitId: z.string(),
-  productId: z.string(),
-}) satisfies z.Schema<Prisma.ProductsOnKitsUncheckedCreateInput>;
+import { ProductsOnKitsSchema } from "@/lib/zod/kits";
 
 export function AddProductToKitForm({
   setOpen,
@@ -62,8 +57,8 @@ export function AddProductToKitForm({
     getKits();
   }, []);
 
-  const form = useForm<z.infer<typeof FormInput>>({
-    resolver: zodResolver(FormInput),
+  const form = useForm<z.infer<typeof ProductsOnKitsSchema>>({
+    resolver: zodResolver(ProductsOnKitsSchema),
     defaultValues: {
       productId: product.id,
     },
@@ -73,7 +68,7 @@ export function AddProductToKitForm({
    * Submits the kit entry form, productId on kitId
    * @param data
    */
-  function onSubmit(data: z.infer<typeof FormInput>) {
+  function onSubmit(data: z.infer<typeof ProductsOnKitsSchema>) {
     setLoading(true);
     addProductToKitAction(data)
       .then((kit) => {

@@ -18,12 +18,9 @@ import {
 
 import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-import { Kit, Prisma } from "@prisma/client";
+import { Kit } from "@prisma/client";
 import { createKitAction, editKitAction } from "@/app/(dashboard)/kits/actions";
-
-const KitFormSchema = z.object({
-  name: z.string().min(3).trim(),
-}) satisfies z.Schema<Prisma.KitUncheckedCreateWithoutOwnerInput>;
+import { KitCreateSchema } from "@/lib/zod/kits";
 
 export function KitForm({
   setOpen,
@@ -33,9 +30,9 @@ export function KitForm({
   kit?: Kit;
 }) {
   const [loading, setLoading] = useState(false);
-  const safeKit = KitFormSchema.safeParse(kit);
-  const form = useForm<z.infer<typeof KitFormSchema>>({
-    resolver: zodResolver(KitFormSchema),
+  const safeKit = KitCreateSchema.safeParse(kit);
+  const form = useForm<z.infer<typeof KitCreateSchema>>({
+    resolver: zodResolver(KitCreateSchema),
     defaultValues: {
       name: safeKit.data?.name,
     },
@@ -45,7 +42,7 @@ export function KitForm({
    * Submit the kit form. If the input includes a kit id, then it updates the kit. Otherwise it creates a new kit.
    * @param data Kit Form
    */
-  function onSubmit(data: z.infer<typeof KitFormSchema>) {
+  function onSubmit(data: z.infer<typeof KitCreateSchema>) {
     setLoading(true);
     // kit id found, so edit the kit
     if (kit?.id) {

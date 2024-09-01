@@ -41,7 +41,7 @@ import {
 } from "../ui/select";
 import { removeNullKeysFromObject } from "@/lib";
 import { ProductCondition } from "@/lib/types";
-import { ownershipSchema } from "@/lib/zod";
+import { ownershipSchema } from "@/lib/zod/ownership";
 
 export function OwnershipForm({
   product,

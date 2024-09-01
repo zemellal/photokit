@@ -43,56 +43,7 @@ import {
 } from "../ui/command";
 import { LensType, ProductType } from "@/lib/types";
 import { useState } from "react";
-
-const lensSchema = z.object({
-  mountId: z.number(),
-  type: z.nativeEnum(LensType),
-  minFl: z.coerce
-    .number({ required_error: "Focal length is required" })
-    .positive(),
-  maxAperture: z.coerce
-    .number({
-      required_error: "Maximum aperture is required",
-    })
-    .positive(),
-  maxFl: z.optional(z.coerce.number().positive()),
-  filterThread: z.optional(z.coerce.number().positive()),
-}) satisfies z.Schema<Prisma.LensUncheckedCreateWithoutProductsInput>;
-
-const cameraSchema = z.object({
-  mountId: z.number(),
-  megapixels: z.coerce.number().positive().optional(),
-  cropFactor: z.coerce.number().positive().optional(),
-}) satisfies z.Schema<Prisma.CameraUncheckedCreateWithoutProductsInput>;
-
-const lensProductSchema = z.object({
-  type: z.literal(ProductType.lens),
-  lensData: lensSchema,
-});
-const cameraProductSchema = z.object({
-  type: z.literal(ProductType.camera),
-  cameraData: cameraSchema,
-});
-const accessoryProductSchema = z.object({
-  type: z.literal(ProductType.accessory),
-});
-
-const schemaConditions = z.discriminatedUnion("type", [
-  lensProductSchema,
-  cameraProductSchema,
-  accessoryProductSchema,
-]);
-
-const productBaseSchema = z.object({
-  name: z.string({ required_error: "Please name your item" }),
-  type: z.nativeEnum(ProductType),
-  brandId: z.number({ required_error: "Brand is required for product" }),
-  price: z.coerce.number().optional(),
-  weight: z.coerce.number().positive().int().optional(),
-  releaseDate: z.date().optional(),
-}) satisfies z.Schema<Prisma.ProductUncheckedCreateInput>;
-
-const FormInput = z.intersection(schemaConditions, productBaseSchema);
+import { ProductCreateInputSchema } from "@/lib/zod/product";
 
 export function ProductForm({
   brands,
@@ -103,13 +54,13 @@ export function ProductForm({
 }) {
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof FormInput>>({
-    resolver: zodResolver(FormInput),
+  const form = useForm<z.infer<typeof ProductCreateInputSchema>>({
+    resolver: zodResolver(ProductCreateInputSchema),
     defaultValues: {},
   });
   const router = useRouter();
 
-  function onSubmit(data: z.infer<typeof FormInput>) {
+  function onSubmit(data: z.infer<typeof ProductCreateInputSchema>) {
     setLoading(true);
     let subData: Prisma.ProductUncheckedCreateInput;
 
