@@ -1,5 +1,7 @@
 import { BackButton } from "@/components/button-back";
+import { DialogOpen } from "@/components/dialogs/dialog-open";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
+import { OfferForm } from "@/components/form/form-offer";
 import { SpecsTable } from "@/components/table-specs";
 import { PageTitle } from "@/components/typography";
 import { Badge } from "@/components/ui/badge";
@@ -11,10 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
-import { findOwnershipByProductId } from "@/lib/queries/ownership";
 import { getProductWithDetailsById } from "@/lib/queries/products";
-import { ChevronLeft } from "lucide-react";
 
 export default async function ProductPage({
   params,
@@ -22,10 +23,13 @@ export default async function ProductPage({
   params: { id: string };
 }) {
   const pid = decodeURI(params.id);
-  const productData = getProductWithDetailsById(pid);
-  const ownershipData = findOwnershipByProductId(pid);
 
-  const [product, ownership] = await Promise.all([productData, ownershipData]);
+  const product = await getProductWithDetailsById(pid);
+
+  if (!product) return <div className="container py-6">Product Not Found</div>;
+
+  const ownerships = product.ownership;
+  const offers = product.Offer;
 
   const generalSpecsData = [
     { label: "Price", value: formatCurrency(product.price) },
@@ -76,7 +80,9 @@ export default async function ProductPage({
         <div className="flex flex-row gap-4 items-center">
           <BackButton />
           <PageTitle className="whitespace-nowrap">{product.name}</PageTitle>
-          {ownership.length > 0 && <Badge className="select-none">Owned</Badge>}
+          {ownerships.length > 0 && (
+            <Badge className="select-none">Owned</Badge>
+          )}
         </div>
 
         <div className="grid grid-flow-row-dense gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-6 xl:gap-8">
@@ -95,15 +101,15 @@ export default async function ProductPage({
             <CardHeader>
               <CardTitle className="text-base">Ownership</CardTitle>
               <CardDescription>
-                {ownership.length > 0
+                {ownerships.length > 0
                   ? "You own this product"
                   : "You do not currently own this product"}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {ownership.length > 0 ? (
+              {ownerships.length > 0 ? (
                 <>
-                  {ownership.map((ownedItem) => (
+                  {ownerships.map((ownedItem) => (
                     <SpecsTable
                       key={ownedItem.id}
                       data={[
@@ -136,11 +142,43 @@ export default async function ProductPage({
           </Card>
 
           {/* Price history card */}
+          {/* <ProductOffersWidget
+            offers={offers}
+            className="col-span-1 md:col-span-2 xl:col-span-4"
+          /> */}
           <Card className="col-span-1 md:col-span-2 xl:col-span-4">
-            <CardHeader>
-              <CardTitle className="text-base">Price History</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-base">Price History</CardTitle>
+                <CardDescription>
+                  Historical price data points for new and used values
+                </CardDescription>
+              </div>
+              {/* <DialogOffer productId={pid} /> */}
+              <DialogOpen
+                trigger={<Button size={"sm"}>Add Price Point</Button>}
+                header={{
+                  title: "Price Data Point",
+                  description:
+                    "Add a new price data point for this product to keep a history of new and used prices.",
+                }}
+              >
+                <OfferForm productId={pid} />
+              </DialogOpen>
             </CardHeader>
-            <CardContent></CardContent>
+            <CardContent>
+              {offers && (
+                <ul>
+                  {offers.map((offer) => (
+                    <li key={String(offer.date)}>{` ${formatDate(
+                      offer.date
+                    )} - ${formatCurrency(offer.price)} - ${
+                      offer.itemCondition
+                    }`}</li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
           </Card>
 
           {/* Specs details card */}

@@ -46,27 +46,23 @@ export type ProductsWithOwnershipBrands = Prisma.PromiseReturnType<
  *
  * @group Product
  */
-export const getProductWithDetailsById = cache((id: Product["id"]) => {
+export const getProductWithDetailsById = cache(async (id: Product["id"]) => {
   console.log(`getProductWithDetailsById: ${id}`);
-  const product = prisma.product.findUniqueOrThrow({
+  const product = prisma.product.findUnique({
     where: { id },
     include: {
       Brand: true,
       lens: { include: { mounts: true } },
       camera: { include: { mounts: true } },
+      ownership: {
+        where: {
+          userId: await getSessionId(),
+          productId: id,
+        },
+      },
+      Offer: { orderBy: { date: "desc" } },
     },
   });
-  return product;
-});
-
-/**
- * Get product by unique name
- *
- * @group Product
- */
-export const getProductWithBrandsByName = cache((name: Product["name"]) => {
-  console.log(`getProductWithBrandsByName: ${name}`);
-  const product = prisma.product.findUniqueOrThrow({ where: { name } });
   return product;
 });
 

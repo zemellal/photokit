@@ -1,5 +1,6 @@
 "use server";
 
+import { createOffer } from "@/lib/queries/offers";
 import { createProduct } from "@/lib/queries/products";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
@@ -15,4 +16,15 @@ export const createProductAction = async (
   revalidatePath("/browse", "page");
   redirect("/browse");
   // return product;
+};
+
+export const createOfferAction = async (
+  data: Prisma.OfferUncheckedCreateInput
+) => {
+  console.log(`creating offer in server: ${data}`);
+
+  const offer = await createOffer(data);
+
+  revalidatePath("/(dashboard)/product/[id]", "page");
+  return offer;
 };

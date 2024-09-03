@@ -30,6 +30,7 @@ model Product {
   releaseDate    DateTime?
   weight         Int?
   mpn            String?
+  asin           String?
   Offer          Offer[]
   ProductsOnKits ProductsOnKits[]
   camera         Camera?
@@ -91,9 +92,9 @@ model ProductsOnKits {
 
 model Offer {
   date          DateTime @default(now())
-  itemCondition String?
+  itemCondition String
   price         Float
-  priceCurrency String
+  priceCurrency String   @default("USD")
   productId     String
   product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
