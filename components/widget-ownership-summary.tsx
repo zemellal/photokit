@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { OwnershipWithProducts } from "@/lib/queries/ownership";
+import { OwnershipWithProducts } from "@/data/ownership";
 
 export default function OwnershipSummaryWidget({
   items,

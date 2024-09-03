@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { KitWidget } from "@/components/widget-kit";
 
-import { getKitsWithProductsOnKits } from "@/lib/queries/kits";
+import { getKitsWithProductsOnKits } from "@/data/kits";
 
 export default async function KitPage() {
   const kits = await getKitsWithProductsOnKits();

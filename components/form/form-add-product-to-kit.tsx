@@ -32,6 +32,7 @@ import {
 import Link from "next/link";
 import { ProductsOnKitsSchema } from "@/lib/zod/kits";
 
+// TODO: only pass necessary data to client component
 export function AddProductToKitForm({
   setOpen,
   product,

@@ -24,14 +24,15 @@ import {
 } from "../ui/select";
 import { ItemCondition } from "@/lib/types";
 import { Button } from "../ui/button";
-import { Dispatch, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { createOfferAction } from "@/app/(dashboard)/product/actions";
 import { toast } from "../ui/use-toast";
 import { DialogOpenContext } from "../dialogs/dialog-open";
 
 export function OfferForm({ productId }: { productId: Product["id"] }) {
-  const setOpen = useContext(DialogOpenContext);
+  const { setOpen } = useContext(DialogOpenContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof OfferCreateSchema>>({
     resolver: zodResolver(OfferCreateSchema),
     defaultValues: {

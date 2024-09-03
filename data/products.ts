@@ -2,7 +2,7 @@ import { cache } from "react";
 import "server-only";
 
 import { Prisma, Product } from "@prisma/client";
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/db";
 import { getSessionId } from "@/auth";
 import { unstable_cache } from "next/cache";
 

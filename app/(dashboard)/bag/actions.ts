@@ -4,7 +4,7 @@ import {
   createOwnership,
   editOwnership,
   removeOwnership,
-} from "@/lib/queries/ownership";
+} from "@/data/ownership";
 import { Ownership, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 

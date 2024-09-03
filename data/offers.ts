@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Prisma } from "@prisma/client";
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/db";
 
 /**
  * Create a new product Offer. Keeps track of historical offers and pricing for the a product

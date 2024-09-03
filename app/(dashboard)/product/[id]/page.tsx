@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
-import { getProductWithDetailsById } from "@/lib/queries/products";
+import { getProductWithDetailsById } from "@/data/products";
 
 export default async function ProductPage({
   params,

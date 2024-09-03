@@ -1,4 +1,4 @@
-import { getProducts } from "@/lib/queries/products";
+import { getProducts } from "@/data/products";
 import { DataTable } from "@/components/data-table";
 import { columnsProducts } from "./columns-browse";
 import {

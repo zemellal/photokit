@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { PageTitle } from "@/components/typography";
-import { findUserByID } from "@/lib/queries/users";
+import { findUserByID } from "@/data/users";
 
 export default async function AccountPage() {
   const session = await auth();

@@ -11,7 +11,7 @@ import {
 import { DropdownDialogKit } from "./dialogs/dialog-kit";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
-import { KitsWithProductsOnKits } from "@/lib/queries/kits";
+import { KitsWithProductsOnKits } from "@/data/kits";
 import { formatWeight, locale, sumTotal } from "@/lib";
 import { DialogKitItems } from "./dialogs/dialog-kit-items";
 

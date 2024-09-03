@@ -15,9 +15,10 @@ interface DialogProps extends React.PropsWithChildren {
   header: { title: string; description?: string };
 }
 
-export const DialogOpenContext = React.createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
->(() => {});
+export const DialogOpenContext = React.createContext<{
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}>({ open: false, setOpen: () => {} });
 
 export function DialogOpen({
   trigger,
@@ -25,11 +26,13 @@ export function DialogOpen({
   children,
 }: DialogProps) {
   const [open, setOpen] = React.useState<boolean>(false);
+  const ctxValue = { open, setOpen };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
-        <DialogOpenContext.Provider value={setOpen}>
+        <DialogOpenContext.Provider value={ctxValue}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && (

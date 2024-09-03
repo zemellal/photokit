@@ -7,8 +7,8 @@ import LensTypeWidget from "@/components/widget-lens-type";
 import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
 import { SummaryWidget } from "@/components/widget-summary";
 import { formatCurrency, formatWeight, sumTotal } from "@/lib";
-import { getKitCount } from "@/lib/queries/kits";
-import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
+import { getKitCount } from "@/data/kits";
+import { listOwnershipsWithProductsLens } from "@/data/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 import Link from "next/link";

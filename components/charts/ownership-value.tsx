@@ -17,7 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { OwnershipWithProducts } from "@/lib/queries/ownership";
+import { OwnershipWithProducts } from "@/data/ownership";
 import { formatCurrency, formatDate, localizeDate } from "@/lib";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -34,6 +34,7 @@ interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   ownershipData: OwnershipWithProducts[];
 }
 
+// TODO: only pass necessary data to client component
 export function OwnershipValueChart({ ownershipData, className }: WidgetProps) {
   const dataOrdered = [...ownershipData].reverse();
   let c = 0;

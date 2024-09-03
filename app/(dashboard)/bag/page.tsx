@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/data-table";
 import { columnsBag } from "./columns-bag";
-import { listOwnershipsWithProducts } from "@/lib/queries/ownership";
+import { listOwnershipsWithProducts } from "@/data/ownership";
 import {
   Card,
   CardContent,

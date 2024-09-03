@@ -12,13 +12,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { KitsWithProductsOnKits } from "@/lib/queries/kits";
+import { KitsWithProductsOnKits } from "@/data/kits";
 import { ProductsOnKits } from "@prisma/client";
 import { deleteKitItemAction } from "@/app/(dashboard)/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 import { X } from "lucide-react";
 import { formatWeight, locale } from "@/lib";
 
+// TODO: only pass necessary data to client component
 export const DialogKitItems = ({
   kitItems,
 }: {

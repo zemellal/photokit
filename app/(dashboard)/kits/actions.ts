@@ -7,7 +7,7 @@ import {
   getKits,
   removeKitItem,
   updateKit,
-} from "@/lib/queries/kits";
+} from "@/data/kits";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 

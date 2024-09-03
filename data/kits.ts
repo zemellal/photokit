@@ -1,7 +1,7 @@
 import { cache } from "react";
 import "server-only";
 
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/db";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
 import { getSessionId } from "@/auth";
 

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { listOwnershipsWithProductsLens } from "@/lib/queries/ownership";
+import { listOwnershipsWithProductsLens } from "@/data/ownership";
 import { TrendingUp } from "lucide-react";
 import { ChartConfig } from "./ui/chart";
 import PieChartLabel from "./charts/pie-chart-label";

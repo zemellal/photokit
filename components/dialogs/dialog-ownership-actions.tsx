@@ -23,10 +23,11 @@ import {
 import { toast } from "@/components/ui/use-toast";
 
 import { deleteOwnershipAction } from "@/app/(dashboard)/bag/actions";
-import { OwnershipWithProducts } from "@/lib/queries/ownership";
+import { OwnershipWithProducts } from "@/data/ownership";
 import { OwnershipForm } from "@/components/form/form-ownership";
 import { AddProductToKitForm } from "@/components/form/form-add-product-to-kit";
 
+// TODO: only pass necessary data to client component
 export function DialogOwnershipActions({
   item,
 }: {

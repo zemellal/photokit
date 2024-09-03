@@ -1,6 +1,6 @@
 import { ProductForm } from "@/components/form/form-product";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCachedBrands, getCachedMounts } from "@/lib/queries/products";
+import { getCachedBrands, getCachedMounts } from "@/data/products";
 
 export default async function AddProduct() {
   const [brands, mounts] = await Promise.all([

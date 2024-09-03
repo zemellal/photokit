@@ -1,7 +1,7 @@
 "use server";
 
-import { createOffer } from "@/lib/queries/offers";
-import { createProduct } from "@/lib/queries/products";
+import { createOffer } from "@/data/offers";
+import { createProduct } from "@/data/products";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";

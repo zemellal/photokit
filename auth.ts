@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 
 import GitHub from "next-auth/providers/github";
 // import Credentials from "next-auth/providers/credentials";

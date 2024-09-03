@@ -22,6 +22,7 @@ import { Kit } from "@prisma/client";
 import { createKitAction, editKitAction } from "@/app/(dashboard)/kits/actions";
 import { KitCreateSchema } from "@/lib/zod/kits";
 
+// TODO: only pass necessary data to client component
 export function KitForm({
   setOpen,
   kit,

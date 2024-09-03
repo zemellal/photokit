@@ -11,7 +11,7 @@ import {
   createOwnershipAction,
   editOwnershipAction,
 } from "@/app/(dashboard)/bag/actions";
-import { OwnershipWithProducts } from "@/lib/queries/ownership";
+import { OwnershipWithProducts } from "@/data/ownership";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ import { removeNullKeysFromObject } from "@/lib";
 import { ItemCondition } from "@/lib/types";
 import { ownershipSchema } from "@/lib/zod/ownership";
 
+// TODO: only pass necessary data to client component
 export function OwnershipForm({
   product,
   item,

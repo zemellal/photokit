@@ -28,6 +28,7 @@ import { deleteKitAction } from "@/app/(dashboard)/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 
 // TODO: pass in JSX child for Dialog Trigger ??
+// TODO: only pass necessary data to client component
 export const DialogKit = ({ action }: { action: "new" }) => {
   const [open, setOpen] = React.useState(false);
   return (

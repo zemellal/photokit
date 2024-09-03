@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { formatCurrency, formatWeight, locale } from "@/lib";
 import { DialogOwnershipActions } from "@/components/dialogs/dialog-ownership-actions";
-import { OwnershipWithProducts } from "@/lib/queries/ownership";
+import { OwnershipWithProducts } from "@/data/ownership";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { badgeVariantByType } from "@/lib/helpers/ui";
