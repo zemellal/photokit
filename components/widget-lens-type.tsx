@@ -61,8 +61,8 @@ export default async function LensTypeWidget({ className }: WidgetProps) {
   return (
     <Card className={cn("", className)}>
       <CardHeader className="items-center pb-0">
-        <CardTitle>Lenses</CardTitle>
-        <CardDescription>Primes vs Zooms</CardDescription>
+        <CardTitle>Primes vs Zooms</CardTitle>
+        {/* <CardDescription>Primes vs Zooms</CardDescription> */}
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <PieChartLabel
@@ -77,7 +77,7 @@ export default async function LensTypeWidget({ className }: WidgetProps) {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div> */}
         <div className="leading-none text-muted-foreground">
-          {`Showing a total of ${primes + zooms} lenses`}
+          {`You own ${primes + zooms} lenses`}
         </div>
       </CardFooter>
     </Card>

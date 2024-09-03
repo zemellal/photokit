@@ -2,10 +2,7 @@ import { BadgeProps } from "@/components/ui/badge";
 import { ItemCondition, ProductType } from "../types";
 
 /**
- *
  * UI Helpers
- *
- *
  * */
 
 /**
