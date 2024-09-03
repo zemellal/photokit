@@ -2,16 +2,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const me = await prisma.user.upsert({
-    where: { id: "g9om23d7o0rdpigl81e2tl50" },
-    update: { name: "Ansel Adams", email: "ansel@adams.com" },
-    create: {
-      id: "g9om23d7o0rdpigl81e2tl50",
-      name: "Ansel Adams",
-      email: "ansel@adams.com",
-    },
-  });
-
   const brands = await prisma.brand.createMany({
     data: [
       { name: "Canon" },
@@ -258,7 +248,7 @@ async function main() {
 
 main()
   .then(async () => {
-    console.info("[SEED] Succussfully created user and products");
+    console.info("[SEED] Succussfully created brands, mounts, and products");
     await prisma.$disconnect();
   })
   .catch(async (e) => {

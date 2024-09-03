@@ -1,8 +1,14 @@
 # PhotoKit
 
-PhotoKit is a web dashboard to add and analyze your camera gear. It adds up your costs, weights, keeps track of your serial numbers and when you bought each prized piece of gear. It also lets you create kits to organize the gear depending on your needs.
+PhotoKit is a dashboard app to store and analyze your camera gear. It summarizes your costs, weights, keeps track of your serial numbers and when you bought each prized piece of gear. It also lets you create kits to organize the gear depending on your needs.
 
-It is built with [Next.JS](https://nextjs.org/), [TailwindCSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/). Authentication is handled with [Auth.JS](https://authjs.dev/). [Prisma](https://www.prisma.io/) for ORM and schema models connected to a SQLite database.
+#### Technical
+
+- Built with [Next.JS](https://nextjs.org/). React server components are used for the DB data fetching and most of the layout building, and server actions for posting new data for creating and updating entities.
+- [TailwindCSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/), .
+- Authentication is handled with [Auth.JS](https://authjs.dev/).
+- [Prisma](https://www.prisma.io/) for ORM and schema models is currently connected to a SQLite database. Prisma allows easy configuration to other databases such as Postgres, MYSql, etc. More authentication providers, ie. Google, Apple, can be added to the NextAuth configuration.
+- [React Hook Form](https://react-hook-form.com/) for all form inputs and [Zod](https://zod.dev/) for validation.
 
 ## Getting Started
 
@@ -12,6 +18,12 @@ Install packages
 npm install
 # or
 bun i
+```
+
+Copy ENV and provide necessary variables
+
+```bash
+cp .env .env.local
 ```
 
 #### Prisma
@@ -51,7 +63,4 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can sign in with the seeded user.
-
-Email: ansel@adams.com
-Password: password
+You can sign in with Github.
