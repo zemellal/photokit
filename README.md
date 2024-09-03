@@ -5,9 +5,9 @@ PhotoKit is a dashboard app to store and analyze your camera gear. It summarizes
 #### Technical
 
 - Built with [Next.JS](https://nextjs.org/). React server components are used for the DB data fetching and most of the layout building, and server actions for posting new data for creating and updating entities.
-- [TailwindCSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/), .
-- Authentication is handled with [Auth.JS](https://authjs.dev/).
-- [Prisma](https://www.prisma.io/) for ORM and schema models is currently connected to a SQLite database. Prisma allows easy configuration to other databases such as Postgres, MYSql, etc. More authentication providers, ie. Google, Apple, can be added to the NextAuth configuration.
+- [TailwindCSS](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/) components, [Tanstack Table](https://tanstack.com/table) for data tables, and [React DayPicker](https://daypicker.dev/) for the calendar.
+- Authentication is handled with [Auth.JS](https://authjs.dev/). More authentication providers, ie. Google, Apple, can be added to the NextAuth configuration.
+- [Prisma](https://www.prisma.io/) for ORM and schema models is currently connected to a SQLite database. Prisma allows easy configuration to other databases such as Postgres, MySQL, etc.
 - [React Hook Form](https://react-hook-form.com/) for all form inputs and [Zod](https://zod.dev/) for validation.
 
 ## Getting Started
