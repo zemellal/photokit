@@ -3,15 +3,16 @@
 import { OwnershipValueChart } from "@/components/charts/ownership-value";
 import { PageTitle } from "@/components/typography";
 import { Button } from "@/components/ui/button";
-import LensTypeWidget from "@/components/widget-lens-type";
-import OwnershipSummaryWidget from "@/components/widget-ownership-summary";
-import { SummaryWidget } from "@/components/widget-summary";
+import LensTypeWidget from "@/components/widgets/widget-lens-type";
+import OwnershipSummaryWidget from "@/components/widgets/widget-ownership-summary";
+import { SummaryWidget } from "@/components/widgets/widget-summary";
 import { formatCurrency, formatWeight, sumTotal } from "@/lib";
 import { getKitCount } from "@/data/kits";
 import { listOwnershipsWithProductsLens } from "@/data/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 import Link from "next/link";
+import { PageHeader } from "@/components/heading";
 
 export default async function Home() {
   const [ownedProducts, kitCount] = await Promise.all([
@@ -27,9 +28,9 @@ export default async function Home() {
 
   return (
     <div className="main-padded main-col-gap">
-      <section className="">
+      <PageHeader>
         <PageTitle className="text-3xl font-medium">PhotoKit</PageTitle>
-      </section>
+      </PageHeader>
 
       <section className="">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">

@@ -85,6 +85,8 @@ export const getKitCount = cache(async () => {
  * @group ProductsOnKits
  */
 export function addProductToKit(data: ProductsOnKits) {
+  // TODO: check if the user is the owner of the kit
+
   const kitItem = prisma.productsOnKits.create({ data });
   return kitItem;
 }
@@ -95,6 +97,8 @@ export function addProductToKit(data: ProductsOnKits) {
  * @group ProductsOnKits
  */
 export function removeKitItem(kitItem: ProductsOnKits) {
+  // TODO: check if the user is the owner of the kit
+
   const removedItem = prisma.productsOnKits.delete({
     where: {
       productId_kitId: { productId: kitItem.productId, kitId: kitItem.kitId },

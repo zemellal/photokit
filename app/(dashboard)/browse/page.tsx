@@ -1,5 +1,5 @@
 import { getProducts } from "@/data/products";
-import { DataTable } from "@/components/data-table";
+import { DataTable } from "@/components/table/data-table";
 import { columnsProducts } from "./columns-browse";
 import {
   Card,
@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PageTitle } from "@/components/typography";
+import { PageHeader } from "@/components/heading";
 
 export default async function BrowsePage() {
   const products = await getProducts();
@@ -18,13 +19,13 @@ export default async function BrowsePage() {
   return (
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
-        <div className="flex flex-row items-center justify-between">
+        <PageHeader>
           <PageTitle>Browse Products</PageTitle>
 
           <Button size={"sm"} asChild>
             <Link href="/product/add">Add Product</Link>
           </Button>
-        </div>
+        </PageHeader>
         <Card className="">
           {/* <CardHeader>
             <CardTitle className="text-base">Browse Products</CardTitle>

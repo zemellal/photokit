@@ -2,7 +2,7 @@ import { BackButton } from "@/components/button-back";
 import { DialogOpen } from "@/components/dialogs/dialog-open";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { OfferForm } from "@/components/form/form-offer";
-import { SpecsTable } from "@/components/table-specs";
+import { SpecsTable } from "@/components/table/table-specs";
 import { PageTitle } from "@/components/typography";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import {
 
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
 import { getProductWithDetailsById } from "@/data/products";
+import { PageHeader } from "@/components/heading";
 
 export default async function ProductPage({
   params,
@@ -77,13 +78,15 @@ export default async function ProductPage({
           <p>Decoded: {pid}</p>
         </section> */}
 
-        <div className="flex flex-row gap-4 items-center">
-          <BackButton />
-          <PageTitle className="whitespace-nowrap">{product.name}</PageTitle>
-          {ownerships.length > 0 && (
-            <Badge className="select-none">Owned</Badge>
-          )}
-        </div>
+        <PageHeader>
+          <div className="flex flex-row gap-4 items-center">
+            <BackButton />
+            <PageTitle className="whitespace-nowrap">{product.name}</PageTitle>
+            {ownerships.length > 0 && (
+              <Badge className="select-none">Owned</Badge>
+            )}
+          </div>
+        </PageHeader>
 
         <div className="grid grid-flow-row-dense gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-6 xl:gap-8">
           {/* General product info card */}

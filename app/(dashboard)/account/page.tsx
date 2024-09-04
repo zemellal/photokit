@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { PageHeader } from "@/components/heading";
 import { PageTitle } from "@/components/typography";
 import { findUserByID } from "@/data/users";
 
@@ -12,9 +13,9 @@ export default async function AccountPage() {
 
   return (
     <div className="main-padded main-col-gap">
-      <section className="">
+      <PageHeader>
         <PageTitle>Account</PageTitle>
-      </section>
+      </PageHeader>
 
       <section className="">
         <div>

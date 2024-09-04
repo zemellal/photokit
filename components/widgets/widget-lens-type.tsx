@@ -9,8 +9,8 @@ import {
 
 import { listOwnershipsWithProductsLens } from "@/data/ownership";
 import { TrendingUp } from "lucide-react";
-import { ChartConfig } from "./ui/chart";
-import PieChartLabel from "./charts/pie-chart-label";
+import { ChartConfig } from "../ui/chart";
+import PieChartLabel from "../charts/pie-chart-label";
 import { cn } from "@/lib/utils";
 
 interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {}

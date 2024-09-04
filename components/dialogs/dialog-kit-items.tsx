@@ -17,7 +17,7 @@ import { ProductsOnKits } from "@prisma/client";
 import { deleteKitItemAction } from "@/app/(dashboard)/kits/actions";
 import { toast } from "@/components/ui/use-toast";
 import { X } from "lucide-react";
-import { formatWeight, locale } from "@/lib";
+import { formatWeight } from "@/lib";
 
 // TODO: only pass necessary data to client component
 export const DialogKitItems = ({

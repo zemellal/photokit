@@ -1,4 +1,4 @@
-import { DataTable } from "@/components/data-table";
+import { DataTable } from "@/components/table/data-table";
 import { columnsBag } from "./columns-bag";
 import { listOwnershipsWithProducts } from "@/data/ownership";
 import {
@@ -9,15 +9,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PageTitle } from "@/components/typography";
+import { PageHeader } from "@/components/heading";
 
 export default async function BagPage() {
   const ownedProducts = await listOwnershipsWithProducts();
   return (
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
-        <div>
+        <PageHeader>
           <PageTitle>My Gear</PageTitle>
-        </div>
+        </PageHeader>
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Ownership List</CardTitle>

@@ -1,5 +1,5 @@
 import React, { ComponentType } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
 import { LucideProps } from "lucide-react";
 

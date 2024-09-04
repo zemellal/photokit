@@ -7,13 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { DropdownDialogKit } from "./dialogs/dialog-kit";
-import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+} from "../ui/card";
+import { DropdownDialogKit } from "../dialogs/dialog-kit";
 import { KitsWithProductsOnKits } from "@/data/kits";
 import { formatWeight, locale, sumTotal } from "@/lib";
-import { DialogKitItems } from "./dialogs/dialog-kit-items";
+import { DialogKitItems } from "../dialogs/dialog-kit-items";
 
 interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   kit: KitsWithProductsOnKits[0];

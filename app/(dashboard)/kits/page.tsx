@@ -1,4 +1,5 @@
 import { DialogKit } from "@/components/dialogs/dialog-kit";
+import { PageHeader } from "@/components/heading";
 import { PageTitle } from "@/components/typography";
 import {
   Card,
@@ -8,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { KitWidget } from "@/components/widget-kit";
+import { KitWidget } from "@/components/widgets/widget-kit";
 
 import { getKitsWithProductsOnKits } from "@/data/kits";
 
@@ -34,10 +35,10 @@ export default async function KitPage() {
   return (
     <div className="main-padded">
       <section className="flex flex-col gap-y-4">
-        <div className="flex flex-row items-center justify-between">
+        <PageHeader>
           <PageTitle>Kits</PageTitle>
           <DialogKit action={"new"} />
-        </div>
+        </PageHeader>
         {kits.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 xl:gap-6">
             {kits.map((kit) => (
