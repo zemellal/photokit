@@ -13,9 +13,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="relative flex">
+    <div className="relative flex flex-col sm:flex-row">
       <Sidebar />
-      <main className="flex flex-col flex-1 min-h-screen sm:pl-14">
+      <main className="flex flex-col flex-1 min-h-screen pt-12 sm:pt-0 sm:pl-14">
         {children}
       </main>
     </div>
