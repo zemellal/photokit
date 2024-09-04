@@ -71,7 +71,7 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="container py-6">
+    <div className="main-padded">
       <article className="grid gap-4 md:gap-8">
         {/* <section>
           <p>Params: {params.slug}</p>
@@ -81,7 +81,7 @@ export default async function ProductPage({
         <PageHeader>
           <div className="flex flex-row gap-4 items-center">
             <BackButton />
-            <PageTitle className="whitespace-nowrap">{product.name}</PageTitle>
+            <PageTitle className="">{product.name}</PageTitle>
             {ownerships.length > 0 && (
               <Badge className="select-none">Owned</Badge>
             )}
