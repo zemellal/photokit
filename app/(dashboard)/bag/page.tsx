@@ -8,8 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PageTitle } from "@/components/typography";
-import { PageHeader } from "@/components/heading";
+import { PageHeader, PageTitle } from "@/components/headings";
 
 export default async function BagPage() {
   const ownedProducts = await listOwnershipsWithProducts();

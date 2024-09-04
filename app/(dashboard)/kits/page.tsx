@@ -1,6 +1,5 @@
 import { DialogKit } from "@/components/dialogs/dialog-kit";
-import { PageHeader } from "@/components/heading";
-import { PageTitle } from "@/components/typography";
+import { PageHeader, PageTitle } from "@/components/headings";
 import {
   Card,
   CardContent,

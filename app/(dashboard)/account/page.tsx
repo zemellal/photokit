@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
-import { PageHeader } from "@/components/heading";
-import { PageTitle } from "@/components/typography";
+import { PageHeader, PageTitle } from "@/components/headings";
 import { findUserByID } from "@/data/users";
 
 export default async function AccountPage() {

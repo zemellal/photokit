@@ -1,7 +1,6 @@
 // export const runtime = "edge";
 
 import { OwnershipValueChart } from "@/components/charts/ownership-value";
-import { PageTitle } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import LensTypeWidget from "@/components/widgets/widget-lens-type";
 import OwnershipSummaryWidget from "@/components/widgets/widget-ownership-summary";
@@ -12,7 +11,7 @@ import { listOwnershipsWithProductsLens } from "@/data/ownership";
 
 import { Backpack, DollarSign, Ungroup, Weight } from "lucide-react";
 import Link from "next/link";
-import { PageHeader } from "@/components/heading";
+import { PageHeader, PageTitle } from "@/components/headings";
 
 export default async function Home() {
   const [ownedProducts, kitCount] = await Promise.all([

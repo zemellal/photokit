@@ -3,7 +3,6 @@ import { DialogOpen } from "@/components/dialogs/dialog-open";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { OfferForm } from "@/components/form/form-offer";
 import { SpecsTable } from "@/components/table/table-specs";
-import { PageTitle } from "@/components/typography";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +15,7 @@ import {
 
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
 import { getProductWithDetailsById } from "@/data/products";
-import { PageHeader } from "@/components/heading";
+import { PageHeader, PageTitle } from "@/components/headings";
 
 export default async function ProductPage({
   params,

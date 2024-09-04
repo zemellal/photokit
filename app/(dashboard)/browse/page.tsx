@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { PageTitle } from "@/components/typography";
-import { PageHeader } from "@/components/heading";
+import { PageHeader, PageTitle } from "@/components/headings";
 
 export default async function BrowsePage() {
   const products = await getProducts();
