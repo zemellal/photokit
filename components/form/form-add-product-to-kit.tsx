@@ -41,8 +41,7 @@ export function AddProductToKitForm({
   product: Product;
 }) {
   const [kits, setKits] = useState<Kit[]>();
-  const [loading, setLoading] = useState(false);
-  function getKits() {
+  const getKits = async () => {
     getKitsAction()
       .then((data) => {
         setKits(data);
@@ -51,7 +50,7 @@ export function AddProductToKitForm({
         console.log("error getting kits: ", err);
       })
       .finally(() => {});
-  }
+  };
 
   /** @todo convert this to a server component? */
   useEffect(() => {
@@ -69,10 +68,9 @@ export function AddProductToKitForm({
    * Submits the kit entry form, productId on kitId
    * @param data
    */
-  function onSubmit(data: z.infer<typeof ProductsOnKitsSchema>) {
-    setLoading(true);
+  const onSubmit = async (data: z.infer<typeof ProductsOnKitsSchema>) => {
     addProductToKitAction(data)
-      .then((kit) => {
+      .then((data) => {
         setOpen(false);
         toast({
           title: "You added this product to your kit:",
@@ -86,7 +84,6 @@ export function AddProductToKitForm({
         });
       })
       .catch((err) => {
-        setLoading(false);
         toast({
           variant: "destructive",
           title: "Error adding product to kit",
@@ -98,7 +95,7 @@ export function AddProductToKitForm({
         });
       })
       .finally(() => {});
-  }
+  };
 
   return (
     <Form {...form}>
@@ -141,7 +138,11 @@ export function AddProductToKitForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit" disabled={loading}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             Add to Kit
           </Button>
         </div>

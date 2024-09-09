@@ -24,14 +24,13 @@ import {
 } from "../ui/select";
 import { ItemCondition } from "@/lib/types";
 import { Button } from "../ui/button";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { createOfferAction } from "@/app/(dashboard)/product/actions";
 import { toast } from "../ui/use-toast";
 import { DialogOpenContext } from "../dialogs/dialog-open";
 
 export function OfferForm({ productId }: { productId: Product["id"] }) {
   const { setOpen } = useContext(DialogOpenContext);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof OfferCreateSchema>>({
     resolver: zodResolver(OfferCreateSchema),
@@ -40,14 +39,12 @@ export function OfferForm({ productId }: { productId: Product["id"] }) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof OfferCreateSchema>) {
-    setIsSubmitting(true);
+  const onSubmit = async (data: z.infer<typeof OfferCreateSchema>) => {
     try {
       createOfferAction(data)
         .then((offerData) => {
           if (setOpen) setOpen(false);
 
-          setIsSubmitting(false);
           toast({
             title: "You submitted the following values:",
             description: (
@@ -60,7 +57,6 @@ export function OfferForm({ productId }: { productId: Product["id"] }) {
           });
         })
         .catch((err) => {
-          setIsSubmitting(false);
           toast({
             variant: "destructive",
             title: "Error creating product offer",
@@ -74,10 +70,9 @@ export function OfferForm({ productId }: { productId: Product["id"] }) {
           });
         });
     } catch (err) {
-      setIsSubmitting(false);
       console.log(err);
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -126,7 +121,11 @@ export function OfferForm({ productId }: { productId: Product["id"] }) {
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit" disabled={isSubmitting}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             Add price data point
           </Button>
         </div>

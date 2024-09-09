@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -42,7 +41,6 @@ import {
   CommandList,
 } from "../ui/command";
 import { LensType, ProductType } from "@/lib/types";
-import { useState } from "react";
 import { ProductCreateInputSchema } from "@/lib/zod/product";
 
 export function ProductForm({
@@ -52,16 +50,12 @@ export function ProductForm({
   brands: Brand[];
   mounts: Mount[];
 }) {
-  const [loading, setLoading] = useState(false);
-
   const form = useForm<z.infer<typeof ProductCreateInputSchema>>({
     resolver: zodResolver(ProductCreateInputSchema),
     defaultValues: {},
   });
-  const router = useRouter();
 
-  function onSubmit(data: z.infer<typeof ProductCreateInputSchema>) {
-    setLoading(true);
+  const onSubmit = async (data: z.infer<typeof ProductCreateInputSchema>) => {
     let subData: Prisma.ProductUncheckedCreateInput;
 
     //  for lens or camera data payloads, it structures the data for
@@ -105,7 +99,6 @@ export function ProductForm({
         // router.push("/browse");
       })
       .catch((err) => {
-        setLoading(false);
         toast({
           variant: "destructive",
           title: "Error creating product",
@@ -119,7 +112,7 @@ export function ProductForm({
         });
       })
       .finally(() => {});
-  }
+  };
 
   return (
     <Form {...form}>
@@ -586,7 +579,11 @@ export function ProductForm({
         )}
 
         <div className="pt-6">
-          <Button className="w-full" type="submit" disabled={loading}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             Create Product
           </Button>
         </div>

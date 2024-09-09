@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, useState } from "react";
+import { Dispatch } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
@@ -53,7 +53,6 @@ export function OwnershipForm({
   item?: OwnershipWithProducts;
   setOpen: Dispatch<boolean>;
 }) {
-  const [loading, setLoading] = useState(false);
   let itemNoNulls;
   if (item) {
     itemNoNulls = removeNullKeysFromObject(item);
@@ -68,7 +67,7 @@ export function OwnershipForm({
     },
   });
 
-  function errorToast(err: unknown) {
+  const errorToast = (err: unknown) => {
     toast({
       variant: "destructive",
       title: "Error submitting",
@@ -78,8 +77,8 @@ export function OwnershipForm({
         </pre>
       ),
     });
-  }
-  function messageToast(data: unknown) {
+  };
+  const messageToast = (data: unknown) => {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -88,10 +87,9 @@ export function OwnershipForm({
         </pre>
       ),
     });
-  }
+  };
 
-  function onSubmit(data: z.infer<typeof ownershipSchema>) {
-    setLoading(true);
+  const onSubmit = async (data: z.infer<typeof ownershipSchema>) => {
     try {
       if (!item?.id) {
         createOwnershipAction(data)
@@ -100,7 +98,6 @@ export function OwnershipForm({
             messageToast(data);
           })
           .catch((err) => {
-            setLoading(false);
             errorToast(err);
           });
       } else {
@@ -110,15 +107,13 @@ export function OwnershipForm({
             messageToast(data);
           })
           .catch((err) => {
-            setLoading(false);
             errorToast(err);
           });
       }
     } catch (err) {
-      setLoading(false);
       errorToast(err);
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -229,7 +224,11 @@ export function OwnershipForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit" disabled={loading}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             {item?.id ? "Edit Item" : "Add Item"}
           </Button>
         </div>

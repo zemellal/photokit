@@ -30,7 +30,6 @@ export function KitForm({
   setOpen: Dispatch<boolean>;
   kit?: Kit;
 }) {
-  const [loading, setLoading] = useState(false);
   const safeKit = KitCreateSchema.safeParse(kit);
   const form = useForm<z.infer<typeof KitCreateSchema>>({
     resolver: zodResolver(KitCreateSchema),
@@ -43,8 +42,7 @@ export function KitForm({
    * Submit the kit form. If the input includes a kit id, then it updates the kit. Otherwise it creates a new kit.
    * @param data Kit Form
    */
-  function onSubmit(data: z.infer<typeof KitCreateSchema>) {
-    setLoading(true);
+  const onSubmit = async (data: z.infer<typeof KitCreateSchema>) => {
     // kit id found, so edit the kit
     if (kit?.id) {
       editKitAction(kit.id, data)
@@ -62,7 +60,6 @@ export function KitForm({
           });
         })
         .catch((err) => {
-          setLoading(false);
           toast({
             variant: "destructive",
             title: "Error editing kit",
@@ -94,7 +91,6 @@ export function KitForm({
           });
         })
         .catch((err) => {
-          setLoading(false);
           toast({
             variant: "destructive",
             title: "Error creating kit",
@@ -109,7 +105,7 @@ export function KitForm({
         })
         .finally(() => {});
     }
-  }
+  };
 
   return (
     <Form {...form}>
@@ -130,7 +126,11 @@ export function KitForm({
         />
 
         <div className="pt-6">
-          <Button className="w-full" type="submit" disabled={loading}>
+          <Button
+            className="w-full"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             {kit ? "Edit Kit" : "Create Kit"}
           </Button>
         </div>

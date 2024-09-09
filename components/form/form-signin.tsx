@@ -20,21 +20,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { signInSchema } from "@/lib/zod/auth";
 import { signInAction } from "@/app/(signin)/signin/actions";
-import { useState } from "react";
 import { toast } from "../ui/use-toast";
 
 export function SignInForm() {
   const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: { email: "", password: "password" },
   });
 
-  function onSubmit(data: z.infer<typeof signInSchema>) {
-    setLoading(true);
+  async function onSubmit(data: z.infer<typeof signInSchema>) {
     signInAction(data)
       .then((data) => {
         console.log("good?: ", data);
@@ -42,7 +38,6 @@ export function SignInForm() {
       })
       .catch((error) => {
         console.log("error: ", error);
-        setLoading(false);
         toast({
           variant: "destructive",
           title: "Auth Error",
@@ -85,7 +80,11 @@ export function SignInForm() {
         />
 
         <div className="pt-4">
-          <Button disabled={loading} className="w-full" type="submit">
+          <Button
+            disabled={form.formState.isSubmitting}
+            className="w-full"
+            type="submit"
+          >
             Sign In
           </Button>
         </div>
