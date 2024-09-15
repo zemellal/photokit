@@ -41,7 +41,7 @@ import {
   CommandList,
 } from "../ui/command";
 import { LensType, ProductType } from "@/lib/types";
-import { ProductCreateInputSchema } from "@/lib/zod/product";
+import { ProductCreateInputSchema } from "@/lib/zod";
 
 export function ProductForm({
   brands,

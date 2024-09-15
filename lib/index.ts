@@ -95,7 +95,7 @@ export const formatCurrency = (
   } else rawNum = input;
 
   return new Intl.NumberFormat(locale, {
-    maximumFractionDigits: options?.maximumFractionDigits,
+    maximumFractionDigits: options?.maximumFractionDigits || 0,
     style: "currency",
     currency: options?.currency || "USD",
   }).format(rawNum);

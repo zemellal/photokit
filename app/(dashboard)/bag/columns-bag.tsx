@@ -37,7 +37,7 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
   // },
   {
     id: "name",
-    accessorKey: "products.name",
+    accessorKey: "product.name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -52,7 +52,7 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     },
   },
   {
-    accessorKey: "products.weight",
+    accessorKey: "product.weight",
     id: "weight",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Weight" />

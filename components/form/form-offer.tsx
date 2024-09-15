@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { OfferCreateSchema } from "@/lib/zod/offer";
+import { OfferCreateSchema } from "@/lib/zod";
 import { Product } from "@prisma/client";
 import { Input } from "../ui/input";
 import {

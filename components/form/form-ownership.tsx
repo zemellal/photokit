@@ -41,7 +41,7 @@ import {
 } from "../ui/select";
 import { removeNullKeysFromObject } from "@/lib";
 import { ItemCondition } from "@/lib/types";
-import { ownershipSchema } from "@/lib/zod/ownership";
+import { OwnershipSchema } from "@/lib/zod";
 
 // TODO: only pass necessary data to client component
 export function OwnershipForm({
@@ -57,10 +57,10 @@ export function OwnershipForm({
   if (item) {
     itemNoNulls = removeNullKeysFromObject(item);
   }
-  const safeItem = ownershipSchema.safeParse(itemNoNulls);
+  const safeItem = OwnershipSchema.safeParse(itemNoNulls);
 
-  const form = useForm<z.infer<typeof ownershipSchema>>({
-    resolver: zodResolver(ownershipSchema),
+  const form = useForm<z.infer<typeof OwnershipSchema>>({
+    resolver: zodResolver(OwnershipSchema),
     defaultValues: {
       productId: product.id,
       ...safeItem.data,
@@ -89,7 +89,7 @@ export function OwnershipForm({
     });
   };
 
-  const onSubmit = async (data: z.infer<typeof ownershipSchema>) => {
+  const onSubmit = async (data: z.infer<typeof OwnershipSchema>) => {
     try {
       if (!item?.id) {
         createOwnershipAction(data)

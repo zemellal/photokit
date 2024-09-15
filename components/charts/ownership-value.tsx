@@ -31,7 +31,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
-  ownershipData: OwnershipWithProducts[];
+  ownershipData: {
+    purchaseDate: OwnershipWithProducts["purchaseDate"];
+    price: OwnershipWithProducts["price"];
+  }[];
 }
 
 // TODO: only pass necessary data to client component

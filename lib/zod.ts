@@ -1,6 +1,19 @@
-import { z } from "zod";
-import { LensType, ProductType } from "../types";
+import { object, string, z } from "zod";
 import { Prisma, Product } from "@prisma/client";
+
+import { ItemCondition, LensType, ProductType } from "./types";
+
+/**
+ * Shared Schemas
+ *
+ */
+
+const priceSchema = z.coerce.number().positive("Must be positive").safe();
+const itemCondition = z.nativeEnum(ItemCondition);
+
+/**
+ * Product Schemas
+ */
 
 const lensSchema = z
   .object({
@@ -61,10 +74,10 @@ const schemaConditions = z.discriminatedUnion("type", [
 ]);
 
 const productBaseSchema = z.object({
-  name: z.string({ required_error: "Please name your item" }),
+  name: z.string({ required_error: "Product name is required" }),
   type: z.nativeEnum(ProductType),
   brandId: z.number({ required_error: "Brand is required for product" }),
-  price: z.coerce.number().optional(),
+  price: priceSchema.optional(),
   weight: z.coerce.number().positive().int().optional(),
   releaseDate: z.date().optional(),
 }) satisfies z.Schema<Prisma.ProductUncheckedCreateInput>;
@@ -74,7 +87,62 @@ export const ProductCreateInputSchema = z.intersection(
   productBaseSchema
 );
 
-// is this too specific: cuid ?
-export const productIdSchema = z.string().cuid() satisfies z.Schema<
-  Product["id"]
->;
+export const ProductIdSchema = z.string() satisfies z.Schema<Product["id"]>;
+
+/**
+ * Ownership Schemas
+ */
+
+export const OwnershipSchema = z.object({
+  productId: z.string(),
+  serialNumber: z
+    .string({
+      invalid_type_error: "Invalid serial number format",
+    })
+    .min(3)
+    .trim()
+    .optional(),
+  purchaseDate: z.date().optional(),
+  itemCondition: itemCondition,
+  price: priceSchema,
+}) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUserInput>;
+
+/**
+ * Kit Schemas
+ * */
+
+export const KitCreateSchema = z.object({
+  name: z.string().min(3).trim(),
+}) satisfies z.Schema<Prisma.KitUncheckedCreateWithoutOwnerInput>;
+
+export const ProductsOnKitsSchema = z.object({
+  kitId: z.string(),
+  productId: z.string(),
+}) satisfies z.Schema<Prisma.ProductsOnKitsUncheckedCreateInput>;
+
+/**
+ * Offer Schemas
+ * */
+
+export const OfferCreateSchema = z.object({
+  date: z.date().optional(),
+  itemCondition: itemCondition,
+  price: priceSchema,
+  //   priceCurrency: z.string().optional(),
+  productId: z.string(),
+}) satisfies z.Schema<Prisma.OfferUncheckedCreateInput>;
+
+/**
+ * Auth Schemas
+ * */
+
+export const signInSchema = object({
+  email: string({ required_error: "Email is required" })
+    .min(1, "Email is required")
+    .email("Invalid email")
+    .toLowerCase(),
+  password: string({ required_error: "Password is required" })
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(64, "Password must be less than 64 characters"),
+});

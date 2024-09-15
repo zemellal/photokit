@@ -16,11 +16,17 @@ import {
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
 import { getProductWithDetailsById } from "@/data/products";
 import { PageHeader, PageTitle } from "@/components/headings";
-import { productIdSchema } from "@/lib/zod/product";
+import { ProductIdSchema } from "@/lib/zod";
+import Link from "next/link";
 
 function ProductError({ msg }: { msg?: string }) {
   return (
-    <div className="container py-6">{msg || "Error getting product data"}</div>
+    <div className="container py-6">
+      <p className="mb-4">{msg || "Error getting product data"}</p>
+      <Button asChild>
+        <Link href={"/browse"}>Browse</Link>
+      </Button>
+    </div>
   );
 }
 
@@ -29,7 +35,7 @@ export default async function ProductPage({
 }: {
   params: { id: string };
 }) {
-  const parsedID = productIdSchema.safeParse(decodeURI(params.id));
+  const parsedID = ProductIdSchema.safeParse(decodeURI(params.id));
   // check if the param is valid
   if (!parsedID.success) return <ProductError />;
 

@@ -6,10 +6,10 @@ import { Ownership, Prisma, User } from "@prisma/client";
 import { getSessionId } from "@/auth";
 
 /**
- * Get the user's owned products with details
+ * Get the user's ownerships with product details
  * @group Ownership
  */
-export const listOwnershipsWithProducts = cache(async () => {
+export const listOwnershipsWithProduct = cache(async () => {
   const items = await prisma.ownership.findMany({
     include: { product: true },
     orderBy: { purchaseDate: "desc" },

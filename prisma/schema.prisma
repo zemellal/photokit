@@ -71,7 +71,7 @@ model Ownership {
   id            String    @id @default(cuid())
   userId        String
   productId     String
-  price         Float
+  price         Int
   itemCondition String
   serialNumber  String?
   purchaseDate  DateTime?
@@ -109,7 +109,7 @@ model Offer {
   date          DateTime @default(now())
   productId     String
   itemCondition String
-  price         Float
+  price         Int
   priceCurrency String   @default("USD")
 
   createdAt DateTime @default(now())

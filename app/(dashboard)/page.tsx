@@ -84,7 +84,14 @@ export default async function Home() {
 
             <div className="sm:col-span-2 lg:col-span-5">
               <div className="grid auto-rows-auto  grid-flow-row gap-4 lg:gap-6">
-                <OwnershipValueChart ownershipData={ownedProducts} />
+                <OwnershipValueChart
+                  ownershipData={ownedProducts.map((x) => {
+                    return {
+                      purchaseDate: x.purchaseDate,
+                      price: Math.round(x.price),
+                    };
+                  })}
+                />
               </div>
             </div>
 

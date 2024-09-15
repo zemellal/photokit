@@ -30,7 +30,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import Link from "next/link";
-import { ProductsOnKitsSchema } from "@/lib/zod/kits";
+import { ProductsOnKitsSchema } from "@/lib/zod";
 
 // TODO: only pass necessary data to client component
 export function AddProductToKitForm({

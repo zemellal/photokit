@@ -20,7 +20,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Kit } from "@prisma/client";
 import { createKitAction, editKitAction } from "@/app/(dashboard)/kits/actions";
-import { KitCreateSchema } from "@/lib/zod/kits";
+import { KitCreateSchema } from "@/lib/zod";
 
 // TODO: only pass necessary data to client component
 export function KitForm({
