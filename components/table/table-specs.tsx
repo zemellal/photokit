@@ -25,14 +25,12 @@ export function SpecsTable({ data, caption }: SpecsTableProps) {
       <TableCaption>{caption}</TableCaption>
       <TableBody>
         {rows.map((row) => (
-          <React.Fragment key={row.label}>
-            <TableRow key={row.label}>
-              <TableCell className="font-medium text-right w-[50%]">
-                {row.label}
-              </TableCell>
-              <TableCell className="">{row.value}</TableCell>
-            </TableRow>
-          </React.Fragment>
+          <TableRow key={row.label}>
+            <TableCell className="font-medium text-right w-[50%]">
+              {row.label}
+            </TableCell>
+            <TableCell className="">{row.value}</TableCell>
+          </TableRow>
         ))}
       </TableBody>
     </Table>

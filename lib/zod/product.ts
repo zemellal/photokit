@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { LensType, ProductType } from "../types";
-import { Prisma } from "@prisma/client";
+import { Prisma, Product } from "@prisma/client";
 
 const lensSchema = z
   .object({
@@ -34,13 +34,13 @@ const lensSchema = z
         message: "Max focal length needs to be greater than min focal length",
       });
     }
-  }) satisfies z.Schema<Prisma.LensUncheckedCreateWithoutProductsInput>;
+  }) satisfies z.Schema<Prisma.LensUncheckedCreateWithoutProductInput>;
 
 const cameraSchema = z.object({
   mountId: z.number(),
   megapixels: z.coerce.number().positive().optional(),
   cropFactor: z.coerce.number().positive().optional(),
-}) satisfies z.Schema<Prisma.CameraUncheckedCreateWithoutProductsInput>;
+}) satisfies z.Schema<Prisma.CameraUncheckedCreateWithoutProductInput>;
 
 const lensProductSchema = z.object({
   type: z.literal(ProductType.lens),
@@ -73,3 +73,8 @@ export const ProductCreateInputSchema = z.intersection(
   schemaConditions,
   productBaseSchema
 );
+
+// is this too specific: cuid ?
+export const productIdSchema = z.string().cuid() satisfies z.Schema<
+  Product["id"]
+>;

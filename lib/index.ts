@@ -27,6 +27,14 @@ export const removeNullKeysFromObject = (
 };
 
 /**
+ * Sleep for ms milliseconds
+ * @param ms
+ * @returns
+ */
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
  * Formats a weight using Intl number formatter
  * @param weight
  * @returns

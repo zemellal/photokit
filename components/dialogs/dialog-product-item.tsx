@@ -19,7 +19,7 @@ export const DialogProductItem = ({
   product,
   children,
 }: {
-  product: Product;
+  product: { id: Product["id"]; name: Product["name"] };
   children?: ReactNode;
 }) => {
   const [open, setOpen] = React.useState(false);

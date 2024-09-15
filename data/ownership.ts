@@ -10,8 +10,8 @@ import { getSessionId } from "@/auth";
  * @group Ownership
  */
 export const listOwnershipsWithProducts = cache(async () => {
-  const items = prisma.ownership.findMany({
-    include: { products: true },
+  const items = await prisma.ownership.findMany({
+    include: { product: true },
     orderBy: { purchaseDate: "desc" },
     where: { userId: await getSessionId() },
   });
@@ -20,7 +20,7 @@ export const listOwnershipsWithProducts = cache(async () => {
 
 const ownershipWithProducts = Prisma.validator<Prisma.OwnershipDefaultArgs>()({
   include: {
-    products: true,
+    product: true,
   },
 });
 
@@ -33,8 +33,8 @@ export type OwnershipWithProducts = Prisma.OwnershipGetPayload<
  * @group Ownership
  */
 export const listOwnershipsWithProductsLens = cache(async () => {
-  const items = prisma.ownership.findMany({
-    include: { products: { include: { lens: true, camera: true } } },
+  const items = await prisma.ownership.findMany({
+    include: { product: { include: { lens: true, camera: true } } },
     orderBy: { purchaseDate: "desc" },
     where: { userId: await getSessionId() },
   });
@@ -49,7 +49,7 @@ export const listOwnershipsWithProductsLens = cache(async () => {
  */
 export const findOwnershipByProductId = cache(
   async (pid: Ownership["productId"]) => {
-    return prisma.ownership.findMany({
+    return await prisma.ownership.findMany({
       where: {
         userId: await getSessionId(),
         productId: pid,
@@ -65,11 +65,15 @@ export const findOwnershipByProductId = cache(
  * @group Ownership
  */
 export async function createOwnership(
-  data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
+  data: Prisma.OwnershipUncheckedCreateWithoutUserInput
 ) {
-  // const ownershipWithUserId = { ...data, users: { connect: { id: userId } } };
-  return prisma.ownership.create({
-    data: { ...data, userId: await getSessionId() },
+  const now = new Date();
+  return await prisma.ownership.create({
+    data: {
+      ...data,
+      // updatedAt: now.toISOString(),
+      userId: await getSessionId(),
+    },
   });
 }
 
@@ -80,8 +84,8 @@ export async function createOwnership(
  *
  * @group Ownership
  */
-export function removeOwnership(id: Ownership["id"]) {
-  return prisma.ownership.delete({ where: { id: id } });
+export async function deleteOwnership(id: Ownership["id"]) {
+  return await prisma.ownership.delete({ where: { id: id } });
 }
 
 /**
@@ -92,9 +96,9 @@ export function removeOwnership(id: Ownership["id"]) {
  *
  * @group Ownership
  */
-export function editOwnership(
+export async function updateOwnership(
   id: Ownership["id"],
-  data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
+  data: Prisma.OwnershipUncheckedCreateWithoutUserInput
 ) {
-  return prisma.ownership.update({ where: { id: id }, data: data });
+  return await prisma.ownership.update({ where: { id: id }, data: data });
 }

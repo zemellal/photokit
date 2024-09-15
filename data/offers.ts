@@ -9,6 +9,6 @@ import { prisma } from "@/lib/db";
  * @param data
  * @returns
  */
-export const createOffer = (data: Prisma.OfferUncheckedCreateInput) => {
-  return prisma.offer.create({ data: { ...data } });
+export const createOffer = async (data: Prisma.OfferUncheckedCreateInput) => {
+  return await prisma.offer.create({ data: { ...data } });
 };

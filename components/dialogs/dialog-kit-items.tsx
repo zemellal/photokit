@@ -23,14 +23,13 @@ import { formatWeight } from "@/lib";
 export const DialogKitItems = ({
   kitItems,
 }: {
-  kitItems: KitsWithProductsOnKits[0]["ProductsOnKits"];
+  kitItems: KitsWithProductsOnKits[0]["productsOnKits"];
 }) => {
   const [open, setOpen] = React.useState(false);
   const [kitItemSelected, setKitItemSelected] =
-    React.useState<KitsWithProductsOnKits[0]["ProductsOnKits"][0]>();
+    React.useState<KitsWithProductsOnKits[0]["productsOnKits"][0]>();
 
   function deleteKitItem(kitItem: ProductsOnKits) {
-    console.log(kitItem);
     deleteKitItemAction(kitItem)
       .then((kit) => {
         setOpen(false);
@@ -69,7 +68,9 @@ export const DialogKitItems = ({
               {kitItem.product.name}{" "}
               <span className="text-muted-foreground">
                 {" • "}
-                {formatWeight(kitItem.product.weight)}
+                <span className="text-nowrap">
+                  {formatWeight(kitItem.product.weight)}
+                </span>
               </span>
             </div>
 

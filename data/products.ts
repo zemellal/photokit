@@ -6,17 +6,15 @@ import { prisma } from "@/lib/db";
 import { getSessionId } from "@/auth";
 import { unstable_cache } from "next/cache";
 
-const revalidate = 60 * 60 * 24 * 3;
-
 /**
  * Get all products
  *
  * @group Product
  */
-export const getProducts = cache(() => {
+export const getProducts = cache(async () => {
   console.log("getProducts");
-  const products = prisma.product.findMany({
-    orderBy: [{ releaseDate: "desc" }],
+  const products = await prisma.product.findMany({
+    // orderBy: [{ releaseDate: "desc" }],
   });
   return products;
 });
@@ -28,12 +26,12 @@ export const getProducts = cache(() => {
  */
 export const getProductsWithOwnershipBrands = cache(async () => {
   console.log("getProductsWithOwnership");
-  const products = prisma.product.findMany({
+  const products = await prisma.product.findMany({
     include: {
-      Brand: true,
-      ownership: { where: { userId: await getSessionId() } },
+      brand: true,
+      ownerships: { where: { userId: await getSessionId() } },
     },
-    orderBy: [{ releaseDate: "desc" }],
+    // orderBy: [{ releaseDate: "desc" }],
   });
   return products;
 });
@@ -48,19 +46,19 @@ export type ProductsWithOwnershipBrands = Prisma.PromiseReturnType<
  */
 export const getProductWithDetailsById = cache(async (id: Product["id"]) => {
   console.log(`getProductWithDetailsById: ${id}`);
-  const product = prisma.product.findUnique({
+  const product = await prisma.product.findUnique({
     where: { id },
     include: {
-      Brand: true,
-      lens: { include: { mounts: true } },
-      camera: { include: { mounts: true } },
-      ownership: {
+      brand: true,
+      lens: { include: { mount: true } },
+      camera: { include: { mount: true } },
+      ownerships: {
         where: {
           userId: await getSessionId(),
           productId: id,
         },
       },
-      Offer: { orderBy: { date: "desc" } },
+      offers: { orderBy: { date: "desc" } },
     },
   });
   return product;
@@ -73,8 +71,10 @@ export const getProductWithDetailsById = cache(async (id: Product["id"]) => {
  *
  * @group Product
  */
-export const createProduct = (data: Prisma.ProductUncheckedCreateInput) => {
-  return prisma.product.create({ data: { ...data } });
+export const createProduct = async (
+  data: Prisma.ProductUncheckedCreateInput
+) => {
+  return await prisma.product.create({ data: { ...data } });
 };
 
 /**
@@ -82,9 +82,9 @@ export const createProduct = (data: Prisma.ProductUncheckedCreateInput) => {
  *
  * @group Brand
  */
-export const getBrands = cache(() => {
+export const getBrands = cache(async () => {
   console.log("getBrands");
-  return prisma.brand.findMany();
+  return await prisma.brand.findMany();
 });
 
 /**
@@ -97,7 +97,7 @@ export const getCachedBrands = unstable_cache(
     return await prisma.brand.findMany();
   },
   ["brands"],
-  { revalidate, tags: ["brands"] }
+  { revalidate: 60 * 60 * 24 * 3, tags: ["brands"] }
 );
 
 /**
@@ -105,9 +105,9 @@ export const getCachedBrands = unstable_cache(
  *
  * @group Mount
  */
-export const getMounts = cache(() => {
+export const getMounts = cache(async () => {
   console.log("getMounts");
-  return prisma.mount.findMany();
+  return await prisma.mount.findMany();
 });
 
 /**
@@ -120,5 +120,5 @@ export const getCachedMounts = unstable_cache(
     return await prisma.mount.findMany();
   },
   ["mounts"],
-  { revalidate, tags: ["mounts"] }
+  { revalidate: 60 * 60 * 24 * 3, tags: ["mounts"] }
 );

@@ -20,7 +20,7 @@ interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
 const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
   ({ className, kit, ...props }, ref) => {
     /** Extract the weights to an array */
-    const weights = kit.ProductsOnKits.map((a) => a.product.weight || 0);
+    const weights = kit.productsOnKits.map((a) => a.product.weight || 0);
 
     const totalWeight = sumTotal(weights);
 
@@ -34,7 +34,7 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
           <CardDescription>Weight: {formatWeight(totalWeight)}</CardDescription>
         </CardHeader>
         <CardContent className="flex-grow">
-          <DialogKitItems kitItems={kit.ProductsOnKits} />
+          <DialogKitItems kitItems={kit.productsOnKits} />
         </CardContent>
         <CardFooter>
           <CardDescription>Add to your kit from your gear page</CardDescription>

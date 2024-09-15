@@ -53,7 +53,7 @@ export default function OwnershipSummaryWidget({
             <div className="grid gap-1">
               <p className="text-sm font-medium leading-none">
                 <Link href={`/product/${item.productId}`}>
-                  {item.products.name}
+                  {item.product.name}
                 </Link>
               </p>
               {item.purchaseDate && (
@@ -67,7 +67,7 @@ export default function OwnershipSummaryWidget({
               {/* <Badge>{item.id}</Badge> */}
             </div>
             <div className="ml-auto font-medium">
-              {formatCurrency(item.price)}
+              {formatCurrency(item.price, { maximumFractionDigits: 0 })}
             </div>
           </article>
         ))}

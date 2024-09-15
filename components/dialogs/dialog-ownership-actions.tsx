@@ -108,18 +108,18 @@ export function DialogOwnershipActions({
         {view === "addToKit" && (
           <>
             <DialogHeader>
-              <DialogTitle>{item.products.name}</DialogTitle>
+              <DialogTitle>{item.product.name}</DialogTitle>
               <DialogDescription>
                 Choose which kit you want to add this item to.
               </DialogDescription>
             </DialogHeader>
-            <AddProductToKitForm setOpen={setOpen} product={item.products} />
+            <AddProductToKitForm setOpen={setOpen} product={item.product} />
           </>
         )}
         {view === "edit" && (
           <>
             <DialogHeader>
-              <DialogTitle>{item.products.name}</DialogTitle>
+              <DialogTitle>{item.product.name}</DialogTitle>
               <DialogDescription>
                 Edit this product ownership details.
               </DialogDescription>

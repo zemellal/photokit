@@ -13,7 +13,7 @@ import { getSessionId } from "@/auth";
 export async function createKit(
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
 ) {
-  const kit = prisma.kit.create({
+  const kit = await prisma.kit.create({
     data: { ...data, ownerId: await getSessionId() },
   });
 
@@ -26,9 +26,9 @@ export async function createKit(
  * @group Kits
  */
 export const getKits = cache(async () => {
-  return prisma.kit.findMany({
+  return await prisma.kit.findMany({
     where: { ownerId: await getSessionId() },
-    orderBy: { createdOn: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 });
 
@@ -37,11 +37,11 @@ export const getKits = cache(async () => {
  * @group Kits
  */
 export const getKitsWithProductsOnKits = cache(async () => {
-  const kits = prisma.kit.findMany({
+  const kits = await prisma.kit.findMany({
     where: { ownerId: await getSessionId() },
-    orderBy: { createdOn: "desc" },
+    orderBy: { createdAt: "desc" },
     include: {
-      ProductsOnKits: { include: { product: true } },
+      productsOnKits: { include: { product: true } },
     },
   });
   return kits;
@@ -54,19 +54,19 @@ export type KitsWithProductsOnKits = Prisma.PromiseReturnType<
  * Update the user's kit by kitId
  * @group Kits
  */
-export function updateKit(
+export async function updateKit(
   id: Kit["id"],
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
 ) {
-  return prisma.kit.update({ where: { id: id }, data });
+  return await prisma.kit.update({ where: { id: id }, data });
 }
 
 /**
  * Delete the user's kit by kitId
  * @group Kits
  */
-export function deleteKit(id: Kit["id"]) {
-  return prisma.kit.delete({ where: { id: id } });
+export async function deleteKit(id: Kit["id"]) {
+  return await prisma.kit.delete({ where: { id: id } });
 }
 
 /**
@@ -74,7 +74,7 @@ export function deleteKit(id: Kit["id"]) {
  * @group Kits
  */
 export const getKitCount = cache(async () => {
-  const kitCount = prisma.kit.count({
+  const kitCount = await prisma.kit.count({
     where: { ownerId: await getSessionId() },
   });
   return kitCount;
@@ -84,10 +84,10 @@ export const getKitCount = cache(async () => {
  * @param {ProductsOnKits} data
  * @group ProductsOnKits
  */
-export function addProductToKit(data: ProductsOnKits) {
+export async function createKitProduct(data: ProductsOnKits) {
   // TODO: check if the user is the owner of the kit
 
-  const kitItem = prisma.productsOnKits.create({ data });
+  const kitItem = await prisma.productsOnKits.create({ data });
   return kitItem;
 }
 
@@ -96,10 +96,10 @@ export function addProductToKit(data: ProductsOnKits) {
  * @returns the deleted kit item
  * @group ProductsOnKits
  */
-export function removeKitItem(kitItem: ProductsOnKits) {
+export async function deleteKitProduct(kitItem: ProductsOnKits) {
   // TODO: check if the user is the owner of the kit
 
-  const removedItem = prisma.productsOnKits.delete({
+  const removedItem = await prisma.productsOnKits.delete({
     where: {
       productId_kitId: { productId: kitItem.productId, kitId: kitItem.kitId },
     },

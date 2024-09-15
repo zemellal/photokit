@@ -16,24 +16,36 @@ import {
 import { formatCurrency, formatDate, formatUnit } from "@/lib";
 import { getProductWithDetailsById } from "@/data/products";
 import { PageHeader, PageTitle } from "@/components/headings";
+import { productIdSchema } from "@/lib/zod/product";
+
+function ProductError({ msg }: { msg?: string }) {
+  return (
+    <div className="container py-6">{msg || "Error getting product data"}</div>
+  );
+}
 
 export default async function ProductPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const pid = decodeURI(params.id);
+  const parsedID = productIdSchema.safeParse(decodeURI(params.id));
+  // check if the param is valid
+  if (!parsedID.success) return <ProductError />;
 
+  const pid = parsedID.data;
   const product = await getProductWithDetailsById(pid);
 
-  if (!product) return <div className="container py-6">Product Not Found</div>;
+  // if no product found in db
+  if (!product) return <ProductError />;
 
-  const ownerships = product.ownership;
-  const offers = product.Offer;
+  const ownerships = product.ownerships;
+  const isOwned = ownerships.length > 0;
+  const offers = product.offers;
 
   const generalSpecsData = [
     { label: "Price", value: formatCurrency(product.price) },
-    { label: "Brand", value: product.Brand.name },
+    { label: "Brand", value: product.brand.name },
     { label: "Weight", value: formatUnit(product.weight, { unit: "gram" }) },
     {
       label: "Announced",
@@ -59,7 +71,7 @@ export default async function ProductPage({
           { unit: "millimeter" }
         ),
       },
-      { label: "Mount", value: product.lens.mounts.name },
+      { label: "Mount", value: product.lens.mount.name },
       { label: "Filter Thread", value: product.lens.filterThread },
     ];
   } else if (product.type === "camera" && product.camera) {
@@ -81,9 +93,7 @@ export default async function ProductPage({
           <div className="flex flex-row gap-4 items-center">
             <BackButton />
             <PageTitle className="">{product.name}</PageTitle>
-            {ownerships.length > 0 && (
-              <Badge className="select-none">Owned</Badge>
-            )}
+            {isOwned && <Badge className="select-none">Owned</Badge>}
           </div>
         </PageHeader>
 
@@ -103,13 +113,13 @@ export default async function ProductPage({
             <CardHeader>
               <CardTitle className="text-base">Ownership</CardTitle>
               <CardDescription>
-                {ownerships.length > 0
+                {isOwned
                   ? "You own this product"
                   : "You do not currently own this product"}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {ownerships.length > 0 ? (
+              {isOwned ? (
                 <>
                   {ownerships.map((ownedItem) => (
                     <SpecsTable
@@ -136,7 +146,9 @@ export default async function ProductPage({
                   ))}
                 </>
               ) : (
-                <DialogProductItem product={product}>
+                <DialogProductItem
+                  product={{ id: product.id, name: product.name }}
+                >
                   <Button>Add to Bag</Button>
                 </DialogProductItem>
               )}

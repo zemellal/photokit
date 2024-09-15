@@ -2,14 +2,14 @@
 
 import {
   createOwnership,
-  editOwnership,
-  removeOwnership,
+  updateOwnership,
+  deleteOwnership,
 } from "@/data/ownership";
 import { Ownership, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const createOwnershipAction = async (
-  data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
+  data: Prisma.OwnershipUncheckedCreateWithoutUserInput
 ) => {
   console.log(`creating entry in server: ${data}`);
 
@@ -21,18 +21,18 @@ export const createOwnershipAction = async (
 };
 
 export const deleteOwnershipAction = async (id: Ownership["id"]) => {
-  const deleteOwnership = await removeOwnership(id);
+  const owernship = await deleteOwnership(id);
 
-  console.log(deleteOwnership);
+  console.log(owernship);
   revalidatePath("/", "layout");
-  return deleteOwnership;
+  return owernship;
 };
 
-export const editOwnershipAction = async (
+export const updateOwnershipAction = async (
   id: Ownership["id"],
-  data: Prisma.OwnershipUncheckedCreateWithoutUsersInput
+  data: Prisma.OwnershipUncheckedCreateWithoutUserInput
 ) => {
-  const ownership = await editOwnership(id, data);
+  const ownership = await updateOwnership(id, data);
 
   console.log(ownership);
   revalidatePath("/", "layout");

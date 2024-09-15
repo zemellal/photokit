@@ -19,10 +19,10 @@ export default async function Home() {
     getKitCount(),
   ]);
 
-  const totalWeight = sumTotal(ownedProducts.map((el) => el.products.weight));
+  const totalWeight = sumTotal(ownedProducts.map((el) => el.product.weight));
   const totalCost = sumTotal(ownedProducts.map((el) => el.price));
   const totalReplacementCost = sumTotal(
-    ownedProducts.map((el) => el.products.price)
+    ownedProducts.map((el) => el.product.price)
   );
 
   return (

@@ -23,9 +23,9 @@ export default async function LensTypeWidget({ className }: WidgetProps) {
 
   /** sums how many of each type of lens the user owns */
   ownershipData.forEach((item) => {
-    if (item.products.type === "lens") {
-      if (item.products.lens?.type === "prime") primes += 1;
-      else if (item.products.lens?.type === "zoom") zooms += 1;
+    if (item.product.type === "lens") {
+      if (item.product.lens?.type === "prime") primes += 1;
+      else if (item.product.lens?.type === "zoom") zooms += 1;
     }
   });
 

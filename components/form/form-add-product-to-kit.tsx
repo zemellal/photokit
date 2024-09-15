@@ -19,7 +19,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { Product, Kit } from "@prisma/client";
 import {
-  addProductToKitAction,
+  createKitItemAction,
   getKitsAction,
 } from "@/app/(dashboard)/kits/actions";
 import {
@@ -69,7 +69,7 @@ export function AddProductToKitForm({
    * @param data
    */
   const onSubmit = async (data: z.infer<typeof ProductsOnKitsSchema>) => {
-    addProductToKitAction(data)
+    createKitItemAction(data)
       .then((data) => {
         setOpen(false);
         toast({

@@ -48,7 +48,7 @@ async function main() {
       price: 300,
       releaseDate: new Date("2021-09-14"),
       weight: 170,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -57,7 +57,7 @@ async function main() {
       type: "lens",
       lens: {
         create: {
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Nikon Z" },
               create: { name: "Nikon Z" },
@@ -80,7 +80,7 @@ async function main() {
       price: 1057,
       releaseDate: new Date("2015-08-04"),
       weight: 2300,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -89,7 +89,7 @@ async function main() {
       type: "lens",
       lens: {
         create: {
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Nikon F" },
               create: { name: "Nikon F" },
@@ -113,7 +113,7 @@ async function main() {
       price: 3000,
       releaseDate: new Date("2018-09-01"),
       weight: 1430,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Canon" },
           create: { name: "Canon" },
@@ -122,7 +122,7 @@ async function main() {
       type: "lens",
       lens: {
         create: {
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Canon RF" },
               create: { name: "Canon RF" },
@@ -146,7 +146,7 @@ async function main() {
       price: 2000,
       releaseDate: new Date("2018-08-23"),
       weight: 675,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -157,7 +157,7 @@ async function main() {
         create: {
           megapixels: 24,
           cropFactor: 1,
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Nikon Z" },
               create: { name: "Nikon Z" },
@@ -176,7 +176,7 @@ async function main() {
       price: 2000,
       releaseDate: new Date("2012-09-01"),
       weight: 850,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },
@@ -187,7 +187,7 @@ async function main() {
         create: {
           megapixels: 24,
           cropFactor: 1,
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Nikon F" },
               create: { name: "Nikon F" },
@@ -206,7 +206,7 @@ async function main() {
       price: 2900,
       releaseDate: new Date("2020-07-09"),
       weight: 738,
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Canon" },
           create: { name: "Canon" },
@@ -217,7 +217,7 @@ async function main() {
         create: {
           megapixels: 45,
           cropFactor: 1,
-          mounts: {
+          mount: {
             connectOrCreate: {
               where: { name: "Canon RF" },
               create: { name: "Canon RF" },
@@ -236,7 +236,7 @@ async function main() {
       price: 250,
       releaseDate: new Date("2021-10-28"),
       type: "accessory",
-      Brand: {
+      brand: {
         connectOrCreate: {
           where: { name: "Nikon" },
           create: { name: "Nikon" },

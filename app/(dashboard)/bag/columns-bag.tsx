@@ -45,8 +45,8 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
     cell: ({ row }) => {
       const original = row.original;
       return (
-        <Link href={`/product/${encodeURI(original.products.id)}`}>
-          {original.products.name}
+        <Link href={`/product/${encodeURI(original.product.id)}`}>
+          {original.product.name}
         </Link>
       );
     },
@@ -58,7 +58,7 @@ export const columnsBag: ColumnDef<OwnershipWithProducts>[] = [
       <DataTableColumnHeader column={column} title="Weight" />
     ),
     cell: ({ row }) => {
-      const amount = row.original.products.weight;
+      const amount = row.original.product.weight;
 
       return <div className="">{formatWeight(amount)}</div>;
     },

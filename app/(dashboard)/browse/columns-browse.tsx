@@ -19,7 +19,7 @@ export const columnsProducts: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const item = row.original;
       return (
-        <DialogProductItem product={item}>
+        <DialogProductItem product={{ id: item.id, name: item.name }}>
           <Button
             className="-mr-4 invisible group-hover:visible size-6"
             variant={"default"}

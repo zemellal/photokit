@@ -14,4 +14,4 @@ export const ownershipSchema = z.object({
   purchaseDate: z.date().optional(),
   itemCondition: z.nativeEnum(ItemCondition),
   price: z.coerce.number(),
-}) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUsersInput>;
+}) satisfies z.Schema<Prisma.OwnershipUncheckedCreateWithoutUserInput>;

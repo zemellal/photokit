@@ -11,8 +11,8 @@ import { User } from "@prisma/client";
  *
  * @group User
  */
-export function getUserByEmail(email: string) {
-  const user = prisma.user.findUnique({ where: { email: email } });
+export async function getUserByEmail(email: string) {
+  const user = await prisma.user.findUnique({ where: { email: email } });
   return user;
 }
 
@@ -23,6 +23,6 @@ export function getUserByEmail(email: string) {
  *
  * @group User
  */
-export const findUserByID = cache((userId: User["id"]) => {
-  return prisma.user.findUnique({ where: { id: userId } });
+export const findUserByID = cache(async (userId: User["id"]) => {
+  return await prisma.user.findUnique({ where: { id: userId } });
 });

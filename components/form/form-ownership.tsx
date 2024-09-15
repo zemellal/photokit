@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import {
   createOwnershipAction,
-  editOwnershipAction,
+  updateOwnershipAction,
 } from "@/app/(dashboard)/bag/actions";
 import { OwnershipWithProducts } from "@/data/ownership";
 
@@ -101,7 +101,7 @@ export function OwnershipForm({
             errorToast(err);
           });
       } else {
-        editOwnershipAction(item.id, data)
+        updateOwnershipAction(item.id, data)
           .then((data) => {
             setOpen(false);
             messageToast(data);

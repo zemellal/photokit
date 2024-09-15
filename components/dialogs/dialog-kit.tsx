@@ -57,7 +57,6 @@ export const DropdownDialogKit = ({ kit }: { kit: Kit }) => {
   const [action, setAction] = React.useState<"delete" | "edit" | "">("");
 
   function deleteKit() {
-    console.log(`kitId: ${kit.id}`);
     deleteKitAction(kit.id)
       .then((kit) => {
         setOpen(false);

@@ -1,11 +1,11 @@
 "use server";
 
 import {
-  addProductToKit,
+  createKitProduct,
   createKit,
   deleteKit,
   getKits,
-  removeKitItem,
+  deleteKitProduct,
   updateKit,
 } from "@/data/kits";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
@@ -60,13 +60,13 @@ export const editKitAction = async (
  * @param data
  * @returns
  */
-export const addProductToKitAction = async (
+export const createKitItemAction = async (
   data: Prisma.ProductsOnKitsUncheckedCreateInput
 ) => {
   console.log(
     `addProductToKitAction: { kitId: ${data.kitId}, productId: ${data.productId} }`
   );
-  const kitItem = await addProductToKit(data);
+  const kitItem = await createKitProduct(data);
   revalidatePath("/kits", "page");
   return kitItem;
 };
@@ -80,7 +80,7 @@ export const deleteKitItemAction = async (kitItem: ProductsOnKits) => {
   console.log(
     `deleteKitItemAction: { kitId: ${kitItem.kitId}, productId: ${kitItem.productId} }`
   );
-  const removedKitItem = await removeKitItem(kitItem);
+  const removedKitItem = await deleteKitProduct(kitItem);
 
   revalidatePath("/kits", "page");
   return removedKitItem;
