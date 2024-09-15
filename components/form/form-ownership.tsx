@@ -42,6 +42,7 @@ import {
 import { removeNullKeysFromObject } from "@/lib";
 import { ItemCondition } from "@/lib/types";
 import { OwnershipSchema } from "@/lib/zod";
+import { Product } from "@prisma/client";
 
 // TODO: only pass necessary data to client component
 export function OwnershipForm({
@@ -49,7 +50,7 @@ export function OwnershipForm({
   item,
   setOpen,
 }: {
-  product: { id: string };
+  product: { id: Product["id"] };
   item?: OwnershipWithProducts;
   setOpen: Dispatch<boolean>;
 }) {

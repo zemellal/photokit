@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 
 import {
   createKitProduct,
@@ -8,8 +9,8 @@ import {
   deleteKitProduct,
   updateKit,
 } from "@/data/kits";
+import { KitCreateSchema } from "@/lib/zod";
 import { Kit, Prisma, ProductsOnKits } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 
 // Kit actions
 /** Server action to create a user's kit
@@ -18,7 +19,8 @@ import { revalidatePath } from "next/cache";
 export const createKitAction = async (
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
 ) => {
-  const ownership = await createKit(data);
+  const validData = KitCreateSchema.parse(data);
+  const ownership = await createKit(validData);
 
   revalidatePath("/kits", "page");
   return ownership;
@@ -46,8 +48,8 @@ export const editKitAction = async (
   data: Prisma.KitUncheckedCreateWithoutOwnerInput
 ) => {
   console.log(`editKitAction: ${id}`);
-  const kit = await updateKit(id, data);
-  console.log(kit);
+  const validData = KitCreateSchema.parse(data);
+  const kit = await updateKit(id, validData);
 
   revalidatePath("/kits", "page");
   return kit;
