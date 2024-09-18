@@ -12,6 +12,7 @@ import { DropdownDialogKit } from "../dialogs/dialog-kit";
 import { KitsWithProductsOnKits } from "@/data/kits";
 import { formatWeight, locale, sumTotal } from "@/lib";
 import { DialogKitItems } from "../dialogs/dialog-kit-items";
+import Link from "next/link";
 
 interface WidgetProps extends React.HTMLAttributes<HTMLDivElement> {
   kit: KitsWithProductsOnKits[0];
@@ -37,7 +38,13 @@ const KitWidget = React.forwardRef<HTMLDivElement, WidgetProps>(
           <DialogKitItems kitItems={kit.productsOnKits} />
         </CardContent>
         <CardFooter>
-          <CardDescription>Add to your kit from your gear page</CardDescription>
+          <CardDescription>
+            Add to your kit from your{" "}
+            <Link className="text-foreground hover:underline" href="/bag">
+              gear
+            </Link>{" "}
+            page
+          </CardDescription>
 
           {/* <Button variant={"outline"} size={"icon"}>
             <Plus className="size-5" />

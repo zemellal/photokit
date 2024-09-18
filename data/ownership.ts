@@ -3,7 +3,7 @@ import "server-only";
 
 import { prisma } from "@/lib/db";
 import { Ownership, Prisma, User } from "@prisma/client";
-import { getSessionId } from "@/auth";
+import { getSessionId } from "@/data/auth";
 
 /**
  * Get the user's ownerships with product details

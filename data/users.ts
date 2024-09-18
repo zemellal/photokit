@@ -2,7 +2,8 @@ import { cache } from "react";
 import "server-only";
 
 import { prisma } from "@/lib/db";
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
+import { getSessionId } from "./auth";
 
 /**
  * Find user by unique email
@@ -17,12 +18,45 @@ export async function getUserByEmail(email: string) {
 }
 
 /**
- * Find unique user by user id
+ * Get unique user by user id
  *
  * @param userId - the user's unique id
  *
  * @group User
  */
-export const findUserByID = cache(async (userId: User["id"]) => {
+const getUserById = cache(async (userId: User["id"]) => {
   return await prisma.user.findUnique({ where: { id: userId } });
 });
+
+/**
+ * Return the logged in user, by the session token
+ *
+ * @group User
+ */
+export const getLoggedInUser = cache(async () => {
+  const userId = await getSessionId();
+  return await getUserById(userId);
+});
+
+/**
+ * Update user, for the logged in user
+ *
+ * @group User
+ */
+export const updateUser = async (data: Prisma.UserUpdateInput) => {
+  const userId = await getSessionId();
+  return await prisma.user.update({
+    data,
+    where: { id: userId },
+  });
+};
+
+/**
+ * Get Accounts for the logged in user
+ */
+export const getAccounts = async () => {
+  const userId = await getSessionId();
+  return await prisma.account.findMany({
+    where: { userId: userId },
+  });
+};

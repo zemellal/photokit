@@ -48,13 +48,6 @@ const providers: Provider[] = [
   // }),
 ];
 
-/** Get User ID from Session Auth */
-export const getSessionId = async () => {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("User not found.");
-  return session.user.id;
-};
-
 /** If we need to access the auth providers in a custom component */
 export const providerMap = providers
   .map((provider) => {

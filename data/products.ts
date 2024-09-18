@@ -3,7 +3,7 @@ import "server-only";
 
 import { Prisma, Product } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getSessionId } from "@/auth";
+import { getSessionId } from "@/data/auth";
 import { unstable_cache } from "next/cache";
 
 /**

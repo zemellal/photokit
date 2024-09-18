@@ -133,6 +133,15 @@ export const OfferCreateSchema = z.object({
 }) satisfies z.Schema<Prisma.OfferUncheckedCreateInput>;
 
 /**
+ * User Schemas
+ * */
+
+export const UserProfileSchema = z.object({
+  name: z.string().min(3).optional(),
+  email: z.string().email().optional(),
+}) satisfies z.Schema<Prisma.UserUpdateInput>;
+
+/**
  * Auth Schemas
  * */
 

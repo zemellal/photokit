@@ -1,5 +1,11 @@
 import { ProductForm } from "@/components/form/form-product";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getCachedBrands, getCachedMounts } from "@/data/products";
 
 export default async function AddProduct() {
@@ -20,6 +26,9 @@ export default async function AddProduct() {
         <Card>
           <CardHeader>
             <CardTitle>Add a Product</CardTitle>
+            <CardDescription>
+              Manually add a product to the database.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <ProductForm brands={brands} mounts={mounts} />

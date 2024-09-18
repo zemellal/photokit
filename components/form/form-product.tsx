@@ -126,7 +126,9 @@ export function ProductForm({
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>Name of the product</FormDescription>
+              <FormDescription>
+                Full manufacturer's name of the product.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -248,7 +250,7 @@ export function ProductForm({
               <FormControl>
                 <Input type="number" placeholder="$" {...field} />
               </FormControl>
-              <FormDescription>{"The new street price"}</FormDescription>
+              <FormDescription>{"The new street price."}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -295,7 +297,7 @@ export function ProductForm({
                   ))}
                 </SelectContent>
               </Select>
-              <FormDescription>The product type</FormDescription>
+              <FormDescription>The product type.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
