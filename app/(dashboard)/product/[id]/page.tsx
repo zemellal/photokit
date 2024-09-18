@@ -2,7 +2,7 @@ import { BackButton } from "@/components/button-back";
 import { DialogOpen } from "@/components/dialogs/dialog-open";
 import { DialogProductItem } from "@/components/dialogs/dialog-product-item";
 import { OfferForm } from "@/components/form/form-offer";
-import { SpecsTable } from "@/components/table/table-specs";
+import { OffersTable, SpecsTable } from "@/components/table/table-specs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -187,17 +187,7 @@ export default async function ProductPage({
               </DialogOpen>
             </CardHeader>
             <CardContent>
-              {offers && (
-                <ul>
-                  {offers.map((offer) => (
-                    <li key={String(offer.date)}>{` ${formatDate(
-                      offer.date
-                    )} - ${formatCurrency(offer.price)} - ${
-                      offer.itemCondition
-                    }`}</li>
-                  ))}
-                </ul>
-              )}
+              <OffersTable offers={offers} />
             </CardContent>
           </Card>
 

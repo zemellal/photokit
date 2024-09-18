@@ -4,8 +4,12 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableHead,
+  TableHeader,
   TableRow,
 } from "../ui/table";
+import { Offer } from "@prisma/client";
+import { formatCurrency, formatDate } from "@/lib";
 
 type SpecsTableRow = {
   label?: string;
@@ -30,6 +34,37 @@ export function SpecsTable({ data, caption }: SpecsTableProps) {
               {row.label}
             </TableCell>
             <TableCell className="">{row.value}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+export function OffersTable({ offers }: { offers: Offer[] }) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Date</TableHead>
+          <TableHead>Condition</TableHead>
+          <TableHead>Price</TableHead>
+        </TableRow>
+      </TableHeader>
+
+      <TableBody>
+        {offers.map((offer) => (
+          <TableRow key={String(offer.date)}>
+            <TableCell>
+              {formatDate(offer.date, {
+                dateStyle: "short",
+                timeStyle: "short",
+              })}
+            </TableCell>
+            <TableCell>
+              {offer.itemCondition.replace(/Condition$/, "")}
+            </TableCell>
+            <TableCell>{formatCurrency(offer.price)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
