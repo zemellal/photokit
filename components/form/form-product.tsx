@@ -127,7 +127,7 @@ export function ProductForm({
                 <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>
-                Full manufacturer's name of the product.
+                Full manufacturer&apos;s name of the product.
               </FormDescription>
               <FormMessage />
             </FormItem>
